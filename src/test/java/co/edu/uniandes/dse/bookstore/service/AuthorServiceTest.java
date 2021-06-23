@@ -9,7 +9,6 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import org.junit.runner.RunWith;
@@ -44,24 +43,7 @@ class AuthorServiceTest {
 	private List<AuthorEntity> data = new ArrayList<>();
 
 	void insertData() {
-		for (int i = 0; i < 3; i++) {
-			AuthorEntity authorEntity = factory.manufacturePojo(AuthorEntity.class);
-			authorEntity.setBooks(new ArrayList<>());
-			entityManager.persist(authorEntity);
-			data.add(authorEntity);
-		}
-
-		AuthorEntity authorEntity = data.get(2);
-		BookEntity bookEntity = factory.manufacturePojo(BookEntity.class);
-		bookEntity.getAuthors().add(authorEntity);
-		entityManager.persist(bookEntity);
-
-		authorEntity.getBooks().add(bookEntity);
-
-		PrizeEntity prize = factory.manufacturePojo(PrizeEntity.class);
-		prize.setAuthor(data.get(1));
-		entityManager.persist(prize);
-		data.get(1).getPrizes().add(prize);
+		
 	}
 
 	@BeforeEach
@@ -143,5 +125,12 @@ class AuthorServiceTest {
 			authorService.deleteAuthor(data.get(2).getId());
 		});
 	}
+	
+	@Test
+    public void testDeleteAuthorWithPrize() {
+		assertThrows(BusinessLogicException.class, ()->{
+			authorService.deleteAuthor(data.get(1).getId());
+		});
+    }
 
 }
