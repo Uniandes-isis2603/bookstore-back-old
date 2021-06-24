@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import lombok.Data;
@@ -18,7 +19,7 @@ public class EditorialEntity extends BaseEntity {
 	private String name;
 
 	@PodamExclude
-    @OneToMany(mappedBy = "editorial")
-	List<BookEntity> books = new ArrayList<>();
+    @OneToMany(mappedBy = "editorial", fetch=FetchType.EAGER)
+	private List<BookEntity> books = new ArrayList<>();
 
 }

@@ -40,14 +40,38 @@ class AuthorServiceTest {
 
 	private PodamFactory factory = new PodamFactoryImpl();
 
-	private List<AuthorEntity> data = new ArrayList<>();
+	private List<AuthorEntity> authorList= new ArrayList<>();
 
-	void insertData() {
-		
+	private void clearData() {
+		entityManager.getEntityManager().createQuery("delete from PrizeEntity").executeUpdate();
+		entityManager.getEntityManager().createQuery("delete from BookEntity").executeUpdate();
+		entityManager.getEntityManager().createQuery("delete from AuthorEntity").executeUpdate();
+	}
+	
+	private void insertData() {
+		for (int i = 0; i < 3; i++) {
+			AuthorEntity authorEntity = factory.manufacturePojo(AuthorEntity.class);
+			authorEntity.setBooks(new ArrayList<>());
+			entityManager.persist(authorEntity);
+			authorList.add(authorEntity);
+		}
+
+		AuthorEntity authorEntity = authorList.get(2);
+		BookEntity bookEntity = factory.manufacturePojo(BookEntity.class);
+		bookEntity.getAuthors().add(authorEntity);
+		entityManager.persist(bookEntity);
+
+		authorEntity.getBooks().add(bookEntity);
+
+		PrizeEntity prize = factory.manufacturePojo(PrizeEntity.class);
+		prize.setAuthor(authorList.get(1));
+		entityManager.persist(prize);
+		authorList.get(1).getPrizes().add(prize);
 	}
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
+		clearData();
 		insertData();
 	}
 
@@ -57,22 +81,22 @@ class AuthorServiceTest {
 		AuthorEntity result = authorService.createAuthor(newEntity);
 		assertNotNull(result);
 
-		AuthorEntity authorEntity = entityManager.find(AuthorEntity.class, result.getId());
+		AuthorEntity entity = entityManager.find(AuthorEntity.class, result.getId());
 
-		assertEquals(authorEntity.getId(), result.getId());
-		assertEquals(authorEntity.getName(), result.getName());
-		assertEquals(authorEntity.getBirthDate(), result.getBirthDate());
-		assertEquals(authorEntity.getDescription(), result.getDescription());
+		assertEquals(newEntity.getId(), entity.getId());
+		assertEquals(newEntity.getName(), entity.getName());
+		assertEquals(newEntity.getBirthDate(), entity.getBirthDate());
+		assertEquals(newEntity.getDescription(), entity.getDescription());
 	}
 
 	@Test
 	void testGetAuthors() {
 		List<AuthorEntity> authorsList = authorService.getAuthors();
-		assertEquals(data.size(), authorsList.size());
+		assertEquals(authorList.size(), authorsList.size());
 
 		for (AuthorEntity authorEntity : authorsList) {
 			boolean found = false;
-			for (AuthorEntity storedEntity : data) {
+			for (AuthorEntity storedEntity : authorList) {
 				if (authorEntity.getId().equals(storedEntity.getId())) {
 					found = true;
 				}
@@ -83,7 +107,7 @@ class AuthorServiceTest {
 
 	@Test
 	void testGetAuthor() {
-		AuthorEntity authorEntity = data.get(0);
+		AuthorEntity authorEntity = authorList.get(0);
 
 		Optional<AuthorEntity> resultEntity = authorService.getAuthor(authorEntity.getId());
 		assertNotNull(resultEntity);
@@ -96,7 +120,7 @@ class AuthorServiceTest {
 
 	@Test
 	void testUpdateAuthor() {
-		AuthorEntity authorEntity = data.get(0);
+		AuthorEntity authorEntity = authorList.get(0);
 		AuthorEntity pojoEntity = factory.manufacturePojo(AuthorEntity.class);
 
 		pojoEntity.setId(authorEntity.getId());
@@ -113,23 +137,23 @@ class AuthorServiceTest {
 
 	@Test
 	void testDeleteAuthor() throws BusinessLogicException {
-		AuthorEntity authorEntity = data.get(0);
+		AuthorEntity authorEntity = authorList.get(0);
 		authorService.deleteAuthor(authorEntity.getId());
 		AuthorEntity deleted = entityManager.find(AuthorEntity.class, authorEntity.getId());
 		assertNull(deleted);
 	}
 
 	@Test
-	public void testDeleteAuthorWithBooks() {
+	void testDeleteAuthorWithBooks() {
 		assertThrows(BusinessLogicException.class, ()-> {
-			authorService.deleteAuthor(data.get(2).getId());
+			authorService.deleteAuthor(authorList.get(2).getId());
 		});
 	}
 	
 	@Test
-    public void testDeleteAuthorWithPrize() {
+    void testDeleteAuthorWithPrize() {
 		assertThrows(BusinessLogicException.class, ()->{
-			authorService.deleteAuthor(data.get(1).getId());
+			authorService.deleteAuthor(authorList.get(1).getId());
 		});
     }
 

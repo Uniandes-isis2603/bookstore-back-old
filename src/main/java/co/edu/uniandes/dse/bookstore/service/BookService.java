@@ -1,8 +1,8 @@
 package co.edu.uniandes.dse.bookstore.service;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
@@ -15,7 +15,11 @@ import lombok.Data;
 @Data
 @Service
 public class BookService {
+	
+	@Autowired
 	BookRepository bookRepository;
+	
+	@Autowired
 	EditorialRepository editorialRepository;
 	
 	public BookEntity createBook(BookEntity bookEntity) throws BusinessLogicException {
@@ -27,7 +31,7 @@ public class BookService {
 			throw new BusinessLogicException("ISBN is not valid");
 		}
 		
-		if(bookRepository.findByIsbn(bookEntity.getIsbn()) != null) {
+		if(bookRepository.findByIsbn(bookEntity.getIsbn()).size() > 0 ) {
 			throw new BusinessLogicException("ISBN already exists");
 		}
 		
@@ -38,8 +42,8 @@ public class BookService {
 		return this.bookRepository.findAll();
 	}
 	
-	public Optional<BookEntity> getBook(Long bookId) {
-		return this.bookRepository.findById(bookId);
+	public BookEntity getBook(Long bookId) {
+		return this.bookRepository.findById(bookId).get();
 	}
 	
 	public BookEntity updateBook(BookEntity bookEntity) throws BusinessLogicException {
@@ -51,7 +55,7 @@ public class BookService {
 	}
 	
 	public void deleteBook(Long bookId) throws BusinessLogicException {
-		List<AuthorEntity> authors = getBook(bookId).get().getAuthors();
+		List<AuthorEntity> authors = getBook(bookId).getAuthors();
 		if(authors != null && !authors.isEmpty()) {
 			throw new BusinessLogicException("Unable to delete book with id = " + bookId + " because it has associated authors");
 		}

@@ -31,5 +31,4 @@ public class DateStrategy implements AttributeStrategy<Date> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

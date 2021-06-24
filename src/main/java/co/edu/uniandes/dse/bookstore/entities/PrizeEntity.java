@@ -18,7 +18,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 public class PrizeEntity extends BaseEntity {
 
 	@Temporal(TemporalType.DATE)
-	private Date fechaEntrega;
+	private Date premiationDate;
 
 	@PodamExclude
 	@ManyToOne

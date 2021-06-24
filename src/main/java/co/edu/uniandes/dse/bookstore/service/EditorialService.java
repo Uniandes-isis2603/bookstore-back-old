@@ -1,8 +1,8 @@
 package co.edu.uniandes.dse.bookstore.service;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
@@ -14,10 +14,12 @@ import lombok.Data;
 @Data
 @Service
 public class EditorialService {
+	
+	@Autowired
 	EditorialRepository editorialRepository;
 	
 	public EditorialEntity createEditorial(EditorialEntity editorialEntity) throws BusinessLogicException {
-		if(editorialRepository.findByName(editorialEntity.getName()) != null) {
+		if(editorialRepository.findByName(editorialEntity.getName()).size() > 0) {
 			throw new BusinessLogicException("Editorial name already exists");
 		}
 		
@@ -28,8 +30,8 @@ public class EditorialService {
 		return this.editorialRepository.findAll();
 	}
 	
-	public Optional<EditorialEntity> getEditorial(Long editorialId) {
-		return this.editorialRepository.findById(editorialId);
+	public EditorialEntity getEditorial(Long editorialId) {
+		return this.editorialRepository.findById(editorialId).get();
 	}
 	
 	public EditorialEntity updateEditorial(EditorialEntity editorialEntity) throws BusinessLogicException {
@@ -37,7 +39,7 @@ public class EditorialService {
 	}
 	
 	public void deleteEditorial(Long editorialId) throws BusinessLogicException {
-		List<BookEntity> books = getEditorial(editorialId).get().getBooks();
+		List<BookEntity> books = getEditorial(editorialId).getBooks();
 		if(books != null && !books.isEmpty()) {
 			throw new BusinessLogicException("Unable to delete editorial with id = " + editorialId + " because it has associated books");
 		}

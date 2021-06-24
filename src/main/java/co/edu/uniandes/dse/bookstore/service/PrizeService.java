@@ -3,6 +3,7 @@ package co.edu.uniandes.dse.bookstore.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
@@ -16,7 +17,10 @@ import lombok.Data;
 @Service
 public class PrizeService {
 
+	@Autowired
 	PrizeRepository prizeRepository;
+	
+	@Autowired
 	OrganizationRepository organizationRepository;
 	
 	public PrizeEntity createPrize(PrizeEntity prizeEntity) throws BusinessLogicException {
@@ -24,12 +28,12 @@ public class PrizeService {
 			throw new BusinessLogicException("Organization is not valid");
 		}
 		
-		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(prizeEntity.getOrganization().getId());
-		if(!organizationEntity.isPresent()) {
+		OrganizationEntity organizationEntity = organizationRepository.findById(prizeEntity.getOrganization().getId()).get();
+		if(organizationEntity == null) {
 			throw new BusinessLogicException("Organization is not valid");
 		}
 		
-		if(organizationEntity.get().getPrize() != null) {
+		if(organizationEntity.getPrize() != null) {
 			throw new BusinessLogicException("Organization already holds a prize");
 		}
 		

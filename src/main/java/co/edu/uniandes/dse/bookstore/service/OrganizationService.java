@@ -1,8 +1,8 @@
 package co.edu.uniandes.dse.bookstore.service;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
@@ -14,10 +14,12 @@ import lombok.Data;
 @Data
 @Service
 public class OrganizationService {
+	
+	@Autowired
 	OrganizationRepository organizationRepository;
 	
 	public OrganizationEntity createOrganization(OrganizationEntity organizationEntity) throws BusinessLogicException {
-		if(organizationRepository.findByName(organizationEntity.getName()) != null) {
+		if(organizationRepository.findByName(organizationEntity.getName()).size() > 0) {
 			throw new BusinessLogicException("Organization name already exists");
 		}
 		
@@ -28,8 +30,8 @@ public class OrganizationService {
 		return this.organizationRepository.findAll();
 	}
 	
-	public Optional<OrganizationEntity> getOrganization(Long organizationId) {
-		return this.organizationRepository.findById(organizationId);
+	public OrganizationEntity getOrganization(Long organizationId) {
+		return this.organizationRepository.findById(organizationId).get();
 	}
 	
 	public OrganizationEntity updateOrganization(OrganizationEntity organizationEntity) throws BusinessLogicException {
@@ -37,7 +39,7 @@ public class OrganizationService {
 	}
 	
 	public void deleteOrganization(Long organizationId) throws BusinessLogicException {
-		PrizeEntity prize = getOrganization(organizationId).get().getPrize();
+		PrizeEntity prize = getOrganization(organizationId).getPrize();
 		if(prize != null) {
 			throw new BusinessLogicException("Unable to delete organization with id = " + organizationId + " because it has an associated prize");
 		}
