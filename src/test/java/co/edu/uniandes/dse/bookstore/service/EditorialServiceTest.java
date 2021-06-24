@@ -18,7 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
-import co.edu.uniandes.dse.bookstore.exceptions.BusinessLogicException;
+import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
+import co.edu.uniandes.dse.bookstore.services.EditorialService;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -69,7 +71,7 @@ class EditorialServiceTest {
 	}
 
 	@Test
-	void testCreateEditorial() throws BusinessLogicException {
+	void testCreateEditorial() throws EntityNotFoundException, IllegalOperationException {
 		EditorialEntity newEntity = factory.manufacturePojo(EditorialEntity.class);
 		EditorialEntity result = editorialService.createEditorial(newEntity);
 		assertNotNull(result);
@@ -81,7 +83,7 @@ class EditorialServiceTest {
 
 	@Test
 	void testCreateEditorialWithSameName() {
-		assertThrows(BusinessLogicException.class, () -> {
+		assertThrows(EntityNotFoundException.class, () -> {
 			EditorialEntity newEntity = factory.manufacturePojo(EditorialEntity.class);
 			newEntity.setName(editorialList.get(0).getName());
 			editorialService.createEditorial(newEntity);
@@ -104,7 +106,7 @@ class EditorialServiceTest {
 	}
 
 	@Test
-	void testGetEditorial() {
+	void testGetEditorial() throws EntityNotFoundException {
 		EditorialEntity entity = editorialList.get(0);
 		EditorialEntity resultEntity = editorialService.getEditorial(entity.getId());
 		assertNotNull(resultEntity);
@@ -113,18 +115,18 @@ class EditorialServiceTest {
 	}
 
 	@Test
-	void testUpdateEditorial() throws BusinessLogicException {
+	void testUpdateEditorial() throws EntityNotFoundException {
 		EditorialEntity entity = editorialList.get(0);
 		EditorialEntity pojoEntity = factory.manufacturePojo(EditorialEntity.class);
 		pojoEntity.setId(entity.getId());
-		editorialService.updateEditorial(pojoEntity);
+		editorialService.updateEditorial(entity.getId(), pojoEntity);
 		EditorialEntity resp = entityManager.find(EditorialEntity.class, entity.getId());
 		assertEquals(pojoEntity.getId(), resp.getId());
 		assertEquals(pojoEntity.getName(), resp.getName());
 	}
 
 	@Test
-	void testDeleteEditorial() throws BusinessLogicException {
+	void testDeleteEditorial() throws EntityNotFoundException, IllegalOperationException {
 		EditorialEntity entity = editorialList.get(1);
 		editorialService.deleteEditorial(entity.getId());
 		EditorialEntity deleted = entityManager.find(EditorialEntity.class, entity.getId());
@@ -133,7 +135,7 @@ class EditorialServiceTest {
 	
 	@Test
     void testDeleteEditorialWithBooks() {
-        assertThrows(BusinessLogicException.class, ()-> {
+        assertThrows(EntityNotFoundException.class, ()-> {
         	EditorialEntity entity = editorialList.get(0);
             editorialService.deleteEditorial(entity.getId());
         });

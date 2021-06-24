@@ -18,7 +18,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
-import co.edu.uniandes.dse.bookstore.exceptions.BusinessLogicException;
+import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.services.OrganizationService;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -62,7 +63,7 @@ class OrganizationServiceTest {
 	}
 
 	@Test
-	void testCreateOrganization() throws BusinessLogicException {
+	void testCreateOrganization() throws EntityNotFoundException {
 		OrganizationEntity newEntity = factory.manufacturePojo(OrganizationEntity.class);
 		OrganizationEntity result = organizationService.createOrganization(newEntity);
 
@@ -75,7 +76,7 @@ class OrganizationServiceTest {
 
 	@Test
 	void testCreateOrganizationWithSameName() {
-		assertThrows(BusinessLogicException.class, () -> {
+		assertThrows(EntityNotFoundException.class, () -> {
 			OrganizationEntity newEntity = factory.manufacturePojo(OrganizationEntity.class);
 			newEntity.setName(organizationList.get(0).getName());
 			organizationService.createOrganization(newEntity);
@@ -109,7 +110,7 @@ class OrganizationServiceTest {
 	}
 
 	@Test
-	void testUpdateOrganization() throws BusinessLogicException {
+	void testUpdateOrganization() throws EntityNotFoundException {
 		OrganizationEntity entity = organizationList.get(0);
 		OrganizationEntity pojoEntity = factory.manufacturePojo(OrganizationEntity.class);
 
@@ -125,7 +126,7 @@ class OrganizationServiceTest {
 	}
 
 	@Test
-	void testDeleteOrganization() throws BusinessLogicException {
+	void testDeleteOrganization() throws EntityNotFoundException {
 		OrganizationEntity entity = organizationList.get(0);
 		organizationService.deleteOrganization(entity.getId());
 		OrganizationEntity deleted = entityManager.find(OrganizationEntity.class, entity.getId());
@@ -134,7 +135,7 @@ class OrganizationServiceTest {
 	
 	@Test
     void testDeleteOrganizationWithPrize() {
-        assertThrows(BusinessLogicException.class, ()->{
+        assertThrows(EntityNotFoundException.class, ()->{
         	organizationService.deleteOrganization(organizationList.get(2).getId());
         });
     }

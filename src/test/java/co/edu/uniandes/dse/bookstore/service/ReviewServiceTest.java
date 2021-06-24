@@ -19,7 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
 import co.edu.uniandes.dse.bookstore.entities.ReviewEntity;
-import co.edu.uniandes.dse.bookstore.exceptions.BusinessLogicException;
+import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.services.ReviewService;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -77,7 +78,7 @@ class ReviewServiceTest {
 	}
 
 	@Test
-	void testCreateReview() throws BusinessLogicException {
+	void testCreateReview() throws EntityNotFoundException {
 		ReviewEntity newEntity = factory.manufacturePojo(ReviewEntity.class);
 		newEntity.setBook(bookList.get(1));
 		ReviewEntity result = reviewService.createReview(reviewList.get(1).getId(), newEntity);
@@ -133,7 +134,7 @@ class ReviewServiceTest {
 	}
 
 	@Test
-	void testDeleteReview() throws BusinessLogicException {
+	void testDeleteReview() throws EntityNotFoundException {
 		ReviewEntity entity = reviewList.get(0);
 		reviewService.deleteReview(bookList.get(0).getId(), entity.getId());
 		ReviewEntity deleted = entityManager.find(ReviewEntity.class, entity.getId());
@@ -142,7 +143,7 @@ class ReviewServiceTest {
 	
 	@Test
 	void testDeleteReviewWithNoAssociatedBook() {
-		assertThrows(BusinessLogicException.class, ()->{
+		assertThrows(EntityNotFoundException.class, ()->{
 			ReviewEntity entity = reviewList.get(0);
 			reviewService.deleteReview(bookList.get(1).getId(), entity.getId());
 		});

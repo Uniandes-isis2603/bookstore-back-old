@@ -19,7 +19,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
-import co.edu.uniandes.dse.bookstore.exceptions.BusinessLogicException;
+import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
+import co.edu.uniandes.dse.bookstore.services.BookService;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -74,7 +76,7 @@ class BookServiceTest {
 	}
 
 	@Test
-	void testCreateBook() throws BusinessLogicException {
+	void testCreateBook() throws EntityNotFoundException, IllegalOperationException {
 		BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
 		newEntity.setEditorial(editorialList.get(0));
 		BookEntity result = bookService.createBook(newEntity);
@@ -86,13 +88,13 @@ class BookServiceTest {
 		assertEquals(newEntity.getName(), entity.getName());
 		assertEquals(newEntity.getDescription(), entity.getDescription());
 		assertEquals(newEntity.getImage(), entity.getImage());
-		assertEquals(newEntity.getPublishDate(), entity.getPublishDate());
+		assertEquals(newEntity.getPublishingDate(), entity.getPublishingDate());
 		assertEquals(newEntity.getIsbn(), entity.getIsbn());
 	}
 
 	@Test
 	void testCreateBookWithNoValidISBN() {
-		assertThrows(BusinessLogicException.class, () -> {
+		assertThrows(EntityNotFoundException.class, () -> {
 			BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
 			newEntity.setEditorial(editorialList.get(0));
 			newEntity.setIsbn("");
@@ -102,7 +104,7 @@ class BookServiceTest {
 
 	@Test
 	void testCreateBookWithNoValidISBN2() {
-		assertThrows(BusinessLogicException.class, () -> {
+		assertThrows(EntityNotFoundException.class, () -> {
 			BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
 			newEntity.setEditorial(editorialList.get(0));
 			newEntity.setIsbn(null);
@@ -112,100 +114,102 @@ class BookServiceTest {
 
 	@Test
 	void testCreateBookWithStoredISBN() {
-		assertThrows(BusinessLogicException.class, ()->{
+		assertThrows(EntityNotFoundException.class, () -> {
 			BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
 			newEntity.setEditorial(editorialList.get(0));
 			newEntity.setIsbn(bookList.get(0).getIsbn());
 			bookService.createBook(newEntity);
 		});
 	}
-	
+
 	@Test
-    void testCreateBookWithNullEditorial() {
-        assertThrows(BusinessLogicException.class, ()->{
-        	BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
-            newEntity.setEditorial(null);
-            bookService.createBook(newEntity);
-        });
-    }
+	void testCreateBookWithNullEditorial() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
+			newEntity.setEditorial(null);
+			bookService.createBook(newEntity);
+		});
+	}
 
 	@Test
 	void testGetBooks() {
 		List<BookEntity> list = bookService.getBooks();
-        assertEquals(bookList.size(), list.size());
-        for (BookEntity entity : list) {
-            boolean found = false;
-            for (BookEntity storedEntity : bookList) {
-                if (entity.getId().equals(storedEntity.getId())) {
-                    found = true;
-                }
-            }
-            assertTrue(found);
-        }
+		assertEquals(bookList.size(), list.size());
+		for (BookEntity entity : list) {
+			boolean found = false;
+			for (BookEntity storedEntity : bookList) {
+				if (entity.getId().equals(storedEntity.getId())) {
+					found = true;
+				}
+			}
+			assertTrue(found);
+		}
 	}
 
 	@Test
-	void testGetBook() {
+	void testGetBook() throws EntityNotFoundException {
 		BookEntity entity = bookList.get(0);
-        BookEntity resultEntity = bookService.getBook(entity.getId());
-        assertNotNull(resultEntity);
-        assertEquals(entity.getId(), resultEntity.getId());
-        assertEquals(entity.getName(), resultEntity.getName());
-        assertEquals(entity.getDescription(), resultEntity.getDescription());
-        assertEquals(entity.getIsbn(), resultEntity.getIsbn());
-        assertEquals(entity.getImage(), resultEntity.getImage());
+		BookEntity resultEntity = bookService.getBook(entity.getId());
+		assertNotNull(resultEntity);
+		assertEquals(entity.getId(), resultEntity.getId());
+		assertEquals(entity.getName(), resultEntity.getName());
+		assertEquals(entity.getDescription(), resultEntity.getDescription());
+		assertEquals(entity.getIsbn(), resultEntity.getIsbn());
+		assertEquals(entity.getImage(), resultEntity.getImage());
 	}
 
 	@Test
-	void testUpdateBook() throws BusinessLogicException {
-		 BookEntity entity = bookList.get(0);
-	        BookEntity pojoEntity = factory.manufacturePojo(BookEntity.class);
-	        pojoEntity.setId(entity.getId());
-	        bookService.updateBook(pojoEntity);
-	        BookEntity resp = entityManager.find(BookEntity.class, entity.getId());
-	        assertEquals(pojoEntity.getId(), resp.getId());
-	        assertEquals(pojoEntity.getName(), resp.getName());
-	        assertEquals(pojoEntity.getDescription(), resp.getDescription());
-	        assertEquals(pojoEntity.getIsbn(), resp.getIsbn());
-	        assertEquals(pojoEntity.getImage(), resp.getImage());
+	void testUpdateBook() throws EntityNotFoundException, IllegalOperationException {
+		BookEntity entity = bookList.get(0);
+		BookEntity pojoEntity = factory.manufacturePojo(BookEntity.class);
+		pojoEntity.setId(entity.getId());
+		bookService.updateBook(entity.getId(), pojoEntity);
+		
+		BookEntity resp = entityManager.find(BookEntity.class, entity.getId());
+		assertEquals(pojoEntity.getId(), resp.getId());
+		assertEquals(pojoEntity.getName(), resp.getName());
+		assertEquals(pojoEntity.getDescription(), resp.getDescription());
+		assertEquals(pojoEntity.getIsbn(), resp.getIsbn());
+		assertEquals(pojoEntity.getImage(), resp.getImage());
+		assertEquals(pojoEntity.getPublishingDate(), resp.getPublishingDate());
 	}
 
 	@Test
-    void testUpdateBookWithNoValidISBN() {
-        assertThrows(BusinessLogicException.class, ()->{
-        	BookEntity entity = bookList.get(0);
-            BookEntity pojoEntity = factory.manufacturePojo(BookEntity.class);
-            pojoEntity.setIsbn("");
-            pojoEntity.setId(entity.getId());
-            bookService.updateBook(pojoEntity);
-        });
-    }
-	
+	void testUpdateBookWithNoValidISBN() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			BookEntity entity = bookList.get(0);
+			BookEntity pojoEntity = factory.manufacturePojo(BookEntity.class);
+			pojoEntity.setIsbn("");
+			pojoEntity.setId(entity.getId());
+			bookService.updateBook(entity.getId(), pojoEntity);
+		});
+	}
+
 	@Test
-    void testUpdateBookWithNoValidISBN2(){
-        assertThrows(BusinessLogicException.class, ()->{
-        	BookEntity entity = bookList.get(0);
-            BookEntity pojoEntity = factory.manufacturePojo(BookEntity.class);
-            pojoEntity.setIsbn(null);
-            pojoEntity.setId(entity.getId());
-            bookService.updateBook(pojoEntity);
-        });
-    }
-	
+	void testUpdateBookWithNoValidISBN2() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			BookEntity entity = bookList.get(0);
+			BookEntity pojoEntity = factory.manufacturePojo(BookEntity.class);
+			pojoEntity.setIsbn(null);
+			pojoEntity.setId(entity.getId());
+			bookService.updateBook(entity.getId(), pojoEntity);
+		});
+	}
+
 	@Test
-	void testDeleteBook() throws BusinessLogicException {
+	void testDeleteBook() throws EntityNotFoundException {
 		BookEntity entity = bookList.get(1);
-        bookService.deleteBook(entity.getId());
-        BookEntity deleted = entityManager.find(BookEntity.class, entity.getId());
-        assertNull(deleted);
+		bookService.deleteBook(entity.getId());
+		BookEntity deleted = entityManager.find(BookEntity.class, entity.getId());
+		assertNull(deleted);
 	}
-	
+
 	@Test
-    void testDeleteBookWithAuthor() {
-        assertThrows(BusinessLogicException.class, ()->{
-        	BookEntity entity = bookList.get(0);
-            bookService.deleteBook(entity.getId());
-        });
-    }
+	void testDeleteBookWithAuthor() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			BookEntity entity = bookList.get(0);
+			bookService.deleteBook(entity.getId());
+		});
+	}
 
 }

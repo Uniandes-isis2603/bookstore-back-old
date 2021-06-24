@@ -22,36 +22,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package co.edu.uniandes.dse.bookstore.entities;
+package co.edu.uniandes.dse.bookstore.exceptions;
 
-import java.util.Date;
+public class EntityNotFoundException extends Exception {
+	
+	private static final long serialVersionUID = 1L;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import uk.co.jemos.podam.common.PodamExclude;
-
-@Data
-@Entity
-@EqualsAndHashCode(callSuper=false)
-public class PrizeEntity extends BaseEntity {
-
-	@Temporal(TemporalType.DATE)
-	private Date premiationDate;
-
-	@PodamExclude
-	@ManyToOne
-	private AuthorEntity author;
-
-	private String name;
-	private String description;
-
-	@PodamExclude
-	@OneToOne
-	private OrganizationEntity organization;
+	public EntityNotFoundException() {	
+	}
+	
+	public EntityNotFoundException(String message) {
+		super(message);
+	}
+	
+	public EntityNotFoundException(Throwable cause) {
+        super(cause);
+    }
+	
+	public EntityNotFoundException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

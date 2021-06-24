@@ -8,7 +8,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
-import co.edu.uniandes.dse.bookstore.exceptions.BusinessLogicException;
+import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
+import co.edu.uniandes.dse.bookstore.services.AuthorBookService;
+import co.edu.uniandes.dse.bookstore.services.BookService;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -60,13 +62,13 @@ class AuthorBookServiceTest {
 
 		for (int i = 0; i < 3; i++) {
 			BookEntity entity = factory.manufacturePojo(BookEntity.class);
+			entity.setEditorial(editorial);
 			entity.setAuthors(new ArrayList<>());
 			entity.getAuthors().add(author);
 			entityManager.persist(entity);
 			bookList.add(entity);
-			author.getBooks().add(entity);
+			//author.getBooks().add(entity);
 		}
-
 	}
 
 	@BeforeEach
@@ -76,7 +78,7 @@ class AuthorBookServiceTest {
 	}
 
 	@Test
-	void testAddBook() throws BusinessLogicException {
+	void testAddBook() throws EntityNotFoundException, IllegalOperationException {
 		BookEntity newBook = factory.manufacturePojo(BookEntity.class);
 		newBook.setEditorial(editorial);
 		bookService.createBook(newBook);
@@ -112,7 +114,7 @@ class AuthorBookServiceTest {
 	}
 
 	@Test
-	void testGetBook() throws BusinessLogicException {
+	void testGetBook() throws EntityNotFoundException {
 		BookEntity bookEntity = bookList.get(0);
 		BookEntity book = authorBookService.getBook(author.getId(), bookEntity.getId());
 		assertNotNull(book);
@@ -125,7 +127,7 @@ class AuthorBookServiceTest {
 	}
 
 	@Test
-	void testReplaceBooks() throws BusinessLogicException {
+	void testReplaceBooks() throws EntityNotFoundException, IllegalOperationException {
 		List<BookEntity> nuevaLista = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			BookEntity entity = factory.manufacturePojo(BookEntity.class);
@@ -144,10 +146,10 @@ class AuthorBookServiceTest {
 
 	@Test
 	void testRemoveBook() {
-		/*for (BookEntity book : bookList) {
+		for (BookEntity book : bookList) {
 			authorBookService.removeBook(author.getId(), book.getId());
 		}
-		assertTrue(authorBookService.getBooks(author.getId()).isEmpty());*/
+		assertTrue(authorBookService.getBooks(author.getId()).isEmpty());
 	}
 
 }

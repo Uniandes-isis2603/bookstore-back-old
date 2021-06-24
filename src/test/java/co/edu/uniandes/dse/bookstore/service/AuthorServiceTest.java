@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -22,7 +21,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
-import co.edu.uniandes.dse.bookstore.exceptions.BusinessLogicException;
+import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
+import co.edu.uniandes.dse.bookstore.services.AuthorService;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -106,26 +107,26 @@ class AuthorServiceTest {
 	}
 
 	@Test
-	void testGetAuthor() {
+	void testGetAuthor() throws EntityNotFoundException {
 		AuthorEntity authorEntity = authorList.get(0);
 
-		Optional<AuthorEntity> resultEntity = authorService.getAuthor(authorEntity.getId());
+		AuthorEntity resultEntity = authorService.getAuthor(authorEntity.getId());
 		assertNotNull(resultEntity);
 
-		assertEquals(authorEntity.getId(), resultEntity.get().getId());
-		assertEquals(authorEntity.getName(), resultEntity.get().getName());
-		assertEquals(authorEntity.getBirthDate(), resultEntity.get().getBirthDate());
-		assertEquals(authorEntity.getDescription(), resultEntity.get().getDescription());
+		assertEquals(authorEntity.getId(), resultEntity.getId());
+		assertEquals(authorEntity.getName(), resultEntity.getName());
+		assertEquals(authorEntity.getBirthDate(), resultEntity.getBirthDate());
+		assertEquals(authorEntity.getDescription(), resultEntity.getDescription());
 	}
 
 	@Test
-	void testUpdateAuthor() {
+	void testUpdateAuthor() throws EntityNotFoundException {
 		AuthorEntity authorEntity = authorList.get(0);
 		AuthorEntity pojoEntity = factory.manufacturePojo(AuthorEntity.class);
 
 		pojoEntity.setId(authorEntity.getId());
 
-		authorService.updateAuthor(pojoEntity);
+		authorService.updateAuthor(authorEntity.getId(), pojoEntity);
 
 		AuthorEntity response = entityManager.find(AuthorEntity.class, authorEntity.getId());
 
@@ -136,7 +137,7 @@ class AuthorServiceTest {
 	}
 
 	@Test
-	void testDeleteAuthor() throws BusinessLogicException {
+	void testDeleteAuthor() throws EntityNotFoundException, IllegalOperationException {
 		AuthorEntity authorEntity = authorList.get(0);
 		authorService.deleteAuthor(authorEntity.getId());
 		AuthorEntity deleted = entityManager.find(AuthorEntity.class, authorEntity.getId());
@@ -145,14 +146,14 @@ class AuthorServiceTest {
 
 	@Test
 	void testDeleteAuthorWithBooks() {
-		assertThrows(BusinessLogicException.class, ()-> {
+		assertThrows(EntityNotFoundException.class, ()-> {
 			authorService.deleteAuthor(authorList.get(2).getId());
 		});
 	}
 	
 	@Test
     void testDeleteAuthorWithPrize() {
-		assertThrows(BusinessLogicException.class, ()->{
+		assertThrows(EntityNotFoundException.class, ()->{
 			authorService.deleteAuthor(authorList.get(1).getId());
 		});
     }

@@ -22,36 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-package co.edu.uniandes.dse.bookstore.entities;
+package co.edu.uniandes.dse.bookstore.repositories;
 
-import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import uk.co.jemos.podam.common.PodamExclude;
+import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
 
-@Data
-@Entity
-@EqualsAndHashCode(callSuper=false)
-public class PrizeEntity extends BaseEntity {
-
-	@Temporal(TemporalType.DATE)
-	private Date premiationDate;
-
-	@PodamExclude
-	@ManyToOne
-	private AuthorEntity author;
-
-	private String name;
-	private String description;
-
-	@PodamExclude
-	@OneToOne
-	private OrganizationEntity organization;
+@Repository
+public interface EditorialRepository extends JpaRepository<EditorialEntity, Long> {
+	List<EditorialEntity> findByName(String name);
 }

@@ -19,7 +19,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
-import co.edu.uniandes.dse.bookstore.exceptions.BusinessLogicException;
+import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.services.OrganizationService;
+import co.edu.uniandes.dse.bookstore.services.PrizeService;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -73,7 +75,7 @@ class PrizeServiceTest {
 	}
 
 	@Test
-	void testCreatePrize() throws BusinessLogicException {
+	void testCreatePrize() throws EntityNotFoundException {
 		PrizeEntity newEntity = factory.manufacturePojo(PrizeEntity.class);
 		OrganizationEntity newOrgEntity = factory.manufacturePojo(OrganizationEntity.class);
 
@@ -90,7 +92,7 @@ class PrizeServiceTest {
 
 	@Test
 	void testCreatePrizeWithNoValidOrganization() {
-		assertThrows(BusinessLogicException.class, () -> {
+		assertThrows(EntityNotFoundException.class, () -> {
 			PrizeEntity newEntity = factory.manufacturePojo(PrizeEntity.class);
 			newEntity.setOrganization(null);
 			prizeService.createPrize(newEntity);
@@ -98,8 +100,8 @@ class PrizeServiceTest {
 	}
 
 	@Test
-	void testCreatePrizeWithNoValidOrganization2() throws BusinessLogicException {
-		assertThrows(BusinessLogicException.class, () -> {
+	void testCreatePrizeWithNoValidOrganization2() throws EntityNotFoundException {
+		assertThrows(EntityNotFoundException.class, () -> {
 			PrizeEntity newEntity = factory.manufacturePojo(PrizeEntity.class);
 			newEntity.setOrganization(organizationList.get(0));
 			prizeService.createPrize(newEntity);
@@ -133,7 +135,7 @@ class PrizeServiceTest {
 	}
 
 	@Test
-	void testUpdatePrize() throws BusinessLogicException {
+	void testUpdatePrize() throws EntityNotFoundException {
 		PrizeEntity entity = prizeList.get(0);
 		PrizeEntity pojoEntity = factory.manufacturePojo(PrizeEntity.class);
 
@@ -151,7 +153,7 @@ class PrizeServiceTest {
 
 	@Test
 	void testDeletePrize() {
-		assertThrows(BusinessLogicException.class, ()->{
+		assertThrows(EntityNotFoundException.class, ()->{
 			 PrizeEntity entity = prizeList.get(2);
 		     prizeService.deletePrize(entity.getId());
 		});
