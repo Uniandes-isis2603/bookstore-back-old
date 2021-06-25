@@ -123,7 +123,7 @@ class ReviewServiceTest {
 
 		pojoEntity.setId(entity.getId());
 
-		reviewService.updateReview(bookList.get(1).getId(), pojoEntity);
+		reviewService.updateReview(bookList.get(1).getId(), entity.getId(), pojoEntity);
 
 		ReviewEntity resp = entityManager.find(ReviewEntity.class, entity.getId());
 

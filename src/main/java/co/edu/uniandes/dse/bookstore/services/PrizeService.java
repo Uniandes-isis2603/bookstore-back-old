@@ -25,7 +25,6 @@ SOFTWARE.
 package co.edu.uniandes.dse.bookstore.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.OrganizationRepository;
 import co.edu.uniandes.dse.bookstore.repositories.PrizeRepository;
 import lombok.Data;
@@ -49,19 +49,18 @@ public class PrizeService {
 	OrganizationRepository organizationRepository;
 	
 	@Transactional
-	public PrizeEntity createPrize(PrizeEntity prizeEntity) throws EntityNotFoundException {
-		if(prizeEntity.getOrganization() == null) {
-			throw new EntityNotFoundException("Organization is not valid");
-		}
+	public PrizeEntity createPrize(PrizeEntity prizeEntity) throws EntityNotFoundException, IllegalOperationException {
+		if(prizeEntity.getOrganization() == null) 
+			throw new IllegalOperationException("Organization is not valid");
 		
 		OrganizationEntity organizationEntity = organizationRepository.findById(prizeEntity.getOrganization().getId()).orElse(null);
-		if(organizationEntity == null) {
-			throw new EntityNotFoundException("Organization is not valid");
-		}
+		if(organizationEntity == null)
+			throw new IllegalOperationException("Organization is not valid");
 		
-		if(organizationEntity.getPrize() != null) {
-			throw new EntityNotFoundException("Organization already holds a prize");
-		}
+		
+		if(organizationEntity.getPrize() != null)
+			throw new IllegalOperationException("Organization already holds a prize");
+		
 		
 		return prizeRepository.save(prizeEntity);
 	}
@@ -72,19 +71,33 @@ public class PrizeService {
 	}
 	
 	@Transactional
-	public Optional<PrizeEntity> getPrize(Long prizeId) {
-		return prizeRepository.findById(prizeId);
+	public PrizeEntity getPrize(Long prizeId) throws EntityNotFoundException {
+		PrizeEntity prizeEntity = prizeRepository.findById(prizeId).orElse(null);
+		if(prizeEntity == null)
+			throw new EntityNotFoundException("The prize with the given id was not found");
+		
+		
+		return prizeEntity;
 	}
 	
 	@Transactional
-	public PrizeEntity updatePrize(PrizeEntity prizeEntity) throws EntityNotFoundException {
+	public PrizeEntity updatePrize(Long prizeId, PrizeEntity prizeEntity) throws EntityNotFoundException {
+		PrizeEntity prize = prizeRepository.findById(prizeId).orElse(null);
+		if(prize == null)
+			throw new EntityNotFoundException("The prize with the given id was not found");
+		
+		prizeEntity.setId(prize.getId());
 		return prizeRepository.save(prizeEntity);
 	}
 	
 	@Transactional
-	public void deletePrize(Long prizeId) throws EntityNotFoundException {
+	public void deletePrize(Long prizeId) throws EntityNotFoundException, IllegalOperationException {
+		PrizeEntity prize = prizeRepository.findById(prizeId).orElse(null);
+		if(prize == null)
+			throw new EntityNotFoundException("The prize with the given id was not found");
+		
 		if(prizeRepository.findById(prizeId).get().getAuthor() != null ) {
-			throw new EntityNotFoundException("Unable to delete prize with id = " + prizeId + " because it has an associated author");
+			throw new IllegalOperationException("Unable to delete prize because it has an associated author");
 		}
 	
 		prizeRepository.deleteById(prizeId);

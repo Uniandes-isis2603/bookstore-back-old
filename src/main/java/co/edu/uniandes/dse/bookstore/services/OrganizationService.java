@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.OrganizationRepository;
 import lombok.Data;
 
@@ -44,9 +45,9 @@ public class OrganizationService {
 	OrganizationRepository organizationRepository;
 	
 	@Transactional
-	public OrganizationEntity createOrganization(OrganizationEntity organizationEntity) throws EntityNotFoundException {
+	public OrganizationEntity createOrganization(OrganizationEntity organizationEntity) throws IllegalOperationException   {
 		if(organizationRepository.findByName(organizationEntity.getName()).size() > 0) {
-			throw new EntityNotFoundException("Organization name already exists");
+			throw new IllegalOperationException("Organization name already exists");
 		}
 		
 		return this.organizationRepository.save(organizationEntity);
@@ -58,22 +59,36 @@ public class OrganizationService {
 	}
 	
 	@Transactional
-	public OrganizationEntity getOrganization(Long organizationId) {
-		return this.organizationRepository.findById(organizationId).get();
+	public OrganizationEntity getOrganization(Long organizationId) throws EntityNotFoundException {
+		OrganizationEntity organizationEntity = organizationRepository.findById(organizationId).orElse(null); 
+		if(organizationEntity == null)
+			throw new EntityNotFoundException("The organization with the given id was not found");
+		
+		return organizationEntity;
 	}
 	
 	@Transactional	
-	public OrganizationEntity updateOrganization(OrganizationEntity organizationEntity) throws EntityNotFoundException {
-		return this.organizationRepository.save(organizationEntity);
+	public OrganizationEntity updateOrganization(Long organizationId, OrganizationEntity organizationEntity) throws EntityNotFoundException {
+		OrganizationEntity organization = organizationRepository.findById(organizationId).orElse(null); 
+		if(organization == null)
+			throw new EntityNotFoundException("The organization with the given id was not found");
+		
+		organizationEntity.setId(organization.getId());
+		
+		return organizationRepository.save(organizationEntity);
 	}
 	
 	@Transactional
-	public void deleteOrganization(Long organizationId) throws EntityNotFoundException {
-		PrizeEntity prize = getOrganization(organizationId).getPrize();
+	public void deleteOrganization(Long organizationId) throws EntityNotFoundException, IllegalOperationException {
+		OrganizationEntity organization = organizationRepository.findById(organizationId).orElse(null); 
+		if(organization == null)
+			throw new EntityNotFoundException("The organization with the given id was not found");
+		
+		PrizeEntity prize = organization.getPrize();
 		if(prize != null) {
-			throw new EntityNotFoundException("Unable to delete organization with id = " + organizationId + " because it has an associated prize");
+			throw new IllegalOperationException("Unable to delete organization with id = " + organizationId + " because it has an associated prize");
 		}
 	
-		this.organizationRepository.deleteById(organizationId);
+		organizationRepository.deleteById(organizationId);
 	}
 }

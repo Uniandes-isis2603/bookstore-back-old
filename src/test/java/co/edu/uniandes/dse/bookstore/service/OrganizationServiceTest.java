@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.services.OrganizationService;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -63,7 +64,7 @@ class OrganizationServiceTest {
 	}
 
 	@Test
-	void testCreateOrganization() throws EntityNotFoundException {
+	void testCreateOrganization() throws EntityNotFoundException, IllegalOperationException {
 		OrganizationEntity newEntity = factory.manufacturePojo(OrganizationEntity.class);
 		OrganizationEntity result = organizationService.createOrganization(newEntity);
 
@@ -100,7 +101,7 @@ class OrganizationServiceTest {
 	}
 
 	@Test
-	void testGetOrganization() {
+	void testGetOrganization() throws EntityNotFoundException {
 		OrganizationEntity entity = organizationList.get(0);
 		OrganizationEntity resultEntity = organizationService.getOrganization(entity.getId());
 		assertNotNull(resultEntity);
@@ -116,7 +117,7 @@ class OrganizationServiceTest {
 
 		pojoEntity.setId(entity.getId());
 
-		organizationService.updateOrganization(pojoEntity);
+		organizationService.updateOrganization(entity.getId(), pojoEntity);
 
 		OrganizationEntity resp = entityManager.find(OrganizationEntity.class, entity.getId());
 
@@ -126,7 +127,7 @@ class OrganizationServiceTest {
 	}
 
 	@Test
-	void testDeleteOrganization() throws EntityNotFoundException {
+	void testDeleteOrganization() throws EntityNotFoundException, IllegalOperationException {
 		OrganizationEntity entity = organizationList.get(0);
 		organizationService.deleteOrganization(entity.getId());
 		OrganizationEntity deleted = entityManager.find(OrganizationEntity.class, entity.getId());

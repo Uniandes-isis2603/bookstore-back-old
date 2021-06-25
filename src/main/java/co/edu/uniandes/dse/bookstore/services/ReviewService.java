@@ -80,13 +80,18 @@ public class ReviewService {
     }
 	
 	@Transactional
-	public ReviewEntity updateReview(Long bookId, ReviewEntity reviewEntity) throws EntityNotFoundException {
+	public ReviewEntity updateReview(Long bookId, Long reviewId, ReviewEntity reviewEntity) throws EntityNotFoundException {
 		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
 		if(bookEntity == null)
 			throw new EntityNotFoundException("The book with the given id was not found");
 		
-        reviewEntity.setBook(bookEntity);
-        return this.reviewRepository.save(reviewEntity);
+		ReviewEntity review = reviewRepository.findById(reviewId).orElse(null);
+		if(review == null)
+			throw new EntityNotFoundException("The review with the given id was not found");
+		
+		reviewEntity.setId(review.getId());
+		reviewEntity.setBook(bookEntity);
+		return reviewRepository.save(reviewEntity);
     }
 	
 	@Transactional

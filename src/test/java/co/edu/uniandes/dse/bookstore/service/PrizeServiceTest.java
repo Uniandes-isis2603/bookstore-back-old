@@ -20,6 +20,7 @@ import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.services.OrganizationService;
 import co.edu.uniandes.dse.bookstore.services.PrizeService;
 import uk.co.jemos.podam.api.PodamFactory;
@@ -75,7 +76,7 @@ class PrizeServiceTest {
 	}
 
 	@Test
-	void testCreatePrize() throws EntityNotFoundException {
+	void testCreatePrize() throws EntityNotFoundException, IllegalOperationException {
 		PrizeEntity newEntity = factory.manufacturePojo(PrizeEntity.class);
 		OrganizationEntity newOrgEntity = factory.manufacturePojo(OrganizationEntity.class);
 
@@ -124,9 +125,9 @@ class PrizeServiceTest {
 	}
 
 	@Test
-	void testGetPrize() {
+	void testGetPrize() throws EntityNotFoundException {
 		PrizeEntity entity = prizeList.get(0);
-		PrizeEntity resultEntity = prizeService.getPrize(entity.getId()).get();
+		PrizeEntity resultEntity = prizeService.getPrize(entity.getId());
 		assertNotNull(resultEntity);
 		assertEquals(entity.getName(), resultEntity.getName());
 		assertEquals(entity.getId(), resultEntity.getId());
@@ -141,7 +142,7 @@ class PrizeServiceTest {
 
 		pojoEntity.setId(entity.getId());
 
-		prizeService.updatePrize(pojoEntity);
+		prizeService.updatePrize(entity.getId(), pojoEntity);
 
 		PrizeEntity resp = entityManager.find(PrizeEntity.class, entity.getId());
 

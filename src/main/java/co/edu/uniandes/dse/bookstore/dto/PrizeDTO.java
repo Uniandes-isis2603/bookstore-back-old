@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class PrizeDTO {
 	private Long id;
-	private Date fechaEntrega;
+	private Date premiationDate;
 	private AuthorDTO author;
 	private String name;
 	private String description;

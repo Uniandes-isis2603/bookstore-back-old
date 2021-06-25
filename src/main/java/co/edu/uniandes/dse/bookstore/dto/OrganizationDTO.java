@@ -12,5 +12,5 @@ public class OrganizationDTO {
 
 	private String name;
 	private TIPO_ORGANIZACION tipo;
-	private PrizeDTO prize;
+	//private PrizeDTO prize;
 }

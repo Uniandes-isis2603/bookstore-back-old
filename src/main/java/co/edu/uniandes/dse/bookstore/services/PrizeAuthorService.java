@@ -96,8 +96,14 @@ public class PrizeAuthorService {
 		PrizeEntity prizeEntity = prizeRepository.findById(prizeId).orElse(null);
 		if(prizeEntity == null)
 			throw new EntityNotFoundException("The prize with the given id was not found");
+		
+		AuthorEntity authorEntity = prizeEntity.getAuthor();
+		
+		if(authorEntity == null) 
+			throw new EntityNotFoundException("The author was not found");
+		
 		log.info("Termina proceso de consultar el autor del premio con id = {0}", prizeId);
-		return prizeEntity.getAuthor();
+		return authorEntity;
 	}
 
 	/**
