@@ -38,7 +38,16 @@ import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.AuthorRepository;
 import co.edu.uniandes.dse.bookstore.repositories.BookRepository;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Clase que implementa la conexion con la persistencia para la relación entre
+ * la entidad de Author y Book.
+ *
+ * @author ISIS2603
+ */
+
+@Slf4j
 @Data
 @Service
 public class AuthorBookService {
@@ -49,86 +58,130 @@ public class AuthorBookService {
 	@Autowired
 	private AuthorRepository authorRepository;
 
+	/**
+	 * Asocia un Book existente a un Author
+	 *
+	 * @param authorId Identificador de la instancia de Author
+	 * @param bookId   Identificador de la instancia de Book
+	 * @return Instancia de BookEntity que fue asociada a Author
+	 */
+
 	@Transactional
 	public BookEntity addBook(Long authorId, Long bookId) throws EntityNotFoundException {
+		log.info("Inicia proceso de asociarle un libro al autor con id = {0}", authorId);
 		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
 		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
-		
-		if(authorEntity == null)
+
+		if (authorEntity == null)
 			throw new EntityNotFoundException("The author with the given id was not found");
-		
-		if(bookEntity == null)
+
+		if (bookEntity == null)
 			throw new EntityNotFoundException("The book with the given id was not found");
-		
+
 		bookEntity.getAuthors().add(authorEntity);
-		
+		log.info("Termina proceso de asociarle un libro al autor con id = {0}", authorId);
 		return bookEntity;
 	}
-	
+
+	/**
+	 * Obtiene una colección de instancias de BookEntity asociadas a una instancia
+	 * de Author
+	 *
+	 * @param authorsId Identificador de la instancia de Author
+	 * @return Colección de instancias de BookEntity asociadas a la instancia de
+	 *         Author
+	 */
 	@Transactional
 	public List<BookEntity> getBooks(Long authorId) throws EntityNotFoundException {
+		log.info("Inicia proceso de consultar todos los libros del autor con id = {0}", authorId);
 		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
-		if(authorEntity == null)
+		if (authorEntity == null)
 			throw new EntityNotFoundException("The author with the given id was not found");
-		
+
 		List<BookEntity> books = bookRepository.findAll();
 		List<BookEntity> bookList = new ArrayList<>();
-		for(BookEntity b : books) {
-			if(b.getAuthors().indexOf(authorEntity) >= 0) {
+		for (BookEntity b : books) {
+			if (b.getAuthors().indexOf(authorEntity) >= 0) {
 				bookList.add(b);
 			}
 		}
-        return bookList;
-    }
-	
-	/*Obtiene el libro con id bookId del author con id authorId*/
-	
+		log.info("Finaliza proceso de consultar todos los libros del autor con id = {0}", authorId);
+		return bookList;
+	}
+
+	 /**
+     * Obtiene una instancia de BookEntity asociada a una instancia de Author
+     *
+     * @param authorsId Identificador de la instancia de Author
+     * @param booksId Identificador de la instancia de Book
+     * @return La entidadd de Libro del autor
+     */
 	@Transactional
 	public BookEntity getBook(Long authorId, Long bookId) throws EntityNotFoundException, IllegalOperationException {
+		log.info("Inicia proceso de consultar el libro con id = {1} del autor con id = {0}" , authorId, bookId);
 		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
 		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
-		
-		if(authorEntity == null)
+
+		if (authorEntity == null)
 			throw new EntityNotFoundException("The author with the given id was not found");
-		
-		if(bookEntity == null)
+
+		if (bookEntity == null)
 			throw new EntityNotFoundException("The book with the given id was not found");
+
+		log.info("Finaliza proceso de consultar el libro con id = {1} del autor con id = {0}" , authorId, bookId);
 		
-		if(bookEntity.getAuthors().contains(authorEntity))
+		if (bookEntity.getAuthors().contains(authorEntity))
 			return bookEntity;
-		
+
 		throw new IllegalOperationException("The book is not associated to the author");
-    }
-	
+	}
+
+	/**
+     * Remplaza las instancias de Book asociadas a una instancia de Author
+     *
+     * @param authorId Identificador de la instancia de Author
+     * @param books Colección de instancias de BookEntity a asociar a instancia
+     * de Author
+     * @return Nueva colección de BookEntity asociada a la instancia de Author
+     */
 	@Transactional
 	public List<BookEntity> addBooks(Long authorId, List<BookEntity> books) throws EntityNotFoundException {
+		log.info("Inicia proceso de reemplazar los libros asociados al author con id = {0}", authorId);
 		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
-		if(authorEntity == null)
+		if (authorEntity == null)
 			throw new EntityNotFoundException("The author with the given id was not found");
-				
-		for (BookEntity book: books) {
-			
+
+		for (BookEntity book : books) {
+
 			BookEntity bookEntity = bookRepository.findById(book.getId()).orElse(null);
-			if(bookEntity == null)
+			if (bookEntity == null)
 				throw new EntityNotFoundException("The book with the given id was not found");
-			
-			if(!bookEntity.getAuthors().contains(authorEntity))
+
+			if (!bookEntity.getAuthors().contains(authorEntity))
 				bookEntity.getAuthors().add(authorEntity);
 		}
-		
+		log.info("Finaliza proceso de reemplazar los libros asociados al author con id = {0}", authorId);
 		return books;
-    }
-	
+	}
+
+	/**
+     * Desasocia un Book existente de un Author existente
+     *
+     * @param authorsId Identificador de la instancia de Author
+     * @param booksId Identificador de la instancia de Book
+     */
 	@Transactional
 	public void removeBook(Long authorId, Long bookId) throws EntityNotFoundException {
-        AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
-        if(authorEntity == null)
+		log.info("Inicia proceso de borrar un libro del author con id = {0}", authorId);
+		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
+		if (authorEntity == null)
 			throw new EntityNotFoundException("The author with the given id was not found");
-				
-        BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
-        if(bookEntity == null)
+
+		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		if (bookEntity == null)
 			throw new EntityNotFoundException("The book with the given id was not found");
-        
-        bookEntity.getAuthors().remove(authorEntity);
-    }
+
+		bookEntity.getAuthors().remove(authorEntity);
+		log.info("Finaliza proceso de borrar un libro del author con id = {0}", authorId);
+	}
 }

@@ -34,15 +34,21 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
 
+/**
+ * Clase que representa una editorial en la persistencia
+ *
+ * @author ISIS2603
+ */
+
 @Data
 @Entity
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class EditorialEntity extends BaseEntity {
-	
+
 	private String name;
 
 	@PodamExclude
-    @OneToMany(mappedBy = "editorial")
+	@OneToMany(mappedBy = "editorial")
 	private List<BookEntity> books = new ArrayList<>();
 
 }

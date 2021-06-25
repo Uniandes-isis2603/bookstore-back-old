@@ -31,6 +31,13 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
 
+/**
+ * Interface that persists an organization
+ *
+ * @author ISIS2603
+ *
+ */
+
 @Repository
 public interface OrganizationRepository extends JpaRepository<OrganizationEntity, Long> {
 	List<OrganizationEntity> findByName(String name);

@@ -40,18 +40,24 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
 
+/**
+ * Clase que representa un libro en la persistencia
+ *
+ * @author ISIS2603
+ */
+
 @Data
 @Entity
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class BookEntity extends BaseEntity {
-	
+
 	private String name;
 	private String isbn;
 	private String image;
-	
+
 	@Temporal(TemporalType.DATE)
 	private Date publishingDate;
-	
+
 	private String description;
 
 	@PodamExclude

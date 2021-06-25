@@ -31,6 +31,13 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 
+/**
+ * Interface that persists a book
+ *
+ * @author ISIS2603
+ *
+ */
+
 @Repository
 public interface BookRepository extends JpaRepository<BookEntity, Long> {
 	List<BookEntity> findByIsbn(String isbn);

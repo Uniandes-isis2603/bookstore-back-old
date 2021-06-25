@@ -32,16 +32,22 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
 
+/**
+ * Clase que representa una reseña en la persistencia
+ *
+ * @author ISIS2603
+ */
+
 @Data
 @Entity
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class ReviewEntity extends BaseEntity {
-	
-	private String name;
-    private String source;
-    private String description;
 
-    @PodamExclude
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private BookEntity book;
+	private String name;
+	private String source;
+	private String description;
+
+	@PodamExclude
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	private BookEntity book;
 }

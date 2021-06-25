@@ -29,6 +29,13 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
 
+/**
+ * Interface that persists an prize
+ *
+ * @author ISIS2603
+ *
+ */
+
 @Repository
 public interface PrizeRepository extends JpaRepository<PrizeEntity, Long> {
 

@@ -29,6 +29,13 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 
+/**
+ * Interface that persists an author
+ *
+ * @author ISIS2603
+ *
+ */
+
 @Repository
 public interface AuthorRepository extends JpaRepository<AuthorEntity, Long> {
 

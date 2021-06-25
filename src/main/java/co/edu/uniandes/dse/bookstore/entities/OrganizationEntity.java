@@ -32,21 +32,25 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
 
+/**
+ * Clase que representa una organizacion en la persistencia
+ *
+ * @author ISIS2603
+ */
+
 @Data
 @Entity
-@EqualsAndHashCode(callSuper=false)
-public class OrganizationEntity extends BaseEntity{
-	
+@EqualsAndHashCode(callSuper = false)
+public class OrganizationEntity extends BaseEntity {
+
 	enum TIPO_ORGANIZACION {
-        PRIVADA,
-        PUBLICA,
-        FUNDACION
-    }
+		PRIVADA, PUBLICA, FUNDACION
+	}
 
-    private String name;
-    private TIPO_ORGANIZACION tipo;
+	private String name;
+	private TIPO_ORGANIZACION tipo;
 
-    @PodamExclude
-    @OneToOne(mappedBy = "organization", fetch = FetchType.LAZY)
-    private PrizeEntity prize;
+	@PodamExclude
+	@OneToOne(mappedBy = "organization", fetch = FetchType.LAZY)
+	private PrizeEntity prize;
 }

@@ -41,23 +41,29 @@ import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
 import uk.co.jemos.podam.common.PodamStrategyValue;
 
+/**
+ * Clase que representa un autor en la persistencia
+ *
+ * @author ISIS2603
+ */
+
 @Data
 @Entity
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class AuthorEntity extends BaseEntity {
 
 	@Temporal(TemporalType.DATE)
 	@PodamStrategyValue(DateStrategy.class)
 	private Date birthDate;
-	
+
 	@PodamExclude
-	@ManyToMany (mappedBy = "authors")
+	@ManyToMany(mappedBy = "authors")
 	private List<BookEntity> books = new ArrayList<>();
-	
+
 	@PodamExclude
-	@OneToMany (mappedBy = "author", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
 	private List<PrizeEntity> prizes = new ArrayList<>();
-	
+
 	private String name;
 	private String description;
 	private String image;

@@ -31,6 +31,13 @@ import org.springframework.stereotype.Repository;
 
 import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
 
+/**
+ * Interface that persists an editorial
+ *
+ * @author ISIS2603
+ *
+ */
+
 @Repository
 public interface EditorialRepository extends JpaRepository<EditorialEntity, Long> {
 	List<EditorialEntity> findByName(String name);
