@@ -28,10 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -45,8 +42,7 @@ public class EditorialEntity extends BaseEntity {
 	private String name;
 
 	@PodamExclude
-	@JsonManagedReference
-    @OneToMany(mappedBy = "editorial", fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "editorial")
 	private List<BookEntity> books = new ArrayList<>();
 
 }

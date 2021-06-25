@@ -29,6 +29,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
@@ -47,12 +48,13 @@ public class PrizeService {
 	@Autowired
 	OrganizationRepository organizationRepository;
 	
+	@Transactional
 	public PrizeEntity createPrize(PrizeEntity prizeEntity) throws EntityNotFoundException {
 		if(prizeEntity.getOrganization() == null) {
 			throw new EntityNotFoundException("Organization is not valid");
 		}
 		
-		OrganizationEntity organizationEntity = organizationRepository.findById(prizeEntity.getOrganization().getId()).get();
+		OrganizationEntity organizationEntity = organizationRepository.findById(prizeEntity.getOrganization().getId()).orElse(null);
 		if(organizationEntity == null) {
 			throw new EntityNotFoundException("Organization is not valid");
 		}
@@ -61,26 +63,30 @@ public class PrizeService {
 			throw new EntityNotFoundException("Organization already holds a prize");
 		}
 		
-		return this.prizeRepository.save(prizeEntity);
+		return prizeRepository.save(prizeEntity);
 	}
 	
+	@Transactional
 	public List<PrizeEntity> getPrizes(){
-		return this.prizeRepository.findAll();
+		return prizeRepository.findAll();
 	}
 	
+	@Transactional
 	public Optional<PrizeEntity> getPrize(Long prizeId) {
-		return this.prizeRepository.findById(prizeId);
+		return prizeRepository.findById(prizeId);
 	}
 	
+	@Transactional
 	public PrizeEntity updatePrize(PrizeEntity prizeEntity) throws EntityNotFoundException {
-		return this.prizeRepository.save(prizeEntity);
+		return prizeRepository.save(prizeEntity);
 	}
 	
+	@Transactional
 	public void deletePrize(Long prizeId) throws EntityNotFoundException {
 		if(prizeRepository.findById(prizeId).get().getAuthor() != null ) {
 			throw new EntityNotFoundException("Unable to delete prize with id = " + prizeId + " because it has an associated author");
 		}
 	
-		this.prizeRepository.deleteById(prizeId);
+		prizeRepository.deleteById(prizeId);
 	}
 }

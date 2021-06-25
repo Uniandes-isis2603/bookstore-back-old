@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
@@ -48,6 +49,7 @@ public class BookService {
 	@Autowired
 	EditorialRepository editorialRepository;
 	
+	@Transactional
 	public BookEntity createBook(BookEntity bookEntity) throws EntityNotFoundException, IllegalOperationException {
 		EditorialEntity editorial = editorialRepository.findById(bookEntity.getEditorial().getId()).orElse(null);
 		if(bookEntity.getEditorial()==null || editorial == null)
@@ -59,13 +61,16 @@ public class BookService {
 		if(bookRepository.findByIsbn(bookEntity.getIsbn()).size() > 0 )
 			throw new IllegalOperationException("ISBN already exists");
 		
+		bookEntity.setEditorial(editorial);
 		return bookRepository.save(bookEntity);
 	}
 	
+	@Transactional
 	public List<BookEntity> getBooks(){
 		return bookRepository.findAll();
 	}
 	
+	@Transactional
 	public BookEntity getBook(Long bookId) throws EntityNotFoundException {
 		BookEntity book = bookRepository.findById(bookId).orElse(null);
 		if(book == null)
@@ -74,19 +79,20 @@ public class BookService {
 		return book;
 	}
 	
+	@Transactional
 	public BookEntity updateBook(Long bookId, BookEntity bookEntity) throws EntityNotFoundException, IllegalOperationException {
 		BookEntity book = bookRepository.findById(bookId).orElse(null);
 		if(book == null)
 			throw new EntityNotFoundException("The book with the given id was not found");
 	
-		
 		if(!validateISBN(bookEntity.getIsbn()))
 			throw new IllegalOperationException("ISBN is not valid");
 	
 		bookEntity.setId(bookId);
-		return bookRepository.save(bookEntity);
+		return bookEntity;
 	}
 	
+	@Transactional
 	public void deleteBook(Long bookId) throws EntityNotFoundException {
 		BookEntity book = bookRepository.findById(bookId).orElse(null);
 		if(book == null)

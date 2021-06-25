@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
@@ -43,6 +44,7 @@ public class EditorialService {
 	@Autowired
 	EditorialRepository editorialRepository;
 	
+	@Transactional
 	public EditorialEntity createEditorial(EditorialEntity editorialEntity) throws IllegalOperationException {
 		if(editorialRepository.findByName(editorialEntity.getName()).size() > 0) {
 			throw new IllegalOperationException("Editorial name already exists");
@@ -51,10 +53,12 @@ public class EditorialService {
 		return editorialRepository.save(editorialEntity);
 	}
 	
+	@Transactional
 	public List<EditorialEntity> getEditorials(){
 		return editorialRepository.findAll();
 	}
 	
+	@Transactional
 	public EditorialEntity getEditorial(Long editorialId) throws EntityNotFoundException {
 		EditorialEntity editorial = editorialRepository.findById(editorialId).orElse(null);
 		if(editorial == null) 
@@ -63,15 +67,17 @@ public class EditorialService {
 		return editorial;
 	}
 	
+	@Transactional
 	public EditorialEntity updateEditorial(Long editorialId, EditorialEntity editorialEntity) throws EntityNotFoundException {
 		EditorialEntity editorial = editorialRepository.findById(editorialId).orElse(null);
 		if(editorial == null)
 			throw new EntityNotFoundException("The editorial with the given id was not found");
 		
 		editorialEntity.setId(editorialId);
-		return editorialRepository.save(editorialEntity);
+		return editorialEntity;
 	}
 	
+	@Transactional
 	public void deleteEditorial(Long editorialId) throws EntityNotFoundException, IllegalOperationException {
 		EditorialEntity editorial = editorialRepository.findById(editorialId).orElse(null);
 		if(editorial == null)

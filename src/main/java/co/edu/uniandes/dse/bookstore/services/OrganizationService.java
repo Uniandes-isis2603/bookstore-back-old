@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
@@ -42,6 +43,7 @@ public class OrganizationService {
 	@Autowired
 	OrganizationRepository organizationRepository;
 	
+	@Transactional
 	public OrganizationEntity createOrganization(OrganizationEntity organizationEntity) throws EntityNotFoundException {
 		if(organizationRepository.findByName(organizationEntity.getName()).size() > 0) {
 			throw new EntityNotFoundException("Organization name already exists");
@@ -50,18 +52,22 @@ public class OrganizationService {
 		return this.organizationRepository.save(organizationEntity);
 	}
 	
+	@Transactional
 	public List<OrganizationEntity> getOrganizations(){
 		return this.organizationRepository.findAll();
 	}
 	
+	@Transactional
 	public OrganizationEntity getOrganization(Long organizationId) {
 		return this.organizationRepository.findById(organizationId).get();
 	}
 	
+	@Transactional	
 	public OrganizationEntity updateOrganization(OrganizationEntity organizationEntity) throws EntityNotFoundException {
 		return this.organizationRepository.save(organizationEntity);
 	}
 	
+	@Transactional
 	public void deleteOrganization(Long organizationId) throws EntityNotFoundException {
 		PrizeEntity prize = getOrganization(organizationId).getPrize();
 		if(prize != null) {

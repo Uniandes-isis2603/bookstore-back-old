@@ -91,7 +91,7 @@ class ReviewServiceTest {
 	}
 
 	@Test
-	void testGetReviews() {
+	void testGetReviews() throws EntityNotFoundException {
 		List<ReviewEntity> list = reviewService.getReviews(bookList.get(0).getId());
 		assertEquals(reviewList.size(), list.size());
 		for (ReviewEntity entity : list) {
@@ -106,7 +106,7 @@ class ReviewServiceTest {
 	}
 
 	@Test
-	void testGetReview() {
+	void testGetReview() throws EntityNotFoundException {
 		ReviewEntity entity = reviewList.get(0);
 		ReviewEntity resultEntity = reviewService.getReview(bookList.get(0).getId(), entity.getId());
 		assertNotNull(resultEntity);
@@ -117,7 +117,7 @@ class ReviewServiceTest {
 	}
 
 	@Test
-	void testUpdateReview() {
+	void testUpdateReview() throws EntityNotFoundException {
 		ReviewEntity entity = reviewList.get(0);
 		ReviewEntity pojoEntity = factory.manufacturePojo(ReviewEntity.class);
 

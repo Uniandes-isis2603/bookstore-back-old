@@ -29,10 +29,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.AuthorRepository;
 import co.edu.uniandes.dse.bookstore.repositories.BookRepository;
 import lombok.Data;
@@ -47,6 +49,7 @@ public class AuthorBookService {
 	@Autowired
 	private AuthorRepository authorRepository;
 
+	@Transactional
 	public BookEntity addBook(Long authorId, Long bookId) throws EntityNotFoundException {
 		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
 		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
@@ -59,15 +62,19 @@ public class AuthorBookService {
 		
 		bookEntity.getAuthors().add(authorEntity);
 		
-		return bookRepository.findById(bookId).orElse(null);
+		return bookEntity;
 	}
 	
-	public List<BookEntity> getBooks(Long authorId) {
-		AuthorEntity author = authorRepository.findById(authorId).get();
+	@Transactional
+	public List<BookEntity> getBooks(Long authorId) throws EntityNotFoundException {
+		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
+		if(authorEntity == null)
+			throw new EntityNotFoundException("The author with the given id was not found");
+		
 		List<BookEntity> books = bookRepository.findAll();
 		List<BookEntity> bookList = new ArrayList<>();
 		for(BookEntity b : books) {
-			if(b.getAuthors().indexOf(author) >= 0) {
+			if(b.getAuthors().indexOf(authorEntity) >= 0) {
 				bookList.add(b);
 			}
 		}
@@ -76,7 +83,8 @@ public class AuthorBookService {
 	
 	/*Obtiene el libro con id bookId del author con id authorId*/
 	
-	public BookEntity getBook(Long authorId, Long bookId) throws EntityNotFoundException {
+	@Transactional
+	public BookEntity getBook(Long authorId, Long bookId) throws EntityNotFoundException, IllegalOperationException {
 		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
 		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
 		
@@ -89,37 +97,38 @@ public class AuthorBookService {
 		if(bookEntity.getAuthors().contains(authorEntity))
 			return bookEntity;
 		
-		throw new EntityNotFoundException("The book is not associated to the author");
-		
-		/*List<AuthorEntity> authors = bookEntity.getAuthors();
+		throw new IllegalOperationException("The book is not associated to the author");
+    }
+	
+	@Transactional
+	public List<BookEntity> addBooks(Long authorId, List<BookEntity> books) throws EntityNotFoundException {
+		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
+		if(authorEntity == null)
+			throw new EntityNotFoundException("The author with the given id was not found");
 				
-		int index = authors.indexOf(authorEntity);
+		for (BookEntity book: books) {
+			
+			BookEntity bookEntity = bookRepository.findById(book.getId()).orElse(null);
+			if(bookEntity == null)
+				throw new EntityNotFoundException("The book with the given id was not found");
+			
+			if(!bookEntity.getAuthors().contains(authorEntity))
+				bookEntity.getAuthors().add(authorEntity);
+		}
+		
+		return books;
+    }
+	
+	@Transactional
+	public void removeBook(Long authorId, Long bookId) throws EntityNotFoundException {
+        AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
+        if(authorEntity == null)
+			throw new EntityNotFoundException("The author with the given id was not found");
+				
+        BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+        if(bookEntity == null)
+			throw new EntityNotFoundException("The book with the given id was not found");
         
-        if (index >= 0)
-        	return bookEntity;*/
-       
-        //throw new EntityNotFoundException("The book is not associated to the author");
-    }
-	
-	public List<BookEntity> replaceBooks(Long authorId, List<BookEntity> books) {
-        AuthorEntity authorEntity = authorRepository.findById(authorId).get();
-        List<BookEntity> bookList = bookRepository.findAll();
-        for (BookEntity book : bookList) {
-            if (books.contains(book)) {
-                if (!book.getAuthors().contains(authorEntity)) {
-                    book.getAuthors().add(authorEntity);
-                }
-            } else {
-                book.getAuthors().remove(authorEntity);
-            }
-        }
-        authorEntity.setBooks(books);
-        return authorEntity.getBooks();
-    }
-	
-	public void removeBook(Long authorId, Long bookId) {
-        AuthorEntity authorEntity = authorRepository.findById(authorId).get();
-        BookEntity bookEntity = bookRepository.findById(bookId).get();
         bookEntity.getAuthors().remove(authorEntity);
     }
 }

@@ -26,12 +26,15 @@ package co.edu.uniandes.dse.bookstore.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.BookRepository;
 import co.edu.uniandes.dse.bookstore.repositories.EditorialRepository;
 import lombok.Data;
@@ -60,11 +63,21 @@ public class EditorialBookService {
 	 * @param bookId      El id libro a guardar
 	 * @param editorialId El id de la editorial en la cual se va a guardar el libro.
 	 * @return El libro creado.
+	 * @throws EntityNotFoundException 
 	 */
-	public BookEntity addBook(Long bookId, Long editorialId) {
+	
+	@Transactional
+	public BookEntity addBook(Long bookId, Long editorialId) throws EntityNotFoundException {
 		log.info("Inicia proceso de agregarle un libro a la editorial con id = {0}", editorialId);
-		EditorialEntity editorialEntity = editorialRepository.findById(editorialId).get();
-		BookEntity bookEntity = bookRepository.findById(bookId).get();
+		
+		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		if(bookEntity == null)
+			throw new EntityNotFoundException("The book with the given id was not found");
+		
+		EditorialEntity editorialEntity = editorialRepository.findById(editorialId).orElse(null);
+		if(editorialEntity == null)
+			throw new EntityNotFoundException("The editorial with the given id was not found");
+		
 		bookEntity.setEditorial(editorialEntity);
 		log.info("Termina proceso de agregarle un libro a la editorial con id = {0}", editorialId);
 		return bookEntity;
@@ -75,9 +88,15 @@ public class EditorialBookService {
 	 *
 	 * @param editorialsId El ID de la editorial buscada
 	 * @return La lista de libros de la editorial
+	 * @throws EntityNotFoundException 
 	 */
-	public List<BookEntity> getBooks(Long editorialId) {
+	@Transactional
+	public List<BookEntity> getBooks(Long editorialId) throws EntityNotFoundException {
 		log.info("Inicia proceso de consultar los libros asociados a la editorial con id = {0}", editorialId);
+		EditorialEntity editorialEntity = editorialRepository.findById(editorialId).orElse(null);
+		if(editorialEntity == null)
+			throw new EntityNotFoundException("The editorial with the given id was not found");
+		
 		return editorialRepository.findById(editorialId).get().getBooks();
 	}
 
@@ -88,17 +107,28 @@ public class EditorialBookService {
 	 * @param booksId      El id del libro a buscar
 	 * @return El libro encontrado dentro de la editorial.
 	 * @throws EntityNotFoundException Si el libro no se encuentra en la editorial
+	 * @throws IllegalOperationException 
 	 */
-	public BookEntity getBook(Long editorialId, Long bookId) throws EntityNotFoundException {
+	@Transactional
+	public BookEntity getBook(Long editorialId, Long bookId) throws EntityNotFoundException, IllegalOperationException {
 		log.info("Inicia proceso de consultar el libro con id = {0} de la editorial con id = " + editorialId, bookId);
-		List<BookEntity> books = editorialRepository.findById(editorialId).get().getBooks();
-		BookEntity bookEntity = bookRepository.findById(bookId).get();
+		
+		EditorialEntity editorialEntity = editorialRepository.findById(editorialId).orElse(null);
+		if(editorialEntity == null)
+			throw new EntityNotFoundException("The editorial with the given id was not found");
+		
+		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		if(bookEntity == null)
+			throw new EntityNotFoundException("The book with the given id was not found");
+		
+		List<BookEntity> books = editorialEntity.getBooks();
+				
 		int index = books.indexOf(bookEntity);
 		log.info("Termina proceso de consultar el libro con id = {0} de la editorial con id = " + editorialId, bookId);
 		if (index >= 0) {
 			return books.get(index);
 		}
-		throw new EntityNotFoundException("El libro no está asociado a la editorial");
+		throw new IllegalOperationException("The book is not associated to the editorial");
 	}
 
 	/**
@@ -107,12 +137,20 @@ public class EditorialBookService {
 	 * @param books        Lista de libros que serán los de la editorial.
 	 * @param editorialsId El id de la editorial que se quiere actualizar.
 	 * @return La lista de libros actualizada.
+	 * @throws EntityNotFoundException 
 	 */
-	public List<BookEntity> replaceBooks(Long editorialId, List<BookEntity> books) {
+	@Transactional
+	public List<BookEntity> replaceBooks(Long editorialId, List<BookEntity> books) throws EntityNotFoundException {
 		log.info("Inicia proceso de actualizar la editorial con id = {0}", editorialId);
-		EditorialEntity editorialEntity = editorialRepository.findById(editorialId).get();
-		List<BookEntity> bookList = bookRepository.findAll();
-		for (BookEntity book : bookList) {
+		EditorialEntity editorialEntity = editorialRepository.findById(editorialId).orElse(null);
+		if(editorialEntity == null)
+			throw new EntityNotFoundException("The editorial with the given id was not found");
+		
+		for (BookEntity book : books) {
+			BookEntity b = bookRepository.findById(book.getId()).orElse(null);
+			if(b == null)
+				throw new EntityNotFoundException("The book with the given id was not found");
+			
 			if (books.contains(book)) {
 				book.setEditorial(editorialEntity);
 			} else if (book.getEditorial() != null && book.getEditorial().equals(editorialEntity)) {

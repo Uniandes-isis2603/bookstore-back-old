@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
@@ -44,14 +45,17 @@ public class AuthorService {
 	@Autowired
 	AuthorRepository authorRepository;
 	
+	@Transactional
 	public AuthorEntity createAuthor(AuthorEntity authorEntity) {
 		return authorRepository.save(authorEntity);
 	}
 	
+	@Transactional
 	public List<AuthorEntity> getAuthors(){
 		return authorRepository.findAll();
 	}
 	
+	@Transactional
 	public AuthorEntity getAuthor(Long authorId) throws EntityNotFoundException {
 		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
 		if(authorEntity == null) 
@@ -60,6 +64,7 @@ public class AuthorService {
 		return authorEntity;
 	}
 	
+	@Transactional
 	public AuthorEntity updateAuthor(Long authorId, AuthorEntity authorEntity) throws EntityNotFoundException {
 		AuthorEntity author = authorRepository.findById(authorId).orElse(null);
 		if(author == null) 
@@ -69,6 +74,7 @@ public class AuthorService {
 		return authorRepository.save(authorEntity);
 	}
 	
+	@Transactional
 	public void deleteAuthor(Long authorId) throws IllegalOperationException, EntityNotFoundException {
 		
 		AuthorEntity author = authorRepository.findById(authorId).orElse(null);

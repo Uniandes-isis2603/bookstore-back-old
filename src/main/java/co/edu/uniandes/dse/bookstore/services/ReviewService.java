@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.ReviewEntity;
@@ -46,32 +47,58 @@ public class ReviewService {
 	@Autowired
 	BookRepository bookRepository;
 
+	@Transactional
 	public ReviewEntity createReview(Long bookId, ReviewEntity reviewEntity) throws EntityNotFoundException {
-		BookEntity book = bookRepository.findById(bookId).get();
-		reviewEntity.setBook(book);
-		return this.reviewRepository.save(reviewEntity);
+		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		if(bookEntity == null)
+			throw new EntityNotFoundException("The book with the given id was not found");
+		
+		reviewEntity.setBook(bookEntity);
+		return reviewRepository.save(reviewEntity);
 	}
 	
-	public List<ReviewEntity> getReviews(Long bookId) {
-        BookEntity bookEntity = bookRepository.findById(bookId).get();
+	@Transactional
+	public List<ReviewEntity> getReviews(Long bookId) throws EntityNotFoundException {
+		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		if(bookEntity == null)
+			throw new EntityNotFoundException("The book with the given id was not found");
+		
         return bookEntity.getReviews();
     }
 	
-	public ReviewEntity getReview(Long bookId, Long reviewId) {
+	@Transactional
+	public ReviewEntity getReview(Long bookId, Long reviewId) throws EntityNotFoundException {
+		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		if(bookEntity == null)
+			throw new EntityNotFoundException("The book with the given id was not found");
+		
+		ReviewEntity reviewEntity = reviewRepository.findById(reviewId).orElse(null);
+		if(reviewEntity == null)
+			throw new EntityNotFoundException("The review with the given id was not found");
+		
         return reviewRepository.findByBookIdAndId(bookId, reviewId);
     }
 	
-	public ReviewEntity updateReview(Long bookId, ReviewEntity reviewEntity) {
-        BookEntity bookEntity = bookRepository.findById(bookId).get();
+	@Transactional
+	public ReviewEntity updateReview(Long bookId, ReviewEntity reviewEntity) throws EntityNotFoundException {
+		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		if(bookEntity == null)
+			throw new EntityNotFoundException("The book with the given id was not found");
+		
         reviewEntity.setBook(bookEntity);
         return this.reviewRepository.save(reviewEntity);
     }
 	
+	@Transactional
 	public void deleteReview(Long bookId, Long reviewId) throws EntityNotFoundException {
-        ReviewEntity old = getReview(bookId, reviewId);
-        if (old == null) {
-            throw new EntityNotFoundException("The review with id = " + reviewId + " is not associated to book with id = " + bookId);
+		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		if(bookEntity == null)
+			throw new EntityNotFoundException("The book with the given id was not found");
+		
+        ReviewEntity review = getReview(bookId, reviewId);
+        if (review == null) {
+            throw new EntityNotFoundException("The review is not associated to the book");
         }
-        reviewRepository.deleteById(old.getId());
+        reviewRepository.deleteById(review.getId());
     }
 }

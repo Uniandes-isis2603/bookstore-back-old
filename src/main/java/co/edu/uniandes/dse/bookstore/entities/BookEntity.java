@@ -36,8 +36,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -57,7 +55,6 @@ public class BookEntity extends BaseEntity {
 	private String description;
 
 	@PodamExclude
-	@JsonBackReference
 	@ManyToOne
 	private EditorialEntity editorial;
 

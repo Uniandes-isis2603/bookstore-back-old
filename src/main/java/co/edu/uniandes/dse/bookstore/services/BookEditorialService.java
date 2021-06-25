@@ -26,9 +26,11 @@ package co.edu.uniandes.dse.bookstore.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
+import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.repositories.BookRepository;
 import co.edu.uniandes.dse.bookstore.repositories.EditorialRepository;
 import lombok.Data;
@@ -43,13 +45,22 @@ public class BookEditorialService {
     @Autowired
     private EditorialRepository editorialRepository;
     
-    public BookEntity replaceEditorial(Long bookId, Long editorialId) {
-        EditorialEntity editorialEntity = editorialRepository.findById(editorialId).get();
-        BookEntity bookEntity = bookRepository.findById(bookId).get();
-        bookEntity.setEditorial(editorialEntity);
-        return bookEntity;
+    @Transactional
+    public BookEntity replaceEditorial(Long bookId, Long editorialId) throws EntityNotFoundException {
+    	
+    	BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		if(bookEntity == null)
+			throw new EntityNotFoundException("The book with the given id was not found");
+		
+		EditorialEntity editorialEntity = editorialRepository.findById(editorialId).orElse(null);
+		if(editorialEntity == null)
+			throw new EntityNotFoundException("The editorial with the given id was not found");
+    	
+		bookEntity.setEditorial(editorialEntity);
+		return bookEntity;
     }
     
+    @Transactional
     public void removeEditorial(Long bookId) {
         BookEntity bookEntity = bookRepository.findById(bookId).get();
         EditorialEntity editorialEntity = editorialRepository.findById(bookEntity.getEditorial().getId()).get();

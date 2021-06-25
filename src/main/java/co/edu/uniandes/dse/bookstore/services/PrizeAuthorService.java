@@ -26,6 +26,7 @@ package co.edu.uniandes.dse.bookstore.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
@@ -62,14 +63,22 @@ public class PrizeAuthorService {
 	 * @param prizesId  El id premio a guardar
 	 * @param authorsId El id del autor al cual se le va a guardar el premio.
 	 * @return El premio que fue agregado al autor.
+	 * @throws EntityNotFoundException 
 	 */
-	public AuthorEntity addAuthor(Long authorId, Long prizeId) {
+	@Transactional
+	public AuthorEntity addAuthor(Long authorId, Long prizeId) throws EntityNotFoundException {
 		log.info("Inicia proceso de asociar el autor con id = {0} al premio con id = " + prizeId, authorId);
-		AuthorEntity autorEntity = authorRepository.findById(authorId).get();
-		PrizeEntity prizeEntity = prizeRepository.findById(prizeId).get();
+		AuthorEntity autorEntity = authorRepository.findById(authorId).orElse(null);
+		if(autorEntity == null)
+			throw new EntityNotFoundException("The author with the given id was not found");
+		
+		PrizeEntity prizeEntity = prizeRepository.findById(prizeId).orElse(null);
+		if(prizeEntity == null)
+			throw new EntityNotFoundException("The prize with the given id was not found");
+		
 		prizeEntity.setAuthor(autorEntity);
-		log.info("Termina proceso de asociar el autor con id = {0} al premio con id = " + prizeId, authorId);
-		return authorRepository.findById(authorId).get();
+		log.info("Termina proceso de asociar el autor con id = {0} al premio con id = {1}", authorId, prizeId);
+		return autorEntity;
 	}
 
 	/**
@@ -78,12 +87,17 @@ public class PrizeAuthorService {
 	 *
 	 * @param prizesId id del premio a ser buscado.
 	 * @return el autor solicitada por medio de su id.
+	 * @throws EntityNotFoundException 
 	 */
-	public AuthorEntity getAuthor(Long prizeId) {
+	
+	@Transactional
+	public AuthorEntity getAuthor(Long prizeId) throws EntityNotFoundException {
 		log.info("Inicia proceso de consultar el autor del premio con id = {0}", prizeId);
-		AuthorEntity authorEntity = prizeRepository.findById(prizeId).get().getAuthor();
+		PrizeEntity prizeEntity = prizeRepository.findById(prizeId).orElse(null);
+		if(prizeEntity == null)
+			throw new EntityNotFoundException("The prize with the given id was not found");
 		log.info("Termina proceso de consultar el autor del premio con id = {0}", prizeId);
-		return authorEntity;
+		return prizeEntity.getAuthor();
 	}
 
 	/**
@@ -92,14 +106,23 @@ public class PrizeAuthorService {
 	 * @param prizesId  el id del premio que se quiere actualizar.
 	 * @param authorsId El id del nuebo autor asociado al premio.
 	 * @return el nuevo autor asociado.
+	 * @throws EntityNotFoundException 
 	 */
-	public AuthorEntity replaceAuthor(Long prizeId, Long authorId) {
+	
+	@Transactional
+	public AuthorEntity replaceAuthor(Long prizeId, Long authorId) throws EntityNotFoundException {
 		log.info("Inicia proceso de actualizar el autor del premio premio con id = {0}", prizeId);
-		AuthorEntity autorEntity = authorRepository.findById(authorId).get();
-		PrizeEntity prizeEntity = prizeRepository.findById(prizeId).get();
+		AuthorEntity autorEntity = authorRepository.findById(authorId).orElse(null);
+		if(autorEntity == null)
+			throw new EntityNotFoundException("The author with the given id was not found");
+		
+		PrizeEntity prizeEntity = prizeRepository.findById(prizeId).orElse(null);
+		if(prizeEntity == null)
+			throw new EntityNotFoundException("The prize with the given id was not found");
+		
 		prizeEntity.setAuthor(autorEntity);
 		log.info("Termina proceso de asociar el autor con id = {0} al premio con id = " + prizeId, authorId);
-		return authorRepository.findById(authorId).get();
+		return autorEntity;
 	}
 
 	/**
@@ -108,13 +131,18 @@ public class PrizeAuthorService {
 	 * @param prizesId El premio que se desea borrar del autor.
 	 * @throws EntityNotFoundException si el premio no tiene autor
 	 */
+	
+	@Transactional
 	public void removeAuthor(Long prizeId) throws EntityNotFoundException {
 		log.info("Inicia proceso de borrar el autor del premio con id = {0}", prizeId);
-		PrizeEntity prizeEntity = prizeRepository.findById(prizeId).get();
+		PrizeEntity prizeEntity = prizeRepository.findById(prizeId).orElse(null);
+		if(prizeEntity == null)
+			throw new EntityNotFoundException("The prize with the given id was not found");
+		
 		if (prizeEntity.getAuthor() == null) {
 			throw new EntityNotFoundException("El premio no tiene autor");
 		}
-		AuthorEntity authorEntity = authorRepository.findById(prizeEntity.getAuthor().getId()).get();
+		AuthorEntity authorEntity = authorRepository.findById(prizeEntity.getAuthor().getId()).orElse(null);
 		prizeEntity.setAuthor(null);
 		authorEntity.getPrizes().remove(prizeEntity);
 		log.info("Termina proceso de borrar el autor con id = {0} del premio con id = " + prizeId,

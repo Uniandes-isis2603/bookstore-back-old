@@ -103,7 +103,7 @@ class AuthorBookServiceTest {
 	}
 
 	@Test
-	void testGetBooks() {
+	void testGetBooks() throws EntityNotFoundException {
 		List<BookEntity> bookEntities = authorBookService.getBooks(author.getId());
 
 		assertEquals(bookList.size(), bookEntities.size());
@@ -114,7 +114,7 @@ class AuthorBookServiceTest {
 	}
 
 	@Test
-	void testGetBook() throws EntityNotFoundException {
+	void testGetBook() throws EntityNotFoundException, IllegalOperationException {
 		BookEntity bookEntity = bookList.get(0);
 		BookEntity book = authorBookService.getBook(author.getId(), bookEntity.getId());
 		assertNotNull(book);
@@ -137,7 +137,7 @@ class AuthorBookServiceTest {
 			bookService.createBook(entity);
 			nuevaLista.add(entity);
 		}
-		authorBookService.replaceBooks(author.getId(), nuevaLista);
+		authorBookService.addBooks(author.getId(), nuevaLista);
 		List<BookEntity> bookEntities = authorBookService.getBooks(author.getId());
 		for (BookEntity aNuevaLista : nuevaLista) {
 			assertTrue(bookEntities.contains(aNuevaLista));
@@ -145,7 +145,7 @@ class AuthorBookServiceTest {
 	}
 
 	@Test
-	void testRemoveBook() {
+	void testRemoveBook() throws EntityNotFoundException {
 		for (BookEntity book : bookList) {
 			authorBookService.removeBook(author.getId(), book.getId());
 		}
