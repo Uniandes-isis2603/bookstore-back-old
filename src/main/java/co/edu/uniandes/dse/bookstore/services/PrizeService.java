@@ -38,66 +38,120 @@ import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.OrganizationRepository;
 import co.edu.uniandes.dse.bookstore.repositories.PrizeRepository;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Clase que implementa la conexion con la persistencia para la entidad de
+ * Prize.
+ *
+ * @author ISIS2603
+ */
+@Slf4j
 @Data
 @Service
 public class PrizeService {
 
 	@Autowired
 	PrizeRepository prizeRepository;
-	
+
 	@Autowired
 	OrganizationRepository organizationRepository;
-	
+
+	/**
+	 * Guardar un nuevo premio
+	 *
+	 * @param prizeEntity La entidad de tipo premio del nuevo premio a persistir.
+	 * @return La entidad luego de persistirla
+	 * @throws IllegalOperationException si la organizacion no existe o ya tiene
+	 *                                   premio.
+	 */
+
 	@Transactional
-	public PrizeEntity createPrize(PrizeEntity prizeEntity) throws EntityNotFoundException, IllegalOperationException {
-		if(prizeEntity.getOrganization() == null) 
+	public PrizeEntity createPrize(PrizeEntity prizeEntity) throws IllegalOperationException {
+		log.info("Inicia proceso de creación de premio");
+		if (prizeEntity.getOrganization() == null)
 			throw new IllegalOperationException("Organization is not valid");
-		
-		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(prizeEntity.getOrganization().getId());
-		if(organizationEntity.isEmpty())
+
+		Optional<OrganizationEntity> organizationEntity = organizationRepository
+				.findById(prizeEntity.getOrganization().getId());
+		if (organizationEntity.isEmpty())
 			throw new IllegalOperationException("Organization is not valid");
-		
-		if(organizationEntity.get().getPrize() != null)
+
+		if (organizationEntity.get().getPrize() != null)
 			throw new IllegalOperationException("Organization already holds a prize");
-		
+
+		log.info("Termina proceso de creación de premio");
 		return prizeRepository.save(prizeEntity);
 	}
-	
+
+	/**
+	 * Devuelve todos los premios que hay en la base de datos.
+	 *
+	 * @return Lista de entidades de tipo premio.
+	 */
 	@Transactional
-	public List<PrizeEntity> getPrizes(){
+	public List<PrizeEntity> getPrizes() {
+		log.info("Inicia proceso de consultar todos los premios");
 		return prizeRepository.findAll();
 	}
-	
+
+	/**
+	 * Busca un premio por ID
+	 *
+	 * @param prizeId El id del premio a buscar
+	 * @return El premio encontrado
+	 * @throws EntityNotFoundException si no encuentra el premio
+	 */
 	@Transactional
 	public PrizeEntity getPrize(Long prizeId) throws EntityNotFoundException {
+		log.info("Inicia proceso de consultar premio con id = {0}", prizeId);
 		Optional<PrizeEntity> prizeEntity = prizeRepository.findById(prizeId);
-		if(prizeEntity.isEmpty())
+		if (prizeEntity.isEmpty())
 			throw new EntityNotFoundException("The prize with the given id was not found");
-		
+
+		log.info("Termina proceso de consultar premio con id = {0}", prizeId);
 		return prizeEntity.get();
 	}
-	
+
+	/**
+	 * Actualizar un premio por ID
+	 *
+	 * @param prizeId El ID del premio a actualizar
+	 * @param prize   La entidad del premio con los cambios deseados
+	 * @return La entidad del premio luego de actualizarla
+	 */
 	@Transactional
 	public PrizeEntity updatePrize(Long prizeId, PrizeEntity prize) throws EntityNotFoundException {
+		log.info("Inicia proceso de actualizar premio con id = {0}", prizeId);
 		Optional<PrizeEntity> prizeEntity = prizeRepository.findById(prizeId);
-		if(prizeEntity.isEmpty())
+		if (prizeEntity.isEmpty())
 			throw new EntityNotFoundException("The prize with the given id was not found");
-		
+
 		prize.setId(prizeId);
+
+		log.info("Termina proceso de actualizar premio con id = {0}", prizeId);
 		return prizeRepository.save(prize);
 	}
-	
+
+	/**
+	 * Eliminar un premio por ID
+	 *
+	 * @param prizeId El ID del premio a eliminar
+	 * @throws BusinessLogicException si el premio tiene un autor asociado.
+	 */
+
 	@Transactional
 	public void deletePrize(Long prizeId) throws EntityNotFoundException, IllegalOperationException {
+		log.info("Inicia proceso de borrar premio con id = {0}", prizeId);
 		Optional<PrizeEntity> prizeEntity = prizeRepository.findById(prizeId);
-		if(prizeEntity.isEmpty())
+		if (prizeEntity.isEmpty())
 			throw new EntityNotFoundException("The prize with the given id was not found");
-		
-		if(prizeEntity.get().getAuthor() != null ) {
+
+		if (prizeEntity.get().getAuthor() != null) {
 			throw new IllegalOperationException("Unable to delete prize because it has an associated author");
 		}
-	
+
 		prizeRepository.deleteById(prizeId);
+		log.info("Termina proceso de borrar premio con id = {0}", prizeId);
 	}
 }

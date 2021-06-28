@@ -37,74 +37,141 @@ import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.repositories.BookRepository;
 import co.edu.uniandes.dse.bookstore.repositories.ReviewRepository;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Clase que implementa la conexion con la persistencia para la entidad de
+ * Reseña(Review).
+ *
+ * @author ISIS2603
+ */
+@Slf4j
 @Data
 @Service
 public class ReviewService {
 
 	@Autowired
 	ReviewRepository reviewRepository;
-	
+
 	@Autowired
 	BookRepository bookRepository;
 
+	/**
+	 * Se encarga de crear un Review en la base de datos.
+	 *
+	 * @param reviewEntity Objeto de ReviewEntity con los datos nuevos
+	 * @param bookId       id del Book el cual sera padre del nuevo Review.
+	 * @return Objeto de ReviewEntity con los datos nuevos y su ID.
+	 * @throws EntityNotFoundException si el book no existe.
+	 *
+	 */
 	@Transactional
 	public ReviewEntity createReview(Long bookId, ReviewEntity reviewEntity) throws EntityNotFoundException {
+		log.info("Inicia proceso de crear review");
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-		if(bookEntity.isEmpty())
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-		
+
 		reviewEntity.setBook(bookEntity.get());
+
+		log.info("Termina proceso de creación del review");
 		return reviewRepository.save(reviewEntity);
 	}
-	
+
+	/**
+	 * Obtiene la lista de los registros de Review que pertenecen a un Book.
+	 *
+	 * @param bookId id del Book el cual es padre de los Reviews.
+	 * @return Colección de objetos de ReviewEntity.
+	 */
+
 	@Transactional
 	public List<ReviewEntity> getReviews(Long bookId) throws EntityNotFoundException {
+		log.info("Inicia proceso de consultar los reviews asociados al book con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-		if(bookEntity.isEmpty())
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-		
-        return bookEntity.get().getReviews();
-    }
-	
+
+		log.info("Termina proceso de consultar los reviews asociados al book con id = {0}", bookId);
+		return bookEntity.get().getReviews();
+	}
+
+	/**
+	 * Obtiene los datos de una instancia de Review a partir de su ID. La existencia
+	 * del elemento padre Book se debe garantizar.
+	 *
+	 * @param bookId   El id del Libro buscado
+	 * @param reviewId Identificador de la Reseña a consultar
+	 * @return Instancia de ReviewEntity con los datos del Review consultado.
+	 *
+	 */
 	@Transactional
 	public ReviewEntity getReview(Long bookId, Long reviewId) throws EntityNotFoundException {
+		log.info("Inicia proceso de consultar el review con id = {0} del libro con id = " + bookId,
+				reviewId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-		if(bookEntity.isEmpty())
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-		
+
 		Optional<ReviewEntity> reviewEntity = reviewRepository.findById(reviewId);
-		if(reviewEntity.isEmpty())
+		if (reviewEntity.isEmpty())
 			throw new EntityNotFoundException("The review with the given id was not found");
-		
-        return reviewRepository.findByBookIdAndId(bookId, reviewId);
-    }
-	
+
+		log.info("Termina proceso de consultar el review con id = {0} del libro con id = " + bookId,
+				reviewId);
+		return reviewRepository.findByBookIdAndId(bookId, reviewId);
+	}
+
+	/**
+	 * Actualiza la información de una instancia de Review.
+	 *
+	 * @param reviewEntity Instancia de ReviewEntity con los nuevos datos.
+	 * @param bookId       id del Book el cual sera padre del Review actualizado.
+	 * @param reviewId     id de la review que será actualizada.
+	 * @return Instancia de ReviewEntity con los datos actualizados.
+	 *
+	 */
 	@Transactional
 	public ReviewEntity updateReview(Long bookId, Long reviewId, ReviewEntity review) throws EntityNotFoundException {
+		log.info("Inicia proceso de actualizar el review con id = {0} del libro con id = " + bookId,
+				reviewId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-		if(bookEntity.isEmpty())
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-		
+
 		Optional<ReviewEntity> reviewEntity = reviewRepository.findById(reviewId);
-		if(reviewEntity.isEmpty())
+		if (reviewEntity.isEmpty())
 			throw new EntityNotFoundException("The review with the given id was not found");
-		
+
 		review.setId(reviewId);
 		review.setBook(bookEntity.get());
+		log.info("Termina proceso de actualizar el review con id = {0} del libro con id = " + bookId,
+				reviewId);
 		return reviewRepository.save(review);
-    }
-	
+	}
+
+	/**
+	 * Elimina una instancia de Review de la base de datos.
+	 *
+	 * @param reviewId Identificador de la instancia a eliminar.
+	 * @param bookId   id del Book el cual es padre del Review.
+	 * @throws EntityNotFoundException Si la reseña no esta asociada al libro.
+	 *
+	 */
 	@Transactional
 	public void deleteReview(Long bookId, Long reviewId) throws EntityNotFoundException {
+		log.info("Inicia proceso de borrar el review con id = {0} del libro con id = " + bookId,
+				reviewId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-		if(bookEntity.isEmpty())
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-		
-        ReviewEntity review = getReview(bookId, reviewId);
-        if (review == null) {
-            throw new EntityNotFoundException("The review is not associated to the book");
-        }
-        reviewRepository.deleteById(reviewId);
-    }
+
+		ReviewEntity review = getReview(bookId, reviewId);
+		if (review == null) {
+			throw new EntityNotFoundException("The review is not associated to the book");
+		}
+		reviewRepository.deleteById(reviewId);
+		log.info("Termina proceso de borrar el review con id = {0} del libro con id = " + bookId,
+				reviewId);
+	}
 }

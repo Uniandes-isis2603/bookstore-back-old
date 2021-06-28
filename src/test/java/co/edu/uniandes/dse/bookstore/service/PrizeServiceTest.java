@@ -93,7 +93,7 @@ class PrizeServiceTest {
 
 	@Test
 	void testCreatePrizeWithNoValidOrganization() {
-		assertThrows(EntityNotFoundException.class, () -> {
+		assertThrows(IllegalOperationException.class, () -> {
 			PrizeEntity newEntity = factory.manufacturePojo(PrizeEntity.class);
 			newEntity.setOrganization(null);
 			prizeService.createPrize(newEntity);
@@ -102,7 +102,7 @@ class PrizeServiceTest {
 
 	@Test
 	void testCreatePrizeWithNoValidOrganization2() throws EntityNotFoundException {
-		assertThrows(EntityNotFoundException.class, () -> {
+		assertThrows(IllegalOperationException.class, () -> {
 			PrizeEntity newEntity = factory.manufacturePojo(PrizeEntity.class);
 			newEntity.setOrganization(organizationList.get(0));
 			prizeService.createPrize(newEntity);
@@ -154,7 +154,7 @@ class PrizeServiceTest {
 
 	@Test
 	void testDeletePrize() {
-		assertThrows(EntityNotFoundException.class, ()->{
+		assertThrows(IllegalOperationException.class, ()->{
 			 PrizeEntity entity = prizeList.get(2);
 		     prizeService.deletePrize(entity.getId());
 		});

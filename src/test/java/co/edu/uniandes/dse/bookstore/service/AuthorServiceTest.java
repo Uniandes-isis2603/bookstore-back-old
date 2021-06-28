@@ -1,3 +1,27 @@
+/*
+MIT License
+
+Copyright (c) 2021 Universidad de los Andes - ISIS2603
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
 package co.edu.uniandes.dse.bookstore.service;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +51,11 @@ import co.edu.uniandes.dse.bookstore.services.AuthorService;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+/**
+ * Pruebas de logica de Authors
+ *
+ * @author ISIS2603
+ */
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @Transactional
@@ -41,18 +70,32 @@ class AuthorServiceTest {
 
 	private PodamFactory factory = new PodamFactoryImpl();
 
-	private List<AuthorEntity> authorList= new ArrayList<>();
+	private List<AuthorEntity> authorList = new ArrayList<>();
 
+	/**
+	 * Configuración inicial de la prueba.
+	 */
+	@BeforeEach
+	void setUp() {
+		clearData();
+		insertData();
+	}
+
+	/**
+	 * Limpia las tablas que están implicadas en la prueba.
+	 */
 	private void clearData() {
 		entityManager.getEntityManager().createQuery("delete from PrizeEntity").executeUpdate();
 		entityManager.getEntityManager().createQuery("delete from BookEntity").executeUpdate();
 		entityManager.getEntityManager().createQuery("delete from AuthorEntity").executeUpdate();
 	}
-	
+
+	/**
+	 * Inserta los datos iniciales para el correcto funcionamiento de las pruebas.
+	 */
 	private void insertData() {
 		for (int i = 0; i < 3; i++) {
 			AuthorEntity authorEntity = factory.manufacturePojo(AuthorEntity.class);
-			authorEntity.setBooks(new ArrayList<>());
 			entityManager.persist(authorEntity);
 			authorList.add(authorEntity);
 		}
@@ -70,12 +113,9 @@ class AuthorServiceTest {
 		authorList.get(1).getPrizes().add(prize);
 	}
 
-	@BeforeEach
-	void setUp() {
-		clearData();
-		insertData();
-	}
-
+	/**
+	 * Prueba para crear un Author.
+	 */
 	@Test
 	void testCreateAuthor() {
 		AuthorEntity newEntity = factory.manufacturePojo(AuthorEntity.class);
@@ -90,6 +130,9 @@ class AuthorServiceTest {
 		assertEquals(newEntity.getDescription(), entity.getDescription());
 	}
 
+	/**
+	 * Prueba para consultar la lista de Authors.
+	 */
 	@Test
 	void testGetAuthors() {
 		List<AuthorEntity> authorsList = authorService.getAuthors();
@@ -106,6 +149,9 @@ class AuthorServiceTest {
 		}
 	}
 
+	/**
+	 * Prueba para consultar un Author.
+	 */
 	@Test
 	void testGetAuthor() throws EntityNotFoundException {
 		AuthorEntity authorEntity = authorList.get(0);
@@ -119,6 +165,9 @@ class AuthorServiceTest {
 		assertEquals(authorEntity.getDescription(), resultEntity.getDescription());
 	}
 
+	/**
+	 * Prueba para actualizar un Author.
+	 */
 	@Test
 	void testUpdateAuthor() throws EntityNotFoundException {
 		AuthorEntity authorEntity = authorList.get(0);
@@ -136,6 +185,10 @@ class AuthorServiceTest {
 		assertEquals(pojoEntity.getDescription(), response.getDescription());
 	}
 
+	/**
+	 * Prueba para eliminar un Author
+	 *
+	 */
 	@Test
 	void testDeleteAuthor() throws EntityNotFoundException, IllegalOperationException {
 		AuthorEntity authorEntity = authorList.get(0);
@@ -144,18 +197,26 @@ class AuthorServiceTest {
 		assertNull(deleted);
 	}
 
+	/**
+	 * Prueba para eliminar un Author asociado a un libro
+	 *
+	 */
 	@Test
 	void testDeleteAuthorWithBooks() {
-		assertThrows(EntityNotFoundException.class, ()-> {
+		assertThrows(IllegalOperationException.class, () -> {
 			authorService.deleteAuthor(authorList.get(2).getId());
 		});
 	}
-	
+
+	/**
+	 * Prueba para eliminar un Author asociado a un premio
+	 *
+	 */
 	@Test
-    void testDeleteAuthorWithPrize() {
-		assertThrows(EntityNotFoundException.class, ()->{
+	void testDeleteAuthorWithPrize() {
+		assertThrows(IllegalOperationException.class, () -> {
 			authorService.deleteAuthor(authorList.get(1).getId());
 		});
-    }
+	}
 
 }

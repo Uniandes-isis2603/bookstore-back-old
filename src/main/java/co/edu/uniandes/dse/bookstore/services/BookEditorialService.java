@@ -36,43 +36,64 @@ import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.repositories.BookRepository;
 import co.edu.uniandes.dse.bookstore.repositories.EditorialRepository;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Data
 @Service
 public class BookEditorialService {
 
 	@Autowired
-    private BookRepository bookRepository;
+	private BookRepository bookRepository;
 
-    @Autowired
-    private EditorialRepository editorialRepository;
-    
-    @Transactional
-    public BookEntity replaceEditorial(Long bookId, Long editorialId) throws EntityNotFoundException {
-    	
-    	Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-		if(bookEntity.isEmpty())
+	@Autowired
+	private EditorialRepository editorialRepository;
+
+	/**
+	 * Remplazar la editorial de un book.
+	 *
+	 * @param bookId      id del libro que se quiere actualizar.
+	 * @param editorialId El id de la editorial que se será del libro.
+	 * @return el nuevo libro.
+	 */
+
+	@Transactional
+	public BookEntity replaceEditorial(Long bookId, Long editorialId) throws EntityNotFoundException {
+		log.info("Inicia proceso de actualizar libro con id = {0}", bookId);
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-		
+
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
-		if(editorialEntity.isEmpty())
+		if (editorialEntity.isEmpty())
 			throw new EntityNotFoundException("The editorial with the given id was not found");
-    	
+
 		bookEntity.get().setEditorial(editorialEntity.get());
+		log.info("Termina proceso de actualizar libro con id = {0}", bookId);
+
 		return bookEntity.get();
-    }
-    
-    @Transactional
-    public void removeEditorial(Long bookId) throws EntityNotFoundException {
-        Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-        if(bookEntity.isEmpty())
+	}
+
+	/**
+	 * Borrar un book de una editorial. Este metodo se utiliza para borrar la
+	 * relacion de un libro.
+	 *
+	 * @param booksId El libro que se desea borrar de la editorial.
+	 */
+	@Transactional
+	public void removeEditorial(Long bookId) throws EntityNotFoundException {
+		log.info("Inicia proceso de borrar la Editorial del libro con id = {0}", bookId);
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-        
-        Optional<EditorialEntity> editorialEntity = editorialRepository.findById(bookEntity.get().getEditorial().getId());
-        editorialEntity.ifPresent(editorial->{
-        	editorial.getBooks().remove(bookEntity.get());
-        });
-        
-        bookEntity.get().setEditorial(null);
-    }
+
+		Optional<EditorialEntity> editorialEntity = editorialRepository
+				.findById(bookEntity.get().getEditorial().getId());
+		editorialEntity.ifPresent(editorial -> {
+			editorial.getBooks().remove(bookEntity.get());
+		});
+
+		bookEntity.get().setEditorial(null);
+		log.info("Termina proceso de borrar la Editorial del libro con id = {0}", bookId);
+	}
 }

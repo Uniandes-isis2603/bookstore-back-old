@@ -101,26 +101,26 @@ public class AuthorBookService {
 
 		List<BookEntity> books = bookRepository.findAll();
 		List<BookEntity> bookList = new ArrayList<>();
-		
-		for(BookEntity b : books) {
-			if(b.getAuthors().contains(authorEntity.get())){
+
+		for (BookEntity b : books) {
+			if (b.getAuthors().contains(authorEntity.get())) {
 				bookList.add(b);
 			}
-		} 
-		log.info("Finaliza proceso de consultar todos los libros del autor con id = {0}", authorId);
+		}
+		log.info("Termina proceso de consultar todos los libros del autor con id = {0}", authorId);
 		return bookList;
 	}
 
-	 /**
-     * Obtiene una instancia de BookEntity asociada a una instancia de Author
-     *
-     * @param authorsId Identificador de la instancia de Author
-     * @param booksId Identificador de la instancia de Book
-     * @return La entidadd de Libro del autor
-     */
+	/**
+	 * Obtiene una instancia de BookEntity asociada a una instancia de Author
+	 *
+	 * @param authorsId Identificador de la instancia de Author
+	 * @param booksId   Identificador de la instancia de Book
+	 * @return La entidadd de Libro del autor
+	 */
 	@Transactional
 	public BookEntity getBook(Long authorId, Long bookId) throws EntityNotFoundException, IllegalOperationException {
-		log.info("Inicia proceso de consultar el libro con id = {1} del autor con id = {0}" , authorId, bookId);
+		log.info("Inicia proceso de consultar el libro con id = {0} del autor con id = " + authorId, bookId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 
@@ -130,8 +130,7 @@ public class AuthorBookService {
 		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 
-		log.info("Finaliza proceso de consultar el libro con id = {1} del autor con id = {0}" , authorId, bookId);
-		
+		log.info("Termina proceso de consultar el libro con id = {0} del autor con id = " + authorId, bookId);
 		if (bookEntity.get().getAuthors().contains(authorEntity.get()))
 			return bookEntity.get();
 
@@ -139,13 +138,13 @@ public class AuthorBookService {
 	}
 
 	/**
-     * Remplaza las instancias de Book asociadas a una instancia de Author
-     *
-     * @param authorId Identificador de la instancia de Author
-     * @param books Colección de instancias de BookEntity a asociar a instancia
-     * de Author
-     * @return Nueva colección de BookEntity asociada a la instancia de Author
-     */
+	 * Remplaza las instancias de Book asociadas a una instancia de Author
+	 *
+	 * @param authorId Identificador de la instancia de Author
+	 * @param books    Colección de instancias de BookEntity a asociar a instancia
+	 *                 de Author
+	 * @return Nueva colección de BookEntity asociada a la instancia de Author
+	 */
 	@Transactional
 	public List<BookEntity> addBooks(Long authorId, List<BookEntity> books) throws EntityNotFoundException {
 		log.info("Inicia proceso de reemplazar los libros asociados al author con id = {0}", authorId);
@@ -166,11 +165,11 @@ public class AuthorBookService {
 	}
 
 	/**
-     * Desasocia un Book existente de un Author existente
-     *
-     * @param authorsId Identificador de la instancia de Author
-     * @param booksId Identificador de la instancia de Book
-     */
+	 * Desasocia un Book existente de un Author existente
+	 *
+	 * @param authorsId Identificador de la instancia de Author
+	 * @param booksId   Identificador de la instancia de Book
+	 */
 	@Transactional
 	public void removeBook(Long authorId, Long bookId) throws EntityNotFoundException {
 		log.info("Inicia proceso de borrar un libro del author con id = {0}", authorId);

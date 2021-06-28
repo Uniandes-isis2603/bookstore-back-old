@@ -39,75 +39,132 @@ import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.BookRepository;
 import co.edu.uniandes.dse.bookstore.repositories.EditorialRepository;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Data
 @Service
 public class BookService {
-	
+
 	@Autowired
 	BookRepository bookRepository;
-	
+
 	@Autowired
 	EditorialRepository editorialRepository;
-	
+
+	/**
+	 * Guardar un nuevo libro
+	 *
+	 * @param bookEntity La entidad de tipo libro del nuevo libro a persistir.
+	 * @return La entidad luego de persistirla
+	 * @throws IllegalOperationException Si el ISBN es inválido o ya existe en la
+	 *                                   persistencia o si la editorial es inválida
+	 */
 	@Transactional
 	public BookEntity createBook(BookEntity bookEntity) throws EntityNotFoundException, IllegalOperationException {
-		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(bookEntity.getEditorial().getId());
-		if(bookEntity.getEditorial() == null || editorialEntity.isEmpty())
+		log.info("Inicia proceso de creación del libro");
+		
+		if (bookEntity.getEditorial() == null)
 			throw new IllegalOperationException("Editorial is not valid");
 		
-		if(!validateISBN(bookEntity.getIsbn()))
+		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(bookEntity.getEditorial().getId());
+		if (editorialEntity.isEmpty())
+			throw new IllegalOperationException("Editorial is not valid");
+
+		if (!validateISBN(bookEntity.getIsbn()))
 			throw new IllegalOperationException("ISBN is not valid");
-		
-		if(bookRepository.findByIsbn(bookEntity.getIsbn()).size() > 0 )
+
+		if (bookRepository.findByIsbn(bookEntity.getIsbn()).size() > 0)
 			throw new IllegalOperationException("ISBN already exists");
-		
+
 		bookEntity.setEditorial(editorialEntity.get());
+		log.info("Termina proceso de creación del libro");
 		return bookRepository.save(bookEntity);
 	}
-	
+
+	/**
+	 * Devuelve todos los libros que hay en la base de datos.
+	 *
+	 * @return Lista de entidades de tipo libro.
+	 */
 	@Transactional
-	public List<BookEntity> getBooks(){
+	public List<BookEntity> getBooks() {
+		log.info("Inicia proceso de consultar todos los libros");
 		return bookRepository.findAll();
 	}
-	
+
+	/**
+	 * Busca un libro por ID
+	 *
+	 * @param bookId El id del libro a buscar
+	 * @return El libro encontrado
+	 * @throws EntityNotFoundException Si el libro no se encuentra
+	 */
 	@Transactional
 	public BookEntity getBook(Long bookId) throws EntityNotFoundException {
+		log.info("Inicia proceso de consultar el libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-		if(bookEntity.isEmpty())
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-		
+		log.info("Termina proceso de consultar el libro con id = {0}", bookId);
 		return bookEntity.get();
 	}
-	
+
+	/**
+	 * Actualizar un libro por ID
+	 *
+	 * @param bookId    El ID del libro a actualizar
+	 * @param book La entidad del libro con los cambios deseados
+	 * @return La entidad del libro luego de actualizarla
+	 * @throws IllegalOperationException Si el ISBN de la actualización es inválido
+	 * @throws EntityNotFoundException Si libro no es encontrado
+	 */
 	@Transactional
-	public BookEntity updateBook(Long bookId, BookEntity book) throws EntityNotFoundException, IllegalOperationException {
+	public BookEntity updateBook(Long bookId, BookEntity book)
+			throws EntityNotFoundException, IllegalOperationException {
+		log.info("Inicia proceso de actualizar el libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-		if(bookEntity.isEmpty())
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-	
-		if(!validateISBN(book.getIsbn()))
+
+		if (!validateISBN(book.getIsbn()))
 			throw new IllegalOperationException("ISBN is not valid");
-	
+
 		book.setId(bookId);
+		log.info("Termina proceso de actualizar el libro con id = {0}", bookId);
 		return bookRepository.save(book);
 	}
-	
+
+	/**
+	 * Eliminar un libro por ID
+	 *
+	 * @param bookId El ID del libro a eliminar
+	 * @throws IllegalOperationException si el libro tiene autores asociados
+	 * @throws EntityNotFoundException si el libro no existe
+	 */
 	@Transactional
-	public void deleteBook(Long bookId) throws EntityNotFoundException {
+	public void deleteBook(Long bookId) throws EntityNotFoundException, IllegalOperationException {
+		log.info("Inicia proceso de borrar el libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-		if(bookEntity.isEmpty())
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-	
+
 		List<AuthorEntity> authors = bookEntity.get().getAuthors();
-		
-		if(authors != null && !authors.isEmpty())
-			throw new EntityNotFoundException("Unable to delete book because it has associated authors");
-	
+
+		if (authors != null && !authors.isEmpty())
+			throw new IllegalOperationException("Unable to delete book because it has associated authors");
+
 		bookRepository.deleteById(bookId);
+		log.info("Termina proceso de borrar el libro con id = {0}", bookId);
 	}
-	
+
+	/**
+	 * Verifica que el ISBN no sea invalido.
+	 *
+	 * @param isbn a verificar
+	 * @return true si el ISBN es valido.
+	 */
 	private boolean validateISBN(String isbn) {
-        return !(isbn == null || isbn.isEmpty());
-    }
+		return !(isbn == null || isbn.isEmpty());
+	}
 }

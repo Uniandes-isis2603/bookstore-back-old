@@ -87,9 +87,9 @@ public class EditorialBookService {
 	/**
 	 * Retorna todos los books asociados a una editorial
 	 *
-	 * @param editorialsId El ID de la editorial buscada
+	 * @param editorialId El ID de la editorial buscada
 	 * @return La lista de libros de la editorial
-	 * @throws EntityNotFoundException 
+	 * @throws EntityNotFoundException si la editorial no existe
 	 */
 	@Transactional
 	public List<BookEntity> getBooks(Long editorialId) throws EntityNotFoundException {
@@ -104,11 +104,11 @@ public class EditorialBookService {
 	/**
 	 * Retorna un book asociado a una editorial
 	 *
-	 * @param editorialsId El id de la editorial a buscar.
-	 * @param booksId      El id del libro a buscar
+	 * @param editorialId El id de la editorial a buscar.
+	 * @param bookId      El id del libro a buscar
 	 * @return El libro encontrado dentro de la editorial.
 	 * @throws EntityNotFoundException Si el libro no se encuentra en la editorial
-	 * @throws IllegalOperationException 
+	 * @throws IllegalOperationException Si el libro no está asociado a la editorial
 	 */
 	@Transactional
 	public BookEntity getBook(Long editorialId, Long bookId) throws EntityNotFoundException, IllegalOperationException {
@@ -134,9 +134,9 @@ public class EditorialBookService {
 	 * Remplazar books de una editorial
 	 *
 	 * @param books        Lista de libros que serán los de la editorial.
-	 * @param editorialsId El id de la editorial que se quiere actualizar.
+	 * @param editorialId El id de la editorial que se quiere actualizar.
 	 * @return La lista de libros actualizada.
-	 * @throws EntityNotFoundException 
+	 * @throws EntityNotFoundException Si la editorial o un libro de la lista no se encuentran
 	 */
 	@Transactional
 	public List<BookEntity> replaceBooks(Long editorialId, List<BookEntity> books) throws EntityNotFoundException {

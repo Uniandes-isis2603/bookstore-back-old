@@ -53,9 +53,8 @@ public class BookAuthorController {
 	@ResponseStatus(code = HttpStatus.OK)
 	public List<AuthorDetailDTO> addAuthors(@PathVariable("bookId") Long bookId, @RequestBody List<AuthorDTO> authors) throws EntityNotFoundException, IllegalOperationException {
 		List<AuthorEntity> entities = modelMapper.map(authors, new TypeToken<List<AuthorEntity>>() {}.getType());
-		List<AuthorEntity> authorsList = bookAuthorService.addAuthors(bookId, entities);
+		List<AuthorEntity> authorsList = bookAuthorService.replaceAuthors(bookId, entities);
 		return modelMapper.map(authorsList, new TypeToken<List<AuthorDetailDTO>>() {}.getType());
-		
 	}
 	
 	@GetMapping(value = "/{bookId}/authors")

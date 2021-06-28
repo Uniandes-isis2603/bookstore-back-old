@@ -56,68 +56,71 @@ public class AuthorService {
 	AuthorRepository authorRepository;
 
 	/**
-     * Se encarga de crear un Author en la base de datos.
-     *
-     * @param authorEntity Objeto de AuthorEntity con los datos nuevos
-     * @return Objeto de AuthorEntity con los datos nuevos y su ID.
-     */
+	 * Se encarga de crear un Author en la base de datos.
+	 *
+	 * @param author Objeto de AuthorEntity con los datos nuevos
+	 * @return Objeto de AuthorEntity con los datos nuevos y su ID.
+	 */
 	@Transactional
-	public AuthorEntity createAuthor(AuthorEntity authorEntity) {
+	public AuthorEntity createAuthor(AuthorEntity author) {
 		log.info("Inicia proceso de creación del autor");
-		return authorRepository.save(authorEntity);
+		return authorRepository.save(author);
 	}
-	
-	 /**
-     * Obtiene la lista de los registros de Author.
-     *
-     * @return Colección de objetos de AuthorEntity.
-     */
+
+	/**
+	 * Obtiene la lista de los registros de Author.
+	 *
+	 * @return Colección de objetos de AuthorEntity.
+	 */
 	@Transactional
 	public List<AuthorEntity> getAuthors() {
+		log.info("Inicia proceso de consultar todos los autores");
 		return authorRepository.findAll();
 	}
 
 	/**
-     * Obtiene los datos de una instancia de Author a partir de su ID.
-     *
-     * @param authorId Identificador de la instancia a consultar
-     * @return Instancia de AuthorEntity con los datos del Author consultado.
-     */
+	 * Obtiene los datos de una instancia de Author a partir de su ID.
+	 *
+	 * @param authorId Identificador de la instancia a consultar
+	 * @return Instancia de AuthorEntity con los datos del Author consultado.
+	 */
 	@Transactional
 	public AuthorEntity getAuthor(Long authorId) throws EntityNotFoundException {
+		log.info("Inicia proceso de consultar el autor con id = {0}", authorId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
-
+		log.info("Termina proceso de consultar el autor con id = {0}", authorId);
 		return authorEntity.get();
 	}
 
 	/**
-     * Actualiza la información de una instancia de Author.
-     *
-     * @param authorId Identificador de la instancia a actualizar
-     * @param authorEntity Instancia de AuthorEntity con los nuevos datos.
-     * @return Instancia de AuthorEntity con los datos actualizados.
-     */
+	 * Actualiza la información de una instancia de Author.
+	 *
+	 * @param authorId     Identificador de la instancia a actualizar
+	 * @param authorEntity Instancia de AuthorEntity con los nuevos datos.
+	 * @return Instancia de AuthorEntity con los datos actualizados.
+	 */
 	@Transactional
 	public AuthorEntity updateAuthor(Long authorId, AuthorEntity author) throws EntityNotFoundException {
+		log.info("Inicia proceso de actualizar el autor con id = {0}", authorId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
-
+		log.info("Termina proceso de actualizar el autor con id = {0}", authorId);
 		author.setId(authorId);
 		return authorRepository.save(author);
 	}
 
-	 /**
-     * Elimina una instancia de Author de la base de datos.
-     *
-     * @param authorId Identificador de la instancia a eliminar.
-     * @throws BusinessLogicException si el autor tiene libros asociados.
-     */
+	/**
+	 * Elimina una instancia de Author de la base de datos.
+	 *
+	 * @param authorId Identificador de la instancia a eliminar.
+	 * @throws BusinessLogicException si el autor tiene libros asociados.
+	 */
 	@Transactional
 	public void deleteAuthor(Long authorId) throws IllegalOperationException, EntityNotFoundException {
-
+		log.info("Inicia proceso de borrar el autor con id = {0}", authorId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
@@ -131,5 +134,6 @@ public class AuthorService {
 			throw new IllegalOperationException("Unable to delete the author because he/she has associated prizes");
 
 		authorRepository.deleteById(authorId);
+		log.info("Termina proceso de borrar el autor con id = {0}", authorId);
 	}
 }

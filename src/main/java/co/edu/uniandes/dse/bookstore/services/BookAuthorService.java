@@ -38,7 +38,9 @@ import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.AuthorRepository;
 import co.edu.uniandes.dse.bookstore.repositories.BookRepository;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Data
 @Service
 public class BookAuthorService {
@@ -49,8 +51,16 @@ public class BookAuthorService {
 	@Autowired
 	private AuthorRepository authorRepository;
 
+	/**
+	 * Asocia un Author existente a un Book
+	 *
+	 * @param bookId   Identificador de la instancia de Book
+	 * @param authorId Identificador de la instancia de Author
+	 * @return Instancia de AuthorEntity que fue asociada a Book
+	 */
 	@Transactional
 	public AuthorEntity addAuthor(Long bookId, Long authorId) throws EntityNotFoundException {
+		log.info("Inicia proceso de asociarle un autor al libro con id = {0}", bookId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
@@ -60,24 +70,39 @@ public class BookAuthorService {
 			throw new EntityNotFoundException("The book with the given id was not found");
 
 		bookEntity.get().getAuthors().add(authorEntity.get());
-
+		log.info("Termina proceso de asociarle un autor al libro con id = {0}", bookId);
 		return authorEntity.get();
 	}
 
+	/**
+	 * Obtiene una colección de instancias de AuthorEntity asociadas a una instancia
+	 * de Book
+	 *
+	 * @param bookId Identificador de la instancia de Book
+	 * @return Colección de instancias de AuthorEntity asociadas a la instancia de
+	 *         Book
+	 */
 	@Transactional
 	public List<AuthorEntity> getAuthors(Long bookId) throws EntityNotFoundException {
+		log.info("Inicia proceso de consultar todos los autores del libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-
+		log.info("Finaliza proceso de consultar todos los autores del libro con id = {0}", bookId);
 		return bookEntity.get().getAuthors();
 	}
 
-	/* Obtiene el author con id authorId del libro con id bookId */
+	/**
+	 * Obtiene una instancia de AuthorEntity asociada a una instancia de Book
+	 *
+	 * @param bookId   Identificador de la instancia de Book
+	 * @param authorId Identificador de la instancia de Author
+	 * @return La entidad del Autor asociada al libro
+	 */
 	@Transactional
 	public AuthorEntity getAuthor(Long bookId, Long authorId)
 			throws EntityNotFoundException, IllegalOperationException {
-
+		log.info("Inicia proceso de consultar un autor del libro con id = {0}", bookId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 
@@ -86,7 +111,7 @@ public class BookAuthorService {
 
 		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-
+		log.info("Termina proceso de consultar un autor del libro con id = {0}", bookId);
 		if (bookEntity.get().getAuthors().contains(authorEntity.get()))
 			return authorEntity.get();
 
@@ -94,7 +119,16 @@ public class BookAuthorService {
 	}
 
 	@Transactional
-	public List<AuthorEntity> addAuthors(Long bookId, List<AuthorEntity> list) throws EntityNotFoundException {
+	/**
+	 * Remplaza las instancias de Author asociadas a una instancia de Book
+	 *
+	 * @param bookId Identificador de la instancia de Book
+	 * @param list    Colección de instancias de AuthorEntity a asociar a instancia
+	 *                de Book
+	 * @return Nueva colección de AuthorEntity asociada a la instancia de Book
+	 */
+	public List<AuthorEntity> replaceAuthors(Long bookId, List<AuthorEntity> list) throws EntityNotFoundException {
+		log.info("Inicia proceso de reemplazar los autores del libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
@@ -103,15 +137,23 @@ public class BookAuthorService {
 			Optional<AuthorEntity> authorEntity = authorRepository.findById(author.getId());
 			if (authorEntity.isEmpty())
 				throw new EntityNotFoundException("The author with the given id was not found");
-			
-			if(!bookEntity.get().getAuthors().contains(authorEntity.get()))
+
+			if (!bookEntity.get().getAuthors().contains(authorEntity.get()))
 				bookEntity.get().getAuthors().add(authorEntity.get());
 		}
+		log.info("Termina proceso de reemplazar los autores del libro con id = {0}", bookId);
 		return getAuthors(bookId);
 	}
 
 	@Transactional
+	/**
+	 * Desasocia un Author existente de un Book existente
+	 *
+	 * @param bookId   Identificador de la instancia de Book
+	 * @param authorId Identificador de la instancia de Author
+	 */
 	public void removeAuthor(Long bookId, Long authorId) throws EntityNotFoundException {
+		log.info("Inicia proceso de borrar un autor del libro con id = {0}", bookId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 
@@ -120,7 +162,9 @@ public class BookAuthorService {
 
 		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
-		
+
 		bookEntity.get().getAuthors().remove(authorEntity.get());
+
+		log.info("Termina proceso de borrar un autor del libro con id = {0}", bookId);
 	}
 }

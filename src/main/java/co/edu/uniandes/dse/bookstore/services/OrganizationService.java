@@ -37,59 +37,112 @@ import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.OrganizationRepository;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Clase que implementa la conexion con la persistencia para la entidad de
+ * Organizacion.
+ *
+ * @author ISIS2603
+ */
+@Slf4j
 @Data
 @Service
 public class OrganizationService {
-	
+
 	@Autowired
 	OrganizationRepository organizationRepository;
-	
+
+	/**
+	 * Crea una organizacion en la persistencia.
+	 *
+	 * @param organizationEntity La entidad que representa la organizacion a
+	 *                           persistir.
+	 * @return La entidad de la organizacion luego de persistirla.
+	 * @throws BusinessLogicException Si la organizacion a persistir ya existe.
+	 */
 	@Transactional
-	public OrganizationEntity createOrganization(OrganizationEntity organizationEntity) throws IllegalOperationException   {
-		if(organizationRepository.findByName(organizationEntity.getName()).size() > 0) {
+	public OrganizationEntity createOrganization(OrganizationEntity organizationEntity)
+			throws IllegalOperationException {
+		log.info("Inicia proceso de creación de la organizacion");
+		if (organizationRepository.findByName(organizationEntity.getName()).size() > 0) {
 			throw new IllegalOperationException("Organization name already exists");
 		}
-		
-		return this.organizationRepository.save(organizationEntity);
+		log.info("Termina proceso de creación de la organizacion");
+		return organizationRepository.save(organizationEntity);
 	}
-	
+
+	/**
+	 * Obtener todas las organizaciones existentes en la base de datos.
+	 *
+	 * @return una lista de organizaciones.
+	 */
 	@Transactional
-	public List<OrganizationEntity> getOrganizations(){
-		return this.organizationRepository.findAll();
+	public List<OrganizationEntity> getOrganizations() {
+		log.info("Inicia proceso de consultar todas las organizaciones");
+		return organizationRepository.findAll();
 	}
-	
+
+	/**
+	 * Obtener una organizacion por medio de su id.
+	 *
+	 * @param organizationId: id de la organizacion para ser buscada.
+	 * @return la organizacion solicitada por medio de su id.
+	 */
 	@Transactional
 	public OrganizationEntity getOrganization(Long organizationId) throws EntityNotFoundException {
+		log.info("Inicia proceso de consultar organizacion con id = {0}", organizationId);
 		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
-		
-		if(organizationEntity.isEmpty())
+
+		if (organizationEntity.isEmpty())
 			throw new EntityNotFoundException("The organization with the given id was not found");
-		
+
+		log.info("Termina proceso de consultar organizacion con id = {0}", organizationId);
 		return organizationEntity.get();
 	}
-	
-	@Transactional	
-	public OrganizationEntity updateOrganization(Long organizationId, OrganizationEntity organization) throws EntityNotFoundException {
-		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId); 
-		if(organizationEntity.isEmpty())
+
+	/**
+	 * Actualizar una organizacion.
+	 *
+	 * @param organizationId: id de la organizacion para buscarla en la base de
+	 *                        datos.
+	 * @param organization:   organizacion con los cambios para ser actualizada, por
+	 *                        ejemplo el nombre.
+	 * @return la organizacion con los cambios actualizados en la base de datos.
+	 */
+	@Transactional
+	public OrganizationEntity updateOrganization(Long organizationId, OrganizationEntity organization)
+			throws EntityNotFoundException {
+		log.info("Inicia proceso de actualizar organizacion con id = {0}", organizationId);
+		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
+		if (organizationEntity.isEmpty())
 			throw new EntityNotFoundException("The organization with the given id was not found");
-		
+
 		organization.setId(organizationId);
-		
+
+		log.info("Termina proceso de actualizar organizacion con id={0}", organizationId);
 		return organizationRepository.save(organization);
 	}
-	
+
+	/**
+	 * Borrar un organizacion
+	 *
+	 * @param organizationId: id de la organizacion a borrar
+	 * @throws BusinessLogicException si la organizacion tiene un premio asociado.
+	 */
 	@Transactional
 	public void deleteOrganization(Long organizationId) throws EntityNotFoundException, IllegalOperationException {
-		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId); 
-		if(organizationEntity.isEmpty())
+		log.info("Inicia proceso de borrar organizacion con id = {0}", organizationId);
+		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
+		if (organizationEntity.isEmpty())
 			throw new EntityNotFoundException("The organization with the given id was not found");
-		
+
 		PrizeEntity prize = organizationEntity.get().getPrize();
-		if(prize != null)
-			throw new IllegalOperationException("Unable to delete organization with id = " + organizationId + " because it has an associated prize");
-		
+		if (prize != null)
+			throw new IllegalOperationException("Unable to delete organization with id = " + organizationId
+					+ " because it has an associated prize");
+
 		organizationRepository.deleteById(organizationId);
+		log.info("Termina proceso de borrar organizacion con id = {0}", organizationId);
 	}
 }

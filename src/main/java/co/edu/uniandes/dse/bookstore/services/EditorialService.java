@@ -37,59 +37,110 @@ import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.EditorialRepository;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Clase que implementa la conexion con la persistencia para la entidad de
+ * Editorial.
+ *
+ * @author ISIS2603
+ */
+
+@Slf4j
 @Data
 @Service
 public class EditorialService {
-	
+
 	@Autowired
 	EditorialRepository editorialRepository;
-	
+
+	/**
+	 * Crea una editorial en la persistencia.
+	 *
+	 * @param editorialEntity La entidad que representa la editorial a persistir.
+	 * @return La entidad de la editorial luego de persistirla.
+	 * @throws IllegalOperationException Si la editorial a persistir ya existe.
+	 */
 	@Transactional
 	public EditorialEntity createEditorial(EditorialEntity editorialEntity) throws IllegalOperationException {
-		if(editorialRepository.findByName(editorialEntity.getName()).size() > 0) {
+		log.info("Inicia proceso de creación de la editorial");
+		if (editorialRepository.findByName(editorialEntity.getName()).size() > 0) {
 			throw new IllegalOperationException("Editorial name already exists");
 		}
-		
+		log.info("Termina proceso de creación de la editorial");
 		return editorialRepository.save(editorialEntity);
 	}
-	
+
+	/**
+	 *
+	 * Obtener todas las editoriales existentes en la base de datos.
+	 *
+	 * @return una lista de editoriales.
+	 */
 	@Transactional
-	public List<EditorialEntity> getEditorials(){
+	public List<EditorialEntity> getEditorials() {
+		log.info("Inicia proceso de consultar todas las editoriales");
 		return editorialRepository.findAll();
 	}
-	
+
+	/**
+	 *
+	 * Obtener una editorial por medio de su id.
+	 *
+	 * @param editorialId: id de la editorial para ser buscada.
+	 * @return la editorial solicitada por medio de su id.
+	 */
 	@Transactional
 	public EditorialEntity getEditorial(Long editorialId) throws EntityNotFoundException {
+		log.info("Inicia proceso de consultar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorial = editorialRepository.findById(editorialId);
-		if(editorial.isEmpty()) 
+		if (editorial.isEmpty())
 			throw new EntityNotFoundException("The editorial with the given id was not found");
-			
+		log.info("Termina proceso de consultar la editorial con id = {0}", editorialId);
 		return editorial.get();
 	}
-	
+
+	/**
+	 *
+	 * Actualizar una editorial.
+	 *
+	 * @param editorialId:    id de la editorial para buscarla en la base de datos.
+	 * @param editorial: editorial con los cambios para ser actualizada.
+	 * @return la editorial con los cambios actualizados en la base de datos.
+	 */
 	@Transactional
 	public EditorialEntity updateEditorial(Long editorialId, EditorialEntity editorial) throws EntityNotFoundException {
+		log.info("Inicia proceso de actualizar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
-		if(editorialEntity.isEmpty())
+		if (editorialEntity.isEmpty())
 			throw new EntityNotFoundException("The editorial with the given id was not found");
-		
+
 		editorial.setId(editorialId);
+		log.info("Termina proceso de actualizar la editorial con id = {0}", editorialId);
 		return editorialRepository.save(editorial);
 	}
-	
+
+	/**
+	 * Borrar un editorial
+	 *
+	 * @param editorialId: id de la editorial a borrar
+	 * @throws BusinessLogicException Si la editorial a eliminar tiene libros.
+	 */
 	@Transactional
 	public void deleteEditorial(Long editorialId) throws EntityNotFoundException, IllegalOperationException {
+		log.info("Inicia proceso de borrar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
-		if(editorialEntity.isEmpty())
+		if (editorialEntity.isEmpty())
 			throw new EntityNotFoundException("The editorial with the given id was not found");
-		
+
 		List<BookEntity> books = editorialEntity.get().getBooks();
-		
-		if(books != null && !books.isEmpty()) {
-			throw new IllegalOperationException("Unable to delete editorial with id = " + editorialId + " because it has associated books");
+
+		if (books != null && !books.isEmpty()) {
+			throw new IllegalOperationException(
+					"Unable to delete editorial with id = " + editorialId + " because it has associated books");
 		}
-	
+
 		editorialRepository.deleteById(editorialId);
+		log.info("Termina proceso de borrar la editorial con id = {0}", editorialId);
 	}
 }
