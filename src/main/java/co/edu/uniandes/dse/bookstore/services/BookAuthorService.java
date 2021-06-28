@@ -25,6 +25,7 @@ SOFTWARE.
 package co.edu.uniandes.dse.bookstore.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,26 +51,26 @@ public class BookAuthorService {
 
 	@Transactional
 	public AuthorEntity addAuthor(Long bookId, Long authorId) throws EntityNotFoundException {
-		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
-		if (authorEntity == null)
+		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
+		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
 
-		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
-		if (bookEntity == null)
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 
-		bookEntity.getAuthors().add(authorEntity);
+		bookEntity.get().getAuthors().add(authorEntity.get());
 
-		return authorEntity;
+		return authorEntity.get();
 	}
 
 	@Transactional
 	public List<AuthorEntity> getAuthors(Long bookId) throws EntityNotFoundException {
-		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
-		if (bookEntity == null)
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 
-		return bookRepository.findById(bookId).get().getAuthors();
+		return bookEntity.get().getAuthors();
 	}
 
 	/* Obtiene el author con id authorId del libro con id bookId */
@@ -77,49 +78,49 @@ public class BookAuthorService {
 	public AuthorEntity getAuthor(Long bookId, Long authorId)
 			throws EntityNotFoundException, IllegalOperationException {
 
-		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
-		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 
-		if (authorEntity == null)
+		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
 
-		if (bookEntity == null)
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 
-		if (bookEntity.getAuthors().contains(authorEntity))
-			return authorEntity;
+		if (bookEntity.get().getAuthors().contains(authorEntity.get()))
+			return authorEntity.get();
 
 		throw new IllegalOperationException("The author is not associated to the book");
 	}
 
 	@Transactional
 	public List<AuthorEntity> addAuthors(Long bookId, List<AuthorEntity> list) throws EntityNotFoundException {
-		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
-		if (bookEntity == null)
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 
 		for (AuthorEntity author : list) {
-			AuthorEntity authorEntity = authorRepository.findById(author.getId()).orElse(null);
-			if (authorEntity == null)
+			Optional<AuthorEntity> authorEntity = authorRepository.findById(author.getId());
+			if (authorEntity.isEmpty())
 				throw new EntityNotFoundException("The author with the given id was not found");
 			
-			if(!bookEntity.getAuthors().contains(authorEntity))
-				bookEntity.getAuthors().add(authorEntity);
+			if(!bookEntity.get().getAuthors().contains(authorEntity.get()))
+				bookEntity.get().getAuthors().add(authorEntity.get());
 		}
-		return bookEntity.getAuthors();
+		return getAuthors(bookId);
 	}
 
 	@Transactional
 	public void removeAuthor(Long bookId, Long authorId) throws EntityNotFoundException {
-		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
-		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 
-		if (authorEntity == null)
+		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
 
-		if (bookEntity == null)
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 		
-		bookEntity.getAuthors().remove(authorEntity);
+		bookEntity.get().getAuthors().remove(authorEntity.get());
 	}
 }

@@ -26,6 +26,7 @@ package co.edu.uniandes.dse.bookstore.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,18 +70,18 @@ public class AuthorBookService {
 	@Transactional
 	public BookEntity addBook(Long authorId, Long bookId) throws EntityNotFoundException {
 		log.info("Inicia proceso de asociarle un libro al autor con id = {0}", authorId);
-		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
-		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 
-		if (authorEntity == null)
+		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
 
-		if (bookEntity == null)
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 
-		bookEntity.getAuthors().add(authorEntity);
+		bookEntity.get().getAuthors().add(authorEntity.get());
 		log.info("Termina proceso de asociarle un libro al autor con id = {0}", authorId);
-		return bookEntity;
+		return bookEntity.get();
 	}
 
 	/**
@@ -94,17 +95,18 @@ public class AuthorBookService {
 	@Transactional
 	public List<BookEntity> getBooks(Long authorId) throws EntityNotFoundException {
 		log.info("Inicia proceso de consultar todos los libros del autor con id = {0}", authorId);
-		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
-		if (authorEntity == null)
+		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
+		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
 
 		List<BookEntity> books = bookRepository.findAll();
 		List<BookEntity> bookList = new ArrayList<>();
-		for (BookEntity b : books) {
-			if (b.getAuthors().indexOf(authorEntity) >= 0) {
+		
+		for(BookEntity b : books) {
+			if(b.getAuthors().contains(authorEntity.get())){
 				bookList.add(b);
 			}
-		}
+		} 
 		log.info("Finaliza proceso de consultar todos los libros del autor con id = {0}", authorId);
 		return bookList;
 	}
@@ -119,19 +121,19 @@ public class AuthorBookService {
 	@Transactional
 	public BookEntity getBook(Long authorId, Long bookId) throws EntityNotFoundException, IllegalOperationException {
 		log.info("Inicia proceso de consultar el libro con id = {1} del autor con id = {0}" , authorId, bookId);
-		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
-		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
+		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 
-		if (authorEntity == null)
+		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
 
-		if (bookEntity == null)
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 
 		log.info("Finaliza proceso de consultar el libro con id = {1} del autor con id = {0}" , authorId, bookId);
 		
-		if (bookEntity.getAuthors().contains(authorEntity))
-			return bookEntity;
+		if (bookEntity.get().getAuthors().contains(authorEntity.get()))
+			return bookEntity.get();
 
 		throw new IllegalOperationException("The book is not associated to the author");
 	}
@@ -147,18 +149,17 @@ public class AuthorBookService {
 	@Transactional
 	public List<BookEntity> addBooks(Long authorId, List<BookEntity> books) throws EntityNotFoundException {
 		log.info("Inicia proceso de reemplazar los libros asociados al author con id = {0}", authorId);
-		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
-		if (authorEntity == null)
+		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
+		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
 
 		for (BookEntity book : books) {
-
-			BookEntity bookEntity = bookRepository.findById(book.getId()).orElse(null);
-			if (bookEntity == null)
+			Optional<BookEntity> bookEntity = bookRepository.findById(book.getId());
+			if (bookEntity.isEmpty())
 				throw new EntityNotFoundException("The book with the given id was not found");
 
-			if (!bookEntity.getAuthors().contains(authorEntity))
-				bookEntity.getAuthors().add(authorEntity);
+			if (!bookEntity.get().getAuthors().contains(authorEntity.get()))
+				bookEntity.get().getAuthors().add(authorEntity.get());
 		}
 		log.info("Finaliza proceso de reemplazar los libros asociados al author con id = {0}", authorId);
 		return books;
@@ -173,15 +174,15 @@ public class AuthorBookService {
 	@Transactional
 	public void removeBook(Long authorId, Long bookId) throws EntityNotFoundException {
 		log.info("Inicia proceso de borrar un libro del author con id = {0}", authorId);
-		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
-		if (authorEntity == null)
+		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
+		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
 
-		BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
-		if (bookEntity == null)
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+		if (bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 
-		bookEntity.getAuthors().remove(authorEntity);
+		bookEntity.get().getAuthors().remove(authorEntity.get());
 		log.info("Finaliza proceso de borrar un libro del author con id = {0}", authorId);
 	}
 }

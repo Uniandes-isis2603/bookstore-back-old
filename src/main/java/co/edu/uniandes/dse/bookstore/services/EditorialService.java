@@ -25,6 +25,7 @@ SOFTWARE.
 package co.edu.uniandes.dse.bookstore.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,30 +61,30 @@ public class EditorialService {
 	
 	@Transactional
 	public EditorialEntity getEditorial(Long editorialId) throws EntityNotFoundException {
-		EditorialEntity editorial = editorialRepository.findById(editorialId).orElse(null);
-		if(editorial == null) 
+		Optional<EditorialEntity> editorial = editorialRepository.findById(editorialId);
+		if(editorial.isEmpty()) 
 			throw new EntityNotFoundException("The editorial with the given id was not found");
 			
-		return editorial;
+		return editorial.get();
 	}
 	
 	@Transactional
-	public EditorialEntity updateEditorial(Long editorialId, EditorialEntity editorialEntity) throws EntityNotFoundException {
-		EditorialEntity editorial = editorialRepository.findById(editorialId).orElse(null);
-		if(editorial == null)
+	public EditorialEntity updateEditorial(Long editorialId, EditorialEntity editorial) throws EntityNotFoundException {
+		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
+		if(editorialEntity.isEmpty())
 			throw new EntityNotFoundException("The editorial with the given id was not found");
 		
-		editorialEntity.setId(editorialId);
-		return editorialEntity;
+		editorial.setId(editorialId);
+		return editorialRepository.save(editorial);
 	}
 	
 	@Transactional
 	public void deleteEditorial(Long editorialId) throws EntityNotFoundException, IllegalOperationException {
-		EditorialEntity editorial = editorialRepository.findById(editorialId).orElse(null);
-		if(editorial == null)
+		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
+		if(editorialEntity.isEmpty())
 			throw new EntityNotFoundException("The editorial with the given id was not found");
 		
-		List<BookEntity> books = getEditorial(editorialId).getBooks();
+		List<BookEntity> books = editorialEntity.get().getBooks();
 		
 		if(books != null && !books.isEmpty()) {
 			throw new IllegalOperationException("Unable to delete editorial with id = " + editorialId + " because it has associated books");

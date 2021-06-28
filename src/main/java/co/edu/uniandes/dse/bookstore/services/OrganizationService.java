@@ -25,6 +25,7 @@ SOFTWARE.
 package co.edu.uniandes.dse.bookstore.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,35 +61,35 @@ public class OrganizationService {
 	
 	@Transactional
 	public OrganizationEntity getOrganization(Long organizationId) throws EntityNotFoundException {
-		OrganizationEntity organizationEntity = organizationRepository.findById(organizationId).orElse(null); 
-		if(organizationEntity == null)
+		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
+		
+		if(organizationEntity.isEmpty())
 			throw new EntityNotFoundException("The organization with the given id was not found");
 		
-		return organizationEntity;
+		return organizationEntity.get();
 	}
 	
 	@Transactional	
-	public OrganizationEntity updateOrganization(Long organizationId, OrganizationEntity organizationEntity) throws EntityNotFoundException {
-		OrganizationEntity organization = organizationRepository.findById(organizationId).orElse(null); 
-		if(organization == null)
+	public OrganizationEntity updateOrganization(Long organizationId, OrganizationEntity organization) throws EntityNotFoundException {
+		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId); 
+		if(organizationEntity.isEmpty())
 			throw new EntityNotFoundException("The organization with the given id was not found");
 		
-		organizationEntity.setId(organization.getId());
+		organization.setId(organizationId);
 		
-		return organizationRepository.save(organizationEntity);
+		return organizationRepository.save(organization);
 	}
 	
 	@Transactional
 	public void deleteOrganization(Long organizationId) throws EntityNotFoundException, IllegalOperationException {
-		OrganizationEntity organization = organizationRepository.findById(organizationId).orElse(null); 
-		if(organization == null)
+		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId); 
+		if(organizationEntity.isEmpty())
 			throw new EntityNotFoundException("The organization with the given id was not found");
 		
-		PrizeEntity prize = organization.getPrize();
-		if(prize != null) {
+		PrizeEntity prize = organizationEntity.get().getPrize();
+		if(prize != null)
 			throw new IllegalOperationException("Unable to delete organization with id = " + organizationId + " because it has an associated prize");
-		}
-	
+		
 		organizationRepository.deleteById(organizationId);
 	}
 }

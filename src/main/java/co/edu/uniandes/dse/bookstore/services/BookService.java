@@ -25,6 +25,7 @@ SOFTWARE.
 package co.edu.uniandes.dse.bookstore.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,8 +52,8 @@ public class BookService {
 	
 	@Transactional
 	public BookEntity createBook(BookEntity bookEntity) throws EntityNotFoundException, IllegalOperationException {
-		EditorialEntity editorial = editorialRepository.findById(bookEntity.getEditorial().getId()).orElse(null);
-		if(bookEntity.getEditorial()==null || editorial == null)
+		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(bookEntity.getEditorial().getId());
+		if(bookEntity.getEditorial() == null || editorialEntity.isEmpty())
 			throw new IllegalOperationException("Editorial is not valid");
 		
 		if(!validateISBN(bookEntity.getIsbn()))
@@ -61,7 +62,7 @@ public class BookService {
 		if(bookRepository.findByIsbn(bookEntity.getIsbn()).size() > 0 )
 			throw new IllegalOperationException("ISBN already exists");
 		
-		bookEntity.setEditorial(editorial);
+		bookEntity.setEditorial(editorialEntity.get());
 		return bookRepository.save(bookEntity);
 	}
 	
@@ -72,33 +73,33 @@ public class BookService {
 	
 	@Transactional
 	public BookEntity getBook(Long bookId) throws EntityNotFoundException {
-		BookEntity book = bookRepository.findById(bookId).orElse(null);
-		if(book == null)
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+		if(bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 		
-		return book;
+		return bookEntity.get();
 	}
 	
 	@Transactional
-	public BookEntity updateBook(Long bookId, BookEntity bookEntity) throws EntityNotFoundException, IllegalOperationException {
-		BookEntity book = bookRepository.findById(bookId).orElse(null);
-		if(book == null)
+	public BookEntity updateBook(Long bookId, BookEntity book) throws EntityNotFoundException, IllegalOperationException {
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+		if(bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 	
-		if(!validateISBN(bookEntity.getIsbn()))
+		if(!validateISBN(book.getIsbn()))
 			throw new IllegalOperationException("ISBN is not valid");
 	
-		bookEntity.setId(bookId);
-		return bookEntity;
+		book.setId(bookId);
+		return bookRepository.save(book);
 	}
 	
 	@Transactional
 	public void deleteBook(Long bookId) throws EntityNotFoundException {
-		BookEntity book = bookRepository.findById(bookId).orElse(null);
-		if(book == null)
+		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+		if(bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 	
-		List<AuthorEntity> authors = getBook(bookId).getAuthors();
+		List<AuthorEntity> authors = bookEntity.get().getAuthors();
 		
 		if(authors != null && !authors.isEmpty())
 			throw new EntityNotFoundException("Unable to delete book because it has associated authors");

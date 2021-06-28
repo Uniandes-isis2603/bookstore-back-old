@@ -25,6 +25,7 @@ SOFTWARE.
 package co.edu.uniandes.dse.bookstore.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,11 +85,11 @@ public class AuthorService {
      */
 	@Transactional
 	public AuthorEntity getAuthor(Long authorId) throws EntityNotFoundException {
-		AuthorEntity authorEntity = authorRepository.findById(authorId).orElse(null);
-		if (authorEntity == null)
+		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
+		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
 
-		return authorEntity;
+		return authorEntity.get();
 	}
 
 	/**
@@ -99,13 +100,13 @@ public class AuthorService {
      * @return Instancia de AuthorEntity con los datos actualizados.
      */
 	@Transactional
-	public AuthorEntity updateAuthor(Long authorId, AuthorEntity authorEntity) throws EntityNotFoundException {
-		AuthorEntity author = authorRepository.findById(authorId).orElse(null);
-		if (author == null)
+	public AuthorEntity updateAuthor(Long authorId, AuthorEntity author) throws EntityNotFoundException {
+		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
+		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
 
-		authorEntity.setId(authorId);
-		return authorRepository.save(authorEntity);
+		author.setId(authorId);
+		return authorRepository.save(author);
 	}
 
 	 /**
@@ -117,15 +118,15 @@ public class AuthorService {
 	@Transactional
 	public void deleteAuthor(Long authorId) throws IllegalOperationException, EntityNotFoundException {
 
-		AuthorEntity author = authorRepository.findById(authorId).orElse(null);
-		if (author == null)
+		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
+		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException("The author with the given id was not found");
 
-		List<BookEntity> books = getAuthor(authorId).getBooks();
+		List<BookEntity> books = authorEntity.get().getBooks();
 		if (books != null && !books.isEmpty())
 			throw new IllegalOperationException("Unable to delete the author because he/she has associated books");
 
-		List<PrizeEntity> prizes = getAuthor(authorId).getPrizes();
+		List<PrizeEntity> prizes = authorEntity.get().getPrizes();
 		if (prizes != null && !prizes.isEmpty())
 			throw new IllegalOperationException("Unable to delete the author because he/she has associated prizes");
 

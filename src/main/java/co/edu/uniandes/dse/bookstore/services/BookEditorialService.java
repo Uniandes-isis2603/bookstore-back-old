@@ -24,6 +24,8 @@ SOFTWARE.
 
 package co.edu.uniandes.dse.bookstore.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,23 +50,29 @@ public class BookEditorialService {
     @Transactional
     public BookEntity replaceEditorial(Long bookId, Long editorialId) throws EntityNotFoundException {
     	
-    	BookEntity bookEntity = bookRepository.findById(bookId).orElse(null);
-		if(bookEntity == null)
+    	Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+		if(bookEntity.isEmpty())
 			throw new EntityNotFoundException("The book with the given id was not found");
 		
-		EditorialEntity editorialEntity = editorialRepository.findById(editorialId).orElse(null);
-		if(editorialEntity == null)
+		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
+		if(editorialEntity.isEmpty())
 			throw new EntityNotFoundException("The editorial with the given id was not found");
     	
-		bookEntity.setEditorial(editorialEntity);
-		return bookEntity;
+		bookEntity.get().setEditorial(editorialEntity.get());
+		return bookEntity.get();
     }
     
     @Transactional
-    public void removeEditorial(Long bookId) {
-        BookEntity bookEntity = bookRepository.findById(bookId).get();
-        EditorialEntity editorialEntity = editorialRepository.findById(bookEntity.getEditorial().getId()).get();
-        bookEntity.setEditorial(null);
-        editorialEntity.getBooks().remove(bookEntity);
+    public void removeEditorial(Long bookId) throws EntityNotFoundException {
+        Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+        if(bookEntity.isEmpty())
+			throw new EntityNotFoundException("The book with the given id was not found");
+        
+        Optional<EditorialEntity> editorialEntity = editorialRepository.findById(bookEntity.get().getEditorial().getId());
+        editorialEntity.ifPresent(editorial->{
+        	editorial.getBooks().remove(bookEntity.get());
+        });
+        
+        bookEntity.get().setEditorial(null);
     }
 }

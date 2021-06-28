@@ -33,19 +33,26 @@ public class AuthorBookController {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	@PostMapping(value = "/{authorId}/books/{bookId}")
-	@ResponseStatus(code = HttpStatus.OK)
-	public BookDetailDTO addBook(@PathVariable("authorId") Long authorId, 
-			@PathVariable("bookId") Long bookId) throws EntityNotFoundException {
-		BookEntity bookEntity = authorBookService.addBook(authorId, bookId);
-		return modelMapper.map(bookEntity, BookDetailDTO.class);
-	}
-	
 	@GetMapping(value = "/{authorId}/books/{bookId}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public BookDetailDTO getBook(@PathVariable("authorId") Long authorId, 
 			@PathVariable("bookId") Long bookId) throws EntityNotFoundException, IllegalOperationException {
 		BookEntity bookEntity = authorBookService.getBook(authorId, bookId);
+		return modelMapper.map(bookEntity, BookDetailDTO.class);
+	}
+	
+	@GetMapping(value = "/{authorId}/books")
+	@ResponseStatus(code = HttpStatus.OK)
+	public List<BookDetailDTO> getBooks(@PathVariable("authorId") Long authorId) throws EntityNotFoundException, IllegalOperationException {
+		List<BookEntity> bookEntity = authorBookService.getBooks(authorId);
+		return modelMapper.map(bookEntity, new TypeToken<List<BookDetailDTO>>() {}.getType());
+	}
+	
+	@PostMapping(value = "/{authorId}/books/{bookId}")
+	@ResponseStatus(code = HttpStatus.OK)
+	public BookDetailDTO addBook(@PathVariable("authorId") Long authorId, 
+			@PathVariable("bookId") Long bookId) throws EntityNotFoundException {
+		BookEntity bookEntity = authorBookService.addBook(authorId, bookId);
 		return modelMapper.map(bookEntity, BookDetailDTO.class);
 	}
 	
@@ -56,13 +63,6 @@ public class AuthorBookController {
 		List<BookEntity> booksList = authorBookService.addBooks(authorId, entities);
 		return modelMapper.map(booksList, new TypeToken<List<BookDetailDTO>>() {}.getType());
 		
-	}
-	
-	@GetMapping(value = "/{authorId}/books")
-	@ResponseStatus(code = HttpStatus.OK)
-	public List<BookDetailDTO> getBooks(@PathVariable("authorId") Long authorId) throws EntityNotFoundException, IllegalOperationException {
-		List<BookEntity> bookEntity = authorBookService.getBooks(authorId);
-		return modelMapper.map(bookEntity, new TypeToken<List<BookDetailDTO>>() {}.getType());
 	}
 	
 	@DeleteMapping(value = "/{authorId}/books/{bookId}")
