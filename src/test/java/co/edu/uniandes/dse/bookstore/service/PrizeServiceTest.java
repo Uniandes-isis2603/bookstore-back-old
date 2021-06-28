@@ -154,9 +154,9 @@ class PrizeServiceTest {
 
 	@Test
 	void testDeletePrize() {
-		assertThrows(IllegalOperationException.class, ()->{
-			 PrizeEntity entity = prizeList.get(2);
-		     prizeService.deletePrize(entity.getId());
+		assertThrows(IllegalOperationException.class, () -> {
+			PrizeEntity entity = prizeList.get(2);
+			prizeService.deletePrize(entity.getId());
 		});
 	}
 

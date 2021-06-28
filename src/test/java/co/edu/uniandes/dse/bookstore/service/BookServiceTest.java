@@ -72,17 +72,17 @@ class BookServiceTest {
 	private List<EditorialEntity> editorialList = new ArrayList<>();
 
 	/**
-     * Configuración inicial de la prueba.
-     */
+	 * Configuración inicial de la prueba.
+	 */
 	@BeforeEach
 	void setUp() {
 		clearData();
 		insertData();
 	}
-	
+
 	/**
-     * Limpia las tablas que están implicadas en la prueba.
-     */
+	 * Limpia las tablas que están implicadas en la prueba.
+	 */
 	private void clearData() {
 		entityManager.getEntityManager().createQuery("delete from BookEntity");
 		entityManager.getEntityManager().createQuery("delete from EditorialEntity");
@@ -90,9 +90,8 @@ class BookServiceTest {
 	}
 
 	/**
-     * Inserta los datos iniciales para el correcto funcionamiento de las
-     * pruebas.
-     */
+	 * Inserta los datos iniciales para el correcto funcionamiento de las pruebas.
+	 */
 	private void insertData() {
 		for (int i = 0; i < 3; i++) {
 			EditorialEntity editorialEntity = factory.manufacturePojo(EditorialEntity.class);
@@ -113,10 +112,9 @@ class BookServiceTest {
 		bookList.get(0).getAuthors().add(authorEntity);
 	}
 
-	
 	/**
-     * Prueba para crear un Book
-     */
+	 * Prueba para crear un Book
+	 */
 	@Test
 	void testCreateBook() throws EntityNotFoundException, IllegalOperationException {
 		BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
@@ -135,8 +133,8 @@ class BookServiceTest {
 	}
 
 	/**
-     * Prueba para crear un Book con ISBN inválido
-     */
+	 * Prueba para crear un Book con ISBN inválido
+	 */
 	@Test
 	void testCreateBookWithNoValidISBN() {
 		assertThrows(IllegalOperationException.class, () -> {
@@ -148,8 +146,8 @@ class BookServiceTest {
 	}
 
 	/**
-     * Prueba para crear un Book con ISBN inválido
-     */
+	 * Prueba para crear un Book con ISBN inválido
+	 */
 	@Test
 	void testCreateBookWithNoValidISBN2() {
 		assertThrows(IllegalOperationException.class, () -> {
@@ -161,8 +159,8 @@ class BookServiceTest {
 	}
 
 	/**
-     * Prueba para crear un Book con ISBN existente.
-     */
+	 * Prueba para crear un Book con ISBN existente.
+	 */
 	@Test
 	void testCreateBookWithStoredISBN() {
 		assertThrows(IllegalOperationException.class, () -> {
@@ -174,8 +172,8 @@ class BookServiceTest {
 	}
 
 	/**
-     * Prueba para crear un Book con una editorial que no existe
-     */
+	 * Prueba para crear un Book con una editorial que no existe
+	 */
 	@Test
 	void testCreateBookWithInvalidEditorial() {
 		assertThrows(IllegalOperationException.class, () -> {
@@ -186,10 +184,10 @@ class BookServiceTest {
 			bookService.createBook(newEntity);
 		});
 	}
-	
+
 	/**
-     * Prueba para crear un Book con una editorial en null.
-     */
+	 * Prueba para crear un Book con una editorial en null.
+	 */
 	@Test
 	void testCreateBookWithNullEditorial() {
 		assertThrows(IllegalOperationException.class, () -> {
@@ -200,8 +198,8 @@ class BookServiceTest {
 	}
 
 	/**
-     * Prueba para consultar la lista de Books.
-     */
+	 * Prueba para consultar la lista de Books.
+	 */
 	@Test
 	void testGetBooks() {
 		List<BookEntity> list = bookService.getBooks();
@@ -217,9 +215,9 @@ class BookServiceTest {
 		}
 	}
 
-	 /**
-     * Prueba para consultar un Book.
-     */
+	/**
+	 * Prueba para consultar un Book.
+	 */
 	@Test
 	void testGetBook() throws EntityNotFoundException {
 		BookEntity entity = bookList.get(0);
@@ -233,15 +231,15 @@ class BookServiceTest {
 	}
 
 	/**
-     * Prueba para actualizar un Book.
-     */
+	 * Prueba para actualizar un Book.
+	 */
 	@Test
 	void testUpdateBook() throws EntityNotFoundException, IllegalOperationException {
 		BookEntity entity = bookList.get(0);
 		BookEntity pojoEntity = factory.manufacturePojo(BookEntity.class);
 		pojoEntity.setId(entity.getId());
 		bookService.updateBook(entity.getId(), pojoEntity);
-		
+
 		BookEntity resp = entityManager.find(BookEntity.class, entity.getId());
 		assertEquals(pojoEntity.getId(), resp.getId());
 		assertEquals(pojoEntity.getName(), resp.getName());
@@ -252,8 +250,8 @@ class BookServiceTest {
 	}
 
 	/**
-     * Prueba para actualizar un Book con ISBN inválido.
-     */
+	 * Prueba para actualizar un Book con ISBN inválido.
+	 */
 	@Test
 	void testUpdateBookWithNoValidISBN() {
 		assertThrows(IllegalOperationException.class, () -> {
@@ -266,8 +264,8 @@ class BookServiceTest {
 	}
 
 	/**
-     * Prueba para actualizar un Book con ISBN inválido.
-     */
+	 * Prueba para actualizar un Book con ISBN inválido.
+	 */
 	@Test
 	void testUpdateBookWithNoValidISBN2() {
 		assertThrows(IllegalOperationException.class, () -> {
@@ -280,8 +278,8 @@ class BookServiceTest {
 	}
 
 	/**
-     * Prueba para eliminar un Book.
-     */
+	 * Prueba para eliminar un Book.
+	 */
 	@Test
 	void testDeleteBook() throws EntityNotFoundException, IllegalOperationException {
 		BookEntity entity = bookList.get(1);
@@ -291,8 +289,8 @@ class BookServiceTest {
 	}
 
 	/**
-     * Prueba para eliminar un Book con un author asociado.
-     */
+	 * Prueba para eliminar un Book con un author asociado.
+	 */
 	@Test
 	void testDeleteBookWithAuthor() {
 		assertThrows(IllegalOperationException.class, () -> {

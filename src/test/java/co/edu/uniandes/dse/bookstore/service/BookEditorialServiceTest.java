@@ -56,16 +56,16 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @Transactional
-@Import({BookService.class, BookEditorialService.class})
+@Import({ BookService.class, BookEditorialService.class })
 
 class BookEditorialServiceTest {
 
 	@Autowired
 	private TestEntityManager entityManager;
-	
+
 	@Autowired
 	private BookEditorialService bookEditorialService;
-	
+
 	@Autowired
 	private BookService bookService;
 
@@ -74,9 +74,9 @@ class BookEditorialServiceTest {
 	private List<EditorialEntity> editorialsList = new ArrayList<>();
 	private List<BookEntity> booksList = new ArrayList<>();
 
-	 /**
-     * Configuración inicial de la prueba.
-     */
+	/**
+	 * Configuración inicial de la prueba.
+	 */
 	@BeforeEach
 	void setUp() {
 		clearData();
@@ -113,7 +113,8 @@ class BookEditorialServiceTest {
 	/**
 	 * Prueba para remplazar las instancias de Books asociadas a una instancia de
 	 * Editorial.
-	 * @throws EntityNotFoundException 
+	 * 
+	 * @throws EntityNotFoundException
 	 */
 	@Test
 	void testReplaceEditorial() throws EntityNotFoundException {
@@ -124,16 +125,17 @@ class BookEditorialServiceTest {
 	}
 
 	/**
-     * Prueba para desasociar un Book existente de un Editorial existente
-	 * @throws EntityNotFoundException 
-     *
-     * @throws co.edu.uniandes.csw.bookstore.exceptions.BusinessLogicException
-     */
+	 * Prueba para desasociar un Book existente de un Editorial existente
+	 * 
+	 * @throws EntityNotFoundException
+	 *
+	 * @throws co.edu.uniandes.csw.bookstore.exceptions.BusinessLogicException
+	 */
 	@Test
 	void testRemoveEditorial() throws EntityNotFoundException {
 		bookEditorialService.removeEditorial(booksList.get(0).getId());
-        BookEntity response = bookService.getBook(booksList.get(0).getId());
-        assertNull(response.getEditorial());
+		BookEntity response = bookService.getBook(booksList.get(0).getId());
+		assertNull(response.getEditorial());
 	}
 
 }

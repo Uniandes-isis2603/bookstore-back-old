@@ -140,10 +140,10 @@ class ReviewServiceTest {
 		ReviewEntity deleted = entityManager.find(ReviewEntity.class, entity.getId());
 		assertNull(deleted);
 	}
-	
+
 	@Test
 	void testDeleteReviewWithNoAssociatedBook() {
-		assertThrows(EntityNotFoundException.class, ()->{
+		assertThrows(EntityNotFoundException.class, () -> {
 			ReviewEntity entity = reviewList.get(0);
 			reviewService.deleteReview(bookList.get(1).getId(), entity.getId());
 		});

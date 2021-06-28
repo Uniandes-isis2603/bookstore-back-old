@@ -72,34 +72,33 @@ class EditorialServiceTest {
 	private List<BookEntity> bookList = new ArrayList<>();
 
 	/**
-     * Configuración inicial de la prueba.
-     */
+	 * Configuración inicial de la prueba.
+	 */
 	@BeforeEach
 	void setUp() {
 		clearData();
 		insertData();
 	}
-	
+
 	/**
-     * Limpia las tablas que están implicadas en la prueba.
-     */
+	 * Limpia las tablas que están implicadas en la prueba.
+	 */
 	private void clearData() {
 		entityManager.getEntityManager().createQuery("delete from BookEntity");
 		entityManager.getEntityManager().createQuery("delete from EditorialEntity");
 	}
 
 	/**
-     * Inserta los datos iniciales para el correcto funcionamiento de las
-     * pruebas.
-     */
+	 * Inserta los datos iniciales para el correcto funcionamiento de las pruebas.
+	 */
 	private void insertData() {
-		
+
 		for (int i = 0; i < 3; i++) {
 			EditorialEntity editorialEntity = factory.manufacturePojo(EditorialEntity.class);
 			entityManager.persist(editorialEntity);
 			editorialList.add(editorialEntity);
 		}
-		
+
 		for (int i = 0; i < 3; i++) {
 			BookEntity bookEntity = factory.manufacturePojo(BookEntity.class);
 			entityManager.persist(bookEntity);
@@ -110,10 +109,10 @@ class EditorialServiceTest {
 	}
 
 	/**
-     * Prueba para crear un Editorial.
-     *
-     * @throws EntityNotFoundException, IllegalOperationException
-     */	
+	 * Prueba para crear un Editorial.
+	 *
+	 * @throws EntityNotFoundException, IllegalOperationException
+	 */
 	@Test
 	void testCreateEditorial() throws EntityNotFoundException, IllegalOperationException {
 		EditorialEntity newEntity = factory.manufacturePojo(EditorialEntity.class);
@@ -125,12 +124,12 @@ class EditorialServiceTest {
 		assertEquals(newEntity.getName(), entity.getName());
 	}
 
-	 /**
-     * Prueba para crear un Editorial con el mismo nombre de un Editorial que ya
-     * existe.
-     *
-     * @throws IllegalOperationException
-     */
+	/**
+	 * Prueba para crear un Editorial con el mismo nombre de un Editorial que ya
+	 * existe.
+	 *
+	 * @throws IllegalOperationException
+	 */
 	@Test
 	void testCreateEditorialWithSameName() {
 		assertThrows(IllegalOperationException.class, () -> {
@@ -140,9 +139,9 @@ class EditorialServiceTest {
 		});
 	}
 
-	 /**
-     * Prueba para consultar la lista de Editorials.
-     */
+	/**
+	 * Prueba para consultar la lista de Editorials.
+	 */
 	@Test
 	void testGetEditorials() {
 		List<EditorialEntity> list = editorialService.getEditorials();
@@ -159,10 +158,11 @@ class EditorialServiceTest {
 	}
 
 	/**
-     * Prueba para consultar un Editorial.
-     * @throws EntityNotFoundException
-     * 
-     */
+	 * Prueba para consultar un Editorial.
+	 * 
+	 * @throws EntityNotFoundException
+	 * 
+	 */
 	@Test
 	void testGetEditorial() throws EntityNotFoundException {
 		EditorialEntity entity = editorialList.get(0);
@@ -172,9 +172,9 @@ class EditorialServiceTest {
 		assertEquals(entity.getName(), resultEntity.getName());
 	}
 
-	 /**
-     * Prueba para actualizar un Editorial.
-     */
+	/**
+	 * Prueba para actualizar un Editorial.
+	 */
 	@Test
 	void testUpdateEditorial() throws EntityNotFoundException {
 		EditorialEntity entity = editorialList.get(0);
@@ -186,9 +186,9 @@ class EditorialServiceTest {
 		assertEquals(pojoEntity.getName(), resp.getName());
 	}
 
-	 /**
-     * Prueba para eliminar un Editorial.
-     */
+	/**
+	 * Prueba para eliminar un Editorial.
+	 */
 	@Test
 	void testDeleteEditorial() throws EntityNotFoundException, IllegalOperationException {
 		EditorialEntity entity = editorialList.get(1);
@@ -196,15 +196,15 @@ class EditorialServiceTest {
 		EditorialEntity deleted = entityManager.find(EditorialEntity.class, entity.getId());
 		assertNull(deleted);
 	}
-	
+
 	/**
-     * Prueba para eliminar un Editorial con books asociados.
-     */
+	 * Prueba para eliminar un Editorial con books asociados.
+	 */
 	@Test
-    void testDeleteEditorialWithBooks() {
-        assertThrows(IllegalOperationException.class, ()-> {
-        	EditorialEntity entity = editorialList.get(0);
-            editorialService.deleteEditorial(entity.getId());
-        });
-    }
+	void testDeleteEditorialWithBooks() {
+		assertThrows(IllegalOperationException.class, () -> {
+			EditorialEntity entity = editorialList.get(0);
+			editorialService.deleteEditorial(entity.getId());
+		});
+	}
 }

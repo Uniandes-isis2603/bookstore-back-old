@@ -31,7 +31,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,11 +56,8 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @Transactional
-@Import({EditorialService.class, EditorialBookService.class})
+@Import({ EditorialService.class, EditorialBookService.class })
 class EditorialBookServiceTest {
-
-	@Autowired
-	private EditorialService editorialService;
 
 	@Autowired
 	private EditorialBookService editorialBookService;
@@ -100,7 +96,7 @@ class EditorialBookServiceTest {
 			entityManager.persist(book);
 			booksList.add(book);
 		}
-		
+
 		for (int i = 0; i < 3; i++) {
 			EditorialEntity entity = factory.manufacturePojo(EditorialEntity.class);
 			entityManager.persist(entity);
@@ -114,7 +110,8 @@ class EditorialBookServiceTest {
 
 	/**
 	 * Prueba para asociar un Book existente a un Editorial.
-	 * @throws EntityNotFoundException 
+	 * 
+	 * @throws EntityNotFoundException
 	 */
 	@Test
 	void testAddBook() throws EntityNotFoundException {
@@ -129,7 +126,8 @@ class EditorialBookServiceTest {
 	/**
 	 * Prueba para obtener una colección de instancias de Books asociadas a una
 	 * instancia Editorial.
-	 * @throws EntityNotFoundException 
+	 * 
+	 * @throws EntityNotFoundException
 	 */
 
 	@Test
@@ -140,8 +138,9 @@ class EditorialBookServiceTest {
 
 	/**
 	 * Prueba para obtener una instancia de Book asociada a una instancia Editorial.
-	 * @throws IllegalOperationException 
-	 * @throws EntityNotFoundException 
+	 * 
+	 * @throws IllegalOperationException
+	 * @throws EntityNotFoundException
 	 *
 	 * @throws co.edu.uniandes.csw.bookstore.exceptions.BusinessLogicException
 	 */
@@ -157,37 +156,35 @@ class EditorialBookServiceTest {
 		assertEquals(bookEntity.getIsbn(), response.getIsbn());
 		assertEquals(bookEntity.getImage(), response.getImage());
 	}
-	
+
 	/**
-     * Prueba para obtener una instancia de Books asociada a una instancia
-     * Editorial que no le pertenece.
-     *
-     * @throws co.edu.uniandes.csw.bookstore.exceptions.BusinessLogicException
-     */
-    @Test
-    public void getBookNoAsociadoTest(){
-    	assertThrows(IllegalOperationException.class, ()->{
-    		EditorialEntity entity = editorialsList.get(0);
-            BookEntity bookEntity = booksList.get(1);
-            editorialBookService.getBook(entity.getId(), bookEntity.getId());
-    	});
-    }
-
-    /**
-     * Prueba para remplazar las instancias de Books asociadas a una instancia
-     * de Editorial.
-     */
+	 * Prueba para obtener una instancia de Books asociada a una instancia Editorial
+	 * que no le pertenece.
+	 *
+	 * @throws co.edu.uniandes.csw.bookstore.exceptions.BusinessLogicException
+	 */
 	@Test
-	@Disabled
-	void testReplaceBooks() throws EntityNotFoundException {
-		EditorialEntity entity = editorialsList.get(0);
-        List<BookEntity> list = booksList.subList(1, 3);
-        editorialBookService.replaceBooks(entity.getId(), list);
-
-        entity = editorialService.getEditorial(entity.getId());
-        assertFalse(entity.getBooks().contains(booksList.get(0)));
-        assertTrue(entity.getBooks().contains(booksList.get(1)));
-        assertTrue(entity.getBooks().contains(booksList.get(2)));
+	public void getBookNoAsociadoTest() {
+		assertThrows(IllegalOperationException.class, () -> {
+			EditorialEntity entity = editorialsList.get(0);
+			BookEntity bookEntity = booksList.get(1);
+			editorialBookService.getBook(entity.getId(), bookEntity.getId());
+		});
 	}
 
+	/**
+	 * Prueba para remplazar las instancias de Books asociadas a una instancia de
+	 * Editorial.
+	 */
+	@Test
+	void testReplaceBooks() throws EntityNotFoundException {
+		EditorialEntity entity = editorialsList.get(0);
+		List<BookEntity> list = booksList.subList(1, 3);
+		editorialBookService.replaceBooks(entity.getId(), list);
+
+		for (BookEntity book : list) {
+			BookEntity b = entityManager.find(BookEntity.class, book.getId());
+			assertTrue(b.getEditorial().equals(entity));
+		}
+	}
 }

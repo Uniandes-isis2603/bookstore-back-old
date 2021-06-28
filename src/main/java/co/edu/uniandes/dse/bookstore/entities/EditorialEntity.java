@@ -50,5 +50,4 @@ public class EditorialEntity extends BaseEntity {
 	@PodamExclude
 	@OneToMany(mappedBy = "editorial")
 	private List<BookEntity> books = new ArrayList<>();
-
 }

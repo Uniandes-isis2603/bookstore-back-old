@@ -145,18 +145,15 @@ public class EditorialBookService {
 		if(editorialEntity.isEmpty())
 			throw new EntityNotFoundException("The editorial with the given id was not found");
 		
-		for (BookEntity book : books) {
-			Optional<BookEntity> b = bookRepository.findById(book.getId());
-			if(b.isEmpty())
-				throw new EntityNotFoundException("The book with the given id was not found");
-			
-			if (books.contains(book)) {
+		List<BookEntity> bookList = bookRepository.findAll();
+		bookList.forEach(book -> {
+			if(books.contains(book)) {
 				book.setEditorial(editorialEntity.get());
 			} else if (book.getEditorial() != null && book.getEditorial().equals(editorialEntity.get())) {
 				book.setEditorial(null);
 			}
-		}
-		log.info("Termina proceso de actualizar la editorial con id = {0}", editorialId);
+		});
+		
 		return books;
 	}
 }

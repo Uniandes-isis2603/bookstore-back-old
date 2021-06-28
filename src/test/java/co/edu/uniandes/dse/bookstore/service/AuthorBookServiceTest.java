@@ -77,26 +77,25 @@ class AuthorBookServiceTest {
 	private List<BookEntity> bookList = new ArrayList<>();
 
 	/**
-     * Configuración inicial de la prueba.
-     */
+	 * Configuración inicial de la prueba.
+	 */
 	@BeforeEach
 	void setUp() {
 		clearData();
 		insertData();
 	}
-	
-	 /**
-     * Limpia las tablas que están implicadas en la prueba.
-     */
+
+	/**
+	 * Limpia las tablas que están implicadas en la prueba.
+	 */
 	private void clearData() {
 		entityManager.getEntityManager().createQuery("delete from AuthorEntity").executeUpdate();
 		entityManager.getEntityManager().createQuery("delete from BookEntity").executeUpdate();
 	}
 
 	/**
-     * Inserta los datos iniciales para el correcto funcionamiento de las
-     * pruebas.
-     */
+	 * Inserta los datos iniciales para el correcto funcionamiento de las pruebas.
+	 */
 	private void insertData() {
 		editorial = factory.manufacturePojo(EditorialEntity.class);
 		entityManager.persist(editorial);
@@ -114,10 +113,10 @@ class AuthorBookServiceTest {
 		}
 	}
 
-	 /**
-     * Prueba para asociar un libro a un author.
-     *
-     */ 
+	/**
+	 * Prueba para asociar un libro a un author.
+	 *
+	 */
 
 	@Test
 	void testAddBook() throws EntityNotFoundException, IllegalOperationException {
@@ -145,8 +144,8 @@ class AuthorBookServiceTest {
 	}
 
 	/**
-     * Prueba para consultar la lista de Books de un autor.
-     */
+	 * Prueba para consultar la lista de Books de un autor.
+	 */
 	@Test
 	void testGetBooks() throws EntityNotFoundException {
 		List<BookEntity> bookEntities = authorBookService.getBooks(author.getId());
@@ -157,12 +156,12 @@ class AuthorBookServiceTest {
 			assertTrue(bookEntities.contains(bookList.get(0)));
 		}
 	}
-	
+
 	/**
-     * Prueba para consultar un libro de un autor.
-     *
-     * @throws throws EntityNotFoundException, IllegalOperationException
-     */
+	 * Prueba para consultar un libro de un autor.
+	 *
+	 * @throws throws EntityNotFoundException, IllegalOperationException
+	 */
 	@Test
 	void testGetBook() throws EntityNotFoundException, IllegalOperationException {
 		BookEntity bookEntity = bookList.get(0);
@@ -177,10 +176,10 @@ class AuthorBookServiceTest {
 	}
 
 	/**
-     * Prueba para actualizar los libros de un autor.
-     *
-     * @throws EntityNotFoundException, IllegalOperationException
-     */
+	 * Prueba para actualizar los libros de un autor.
+	 *
+	 * @throws EntityNotFoundException, IllegalOperationException
+	 */
 	@Test
 	void testReplaceBooks() throws EntityNotFoundException, IllegalOperationException {
 		List<BookEntity> nuevaLista = new ArrayList<>();
@@ -198,10 +197,10 @@ class AuthorBookServiceTest {
 		}
 	}
 
-	 /**
-     * Prueba desasociar un libro con un autor.
-     *
-     */
+	/**
+	 * Prueba desasociar un libro con un autor.
+	 *
+	 */
 	@Test
 	void testRemoveBook() throws EntityNotFoundException {
 		for (BookEntity book : bookList) {

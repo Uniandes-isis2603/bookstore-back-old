@@ -70,8 +70,8 @@ class OrganizationServiceTest {
 	private List<OrganizationEntity> organizationList = new ArrayList<>();
 
 	/**
-     * Configuración inicial de la prueba.
-     */
+	 * Configuración inicial de la prueba.
+	 */
 	@BeforeEach
 	void setUp() {
 		clearData();
@@ -79,17 +79,16 @@ class OrganizationServiceTest {
 	}
 
 	/**
-     * Limpia las tablas que están implicadas en la prueba.
-     */
+	 * Limpia las tablas que están implicadas en la prueba.
+	 */
 	private void clearData() {
 		entityManager.getEntityManager().createQuery("delete from PrizeEntity").executeUpdate();
 		entityManager.getEntityManager().createQuery("delete from OrganizationEntity").executeUpdate();
 	}
 
 	/**
-     * Inserta los datos iniciales para el correcto funcionamiento de las
-     * pruebas.
-     */
+	 * Inserta los datos iniciales para el correcto funcionamiento de las pruebas.
+	 */
 	private void insertData() {
 		for (int i = 0; i < 3; i++) {
 			OrganizationEntity entity = factory.manufacturePojo(OrganizationEntity.class);
@@ -103,8 +102,8 @@ class OrganizationServiceTest {
 	}
 
 	/**
-     * Prueba para crear una Organization.
-     */
+	 * Prueba para crear una Organization.
+	 */
 	@Test
 	void testCreateOrganization() throws EntityNotFoundException, IllegalOperationException {
 		OrganizationEntity newEntity = factory.manufacturePojo(OrganizationEntity.class);
@@ -118,8 +117,8 @@ class OrganizationServiceTest {
 	}
 
 	/**
-     * Prueba para crear una Organization con nombre repetido.
-     */
+	 * Prueba para crear una Organization con nombre repetido.
+	 */
 	@Test
 	void testCreateOrganizationWithSameName() {
 		assertThrows(IllegalOperationException.class, () -> {
@@ -129,6 +128,9 @@ class OrganizationServiceTest {
 		});
 	}
 
+	/**
+	 * Prueba para consultar la lista de Organizations.
+	 */
 	@Test
 	void testGetOrganizations() {
 		List<OrganizationEntity> list = organizationService.getOrganizations();
@@ -145,6 +147,9 @@ class OrganizationServiceTest {
 		}
 	}
 
+	/**
+	 * Prueba para consultar una Organization.
+	 */
 	@Test
 	void testGetOrganization() throws EntityNotFoundException {
 		OrganizationEntity entity = organizationList.get(0);
@@ -155,6 +160,9 @@ class OrganizationServiceTest {
 		assertEquals(entity.getTipo(), resultEntity.getTipo());
 	}
 
+	/**
+	 * Prueba para actualizar un Organization.
+	 */
 	@Test
 	void testUpdateOrganization() throws EntityNotFoundException {
 		OrganizationEntity entity = organizationList.get(0);
@@ -171,6 +179,9 @@ class OrganizationServiceTest {
 		assertEquals(pojoEntity.getTipo(), resp.getTipo());
 	}
 
+	/**
+	 * Prueba para eliminar un Organization.
+	 */
 	@Test
 	void testDeleteOrganization() throws EntityNotFoundException, IllegalOperationException {
 		OrganizationEntity entity = organizationList.get(0);
@@ -178,12 +189,15 @@ class OrganizationServiceTest {
 		OrganizationEntity deleted = entityManager.find(OrganizationEntity.class, entity.getId());
 		assertNull(deleted);
 	}
-	
+
+	/**
+	 * Prueba para eliminar un Organization con un premio.
+	 */
 	@Test
-    void testDeleteOrganizationWithPrize() {
-        assertThrows(IllegalOperationException.class, ()->{
-        	organizationService.deleteOrganization(organizationList.get(2).getId());
-        });
-    }
+	void testDeleteOrganizationWithPrize() {
+		assertThrows(IllegalOperationException.class, () -> {
+			organizationService.deleteOrganization(organizationList.get(2).getId());
+		});
+	}
 
 }
