@@ -58,6 +58,9 @@ public class EditorialBookService {
 	@Autowired
 	private EditorialRepository editorialRepository;
 
+	public static final String bookNotFound = "The book with the given id was not found"; 
+	public static final String editorialNotFound = "The editorial with the given id was not found";
+	
 	/**
 	 * Agregar un book a la editorial
 	 *
@@ -73,11 +76,11 @@ public class EditorialBookService {
 		
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if(bookEntity.isEmpty())
-			throw new EntityNotFoundException("The book with the given id was not found");
+			throw new EntityNotFoundException(bookNotFound);
 		
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
 		if(editorialEntity.isEmpty())
-			throw new EntityNotFoundException("The editorial with the given id was not found");
+			throw new EntityNotFoundException(editorialNotFound);
 		
 		bookEntity.get().setEditorial(editorialEntity.get());
 		log.info("Termina proceso de agregarle un libro a la editorial con id = {0}", editorialId);
@@ -96,7 +99,7 @@ public class EditorialBookService {
 		log.info("Inicia proceso de consultar los libros asociados a la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
 		if(editorialEntity.isEmpty())
-			throw new EntityNotFoundException("The editorial with the given id was not found");
+			throw new EntityNotFoundException(editorialNotFound);
 		
 		return editorialEntity.get().getBooks();
 	}
@@ -116,11 +119,11 @@ public class EditorialBookService {
 		
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
 		if(editorialEntity.isEmpty())
-			throw new EntityNotFoundException("The editorial with the given id was not found");
+			throw new EntityNotFoundException(editorialNotFound);
 		
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if(bookEntity.isEmpty())
-			throw new EntityNotFoundException("The book with the given id was not found");
+			throw new EntityNotFoundException(bookNotFound);
 				
 		log.info("Termina proceso de consultar el libro con id = {0} de la editorial con id = " + editorialId, bookId);
 		
@@ -143,7 +146,7 @@ public class EditorialBookService {
 		log.info("Inicia proceso de actualizar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
 		if(editorialEntity.isEmpty())
-			throw new EntityNotFoundException("The editorial with the given id was not found");
+			throw new EntityNotFoundException(editorialNotFound);
 		
 		List<BookEntity> bookList = bookRepository.findAll();
 		bookList.forEach(book -> {

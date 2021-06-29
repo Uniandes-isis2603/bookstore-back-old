@@ -55,6 +55,9 @@ public class ReviewService {
 
 	@Autowired
 	BookRepository bookRepository;
+	
+	public static final String bookNotFound = "The book with the given id was not found";
+	public static final String reviewNotFound = "The review with the given id was not found";
 
 	/**
 	 * Se encarga de crear un Review en la base de datos.
@@ -70,7 +73,7 @@ public class ReviewService {
 		log.info("Inicia proceso de crear review");
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException("The book with the given id was not found");
+			throw new EntityNotFoundException(bookNotFound);
 
 		reviewEntity.setBook(bookEntity.get());
 
@@ -90,7 +93,7 @@ public class ReviewService {
 		log.info("Inicia proceso de consultar los reviews asociados al book con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException("The book with the given id was not found");
+			throw new EntityNotFoundException(bookNotFound);
 
 		log.info("Termina proceso de consultar los reviews asociados al book con id = {0}", bookId);
 		return bookEntity.get().getReviews();
@@ -111,11 +114,11 @@ public class ReviewService {
 				reviewId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException("The book with the given id was not found");
+			throw new EntityNotFoundException(bookNotFound);
 
 		Optional<ReviewEntity> reviewEntity = reviewRepository.findById(reviewId);
 		if (reviewEntity.isEmpty())
-			throw new EntityNotFoundException("The review with the given id was not found");
+			throw new EntityNotFoundException(reviewNotFound);
 
 		log.info("Termina proceso de consultar el review con id = {0} del libro con id = " + bookId,
 				reviewId);
@@ -137,11 +140,11 @@ public class ReviewService {
 				reviewId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException("The book with the given id was not found");
+			throw new EntityNotFoundException(bookNotFound);
 
 		Optional<ReviewEntity> reviewEntity = reviewRepository.findById(reviewId);
 		if (reviewEntity.isEmpty())
-			throw new EntityNotFoundException("The review with the given id was not found");
+			throw new EntityNotFoundException(reviewNotFound);
 
 		review.setId(reviewId);
 		review.setBook(bookEntity.get());
@@ -164,11 +167,11 @@ public class ReviewService {
 				reviewId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException("The book with the given id was not found");
+			throw new EntityNotFoundException(bookNotFound);
 
 		ReviewEntity review = getReview(bookId, reviewId);
 		if (review == null) {
-			throw new EntityNotFoundException("The review is not associated to the book");
+			throw new EntityNotFoundException(reviewNotFound);
 		}
 		reviewRepository.deleteById(reviewId);
 		log.info("Termina proceso de borrar el review con id = {0} del libro con id = " + bookId,

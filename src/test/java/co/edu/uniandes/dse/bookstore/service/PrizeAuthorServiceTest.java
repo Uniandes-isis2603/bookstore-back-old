@@ -113,7 +113,7 @@ class PrizeAuthorServiceTest {
 	}
 
 	/**
-	 * Prueba para asociar un Prizes existente a un Author.
+	 * Prueba para asociar un Prize existente a un Author.
 	 * 
 	 * @throws EntityNotFoundException
 	 */
@@ -128,6 +128,32 @@ class PrizeAuthorServiceTest {
 	}
 
 	/**
+	 * Prueba para asociar un Prize existente a un Author que no existe.
+	 * 
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testAddInvalidAuthor() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			PrizeEntity prizeEntity = prizesList.get(1);
+			prizeAuthorService.addAuthor(0L, prizeEntity.getId());
+		});
+	}
+
+	/**
+	 * Prueba para asociar un Prize que no existe a un Author.
+	 * 
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testAddAuthorInvalidPrize() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			AuthorEntity entity = authorsList.get(0);
+			prizeAuthorService.addAuthor(entity.getId(), 0L);
+		});
+	}
+
+	/**
 	 * Prueba para consultar un Author.
 	 * 
 	 * @throws EntityNotFoundException
@@ -138,6 +164,31 @@ class PrizeAuthorServiceTest {
 		AuthorEntity resultEntity = prizeAuthorService.getAuthor(entity.getId());
 		assertNotNull(resultEntity);
 		assertEquals(entity.getAuthor().getId(), resultEntity.getId());
+	}
+
+	/**
+	 * Prueba para consultar un Author de un premio que no existe.
+	 * 
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testGetAuthorInvalidPrize() throws EntityNotFoundException {
+		assertThrows(EntityNotFoundException.class, () -> {
+			prizeAuthorService.getAuthor(0L);
+		});
+	}
+
+	/**
+	 * Prueba para consultar un Author que no tiene premio.
+	 * 
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testGetAuthorNotPrize() throws EntityNotFoundException {
+		assertThrows(EntityNotFoundException.class, () -> {
+			PrizeEntity prize = prizesList.get(1);
+			prizeAuthorService.getAuthor(prize.getId());
+		});
 	}
 
 	/**
@@ -156,6 +207,34 @@ class PrizeAuthorServiceTest {
 	}
 
 	/**
+	 * Prueba para remplazar las instancias de Prizes asociadas a una instancia de
+	 * un Author que no existe.
+	 * 
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testReplaceInvalidAuthor() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			prizeAuthorService.replaceAuthor(prizesList.get(1).getId(), 0L);
+		});
+	}
+
+	/**
+	 * Prueba para remplazar las instancias de Prizes que no existen asociadas a una
+	 * instancia de Author.
+	 * 
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testReplaceAuthorInvalidPrize() throws EntityNotFoundException {
+		assertThrows(EntityNotFoundException.class, () -> {
+			AuthorEntity entity = authorsList.get(0);
+			prizeAuthorService.replaceAuthor(0L, entity.getId());
+
+		});
+	}
+
+	/**
 	 * Prueba para desasociar un Prize existente de un Author existente.
 	 * 
 	 * @throws EntityNotFoundException
@@ -167,6 +246,20 @@ class PrizeAuthorServiceTest {
 		prizeAuthorService.removeAuthor(prizesList.get(0).getId());
 		PrizeEntity prize = entityManager.find(PrizeEntity.class, prizesList.get(0).getId());
 		assertNull(prize.getAuthor());
+	}
+	
+	/**
+	 * Prueba para desasociar un Prize que no existe de un Author existente.
+	 * 
+	 * @throws EntityNotFoundException
+	 *
+	 * @throws co.edu.uniandes.csw.bookstore.exceptions.BusinessLogicException
+	 */
+	@Test
+	public void testRemoveInvalidPrize(){
+		assertThrows(EntityNotFoundException.class, ()->{
+			prizeAuthorService.removeAuthor(0L);
+		});
 	}
 
 	/**

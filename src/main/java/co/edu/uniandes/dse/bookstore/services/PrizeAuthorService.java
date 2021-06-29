@@ -55,6 +55,9 @@ public class PrizeAuthorService {
 
 	@Autowired
 	private PrizeRepository prizeRepository;
+	
+	public static final String authorNotFound = "The author with the given id was not found"; 
+	public static final String prizeNotFound = "The prize with the given id was not found"; 
 
 	/**
 	 * Agregar un autor a un premio
@@ -69,11 +72,11 @@ public class PrizeAuthorService {
 		log.info("Inicia proceso de asociar el autor con id = {0} al premio con id = " + prizeId, authorId);
 		Optional<AuthorEntity> autorEntity = authorRepository.findById(authorId);
 		if (autorEntity.isEmpty())
-			throw new EntityNotFoundException("The author with the given id was not found");
+			throw new EntityNotFoundException(authorNotFound);
 
 		Optional<PrizeEntity> prizeEntity = prizeRepository.findById(prizeId);
 		if (prizeEntity.isEmpty())
-			throw new EntityNotFoundException("The prize with the given id was not found");
+			throw new EntityNotFoundException(prizeNotFound);
 
 		prizeEntity.get().setAuthor(autorEntity.get());
 		log.info("Termina proceso de asociar el autor con id = {0} al premio con id = {1}", authorId, prizeId);
@@ -94,7 +97,7 @@ public class PrizeAuthorService {
 		log.info("Inicia proceso de consultar el autor del premio con id = {0}", prizeId);
 		Optional<PrizeEntity> prizeEntity = prizeRepository.findById(prizeId);
 		if (prizeEntity.isEmpty())
-			throw new EntityNotFoundException("The prize with the given id was not found");
+			throw new EntityNotFoundException(prizeNotFound);
 
 		AuthorEntity authorEntity = prizeEntity.get().getAuthor();
 
@@ -119,11 +122,11 @@ public class PrizeAuthorService {
 		log.info("Inicia proceso de actualizar el autor del premio premio con id = {0}", prizeId);
 		Optional<AuthorEntity> autorEntity = authorRepository.findById(authorId);
 		if (autorEntity.isEmpty())
-			throw new EntityNotFoundException("The author with the given id was not found");
+			throw new EntityNotFoundException(authorNotFound);
 
 		Optional<PrizeEntity> prizeEntity = prizeRepository.findById(prizeId);
 		if (prizeEntity.isEmpty())
-			throw new EntityNotFoundException("The prize with the given id was not found");
+			throw new EntityNotFoundException(prizeNotFound);
 
 		prizeEntity.get().setAuthor(autorEntity.get());
 		log.info("Termina proceso de asociar el autor con id = {0} al premio con id = " + prizeId, authorId);
@@ -142,7 +145,7 @@ public class PrizeAuthorService {
 		log.info("Inicia proceso de borrar el autor del premio con id = {0}", prizeId);
 		Optional<PrizeEntity> prizeEntity = prizeRepository.findById(prizeId);
 		if (prizeEntity.isEmpty())
-			throw new EntityNotFoundException("The prize with the given id was not found");
+			throw new EntityNotFoundException(prizeNotFound);
 
 		if (prizeEntity.get().getAuthor() == null) {
 			throw new EntityNotFoundException("El premio no tiene autor");
