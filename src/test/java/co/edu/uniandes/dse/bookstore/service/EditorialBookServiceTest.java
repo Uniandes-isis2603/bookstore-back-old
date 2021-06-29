@@ -257,6 +257,24 @@ class EditorialBookServiceTest {
 	}
 	
 	/**
+	 * Prueba para remplazar las instancias de Books que no existen asociadas a una instancia de
+	 * Editorial.
+	 */
+	@Test
+	void testReplaceInvalidBooks() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			EditorialEntity entity = editorialsList.get(0);
+			
+			List<BookEntity> books = new ArrayList<>();
+			BookEntity newBook = factory.manufacturePojo(BookEntity.class);
+			newBook.setId(0L);
+			books.add(newBook);
+			
+			editorialBookService.replaceBooks(entity.getId(), books);
+		});
+	}
+	
+	/**
 	 * Prueba para remplazar las instancias de Books asociadas a una instancia de
 	 * Editorial que no existe.
 	 */
