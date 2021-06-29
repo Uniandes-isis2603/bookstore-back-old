@@ -37,7 +37,6 @@ import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
  * @author ISIS2603
  *
  */
-
 @Repository
 public interface EditorialRepository extends JpaRepository<EditorialEntity, Long> {
 	List<EditorialEntity> findByName(String name);

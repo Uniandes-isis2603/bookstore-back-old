@@ -37,7 +37,6 @@ import co.edu.uniandes.dse.bookstore.entities.BookEntity;
  * @author ISIS2603
  *
  */
-
 @Repository
 public interface BookRepository extends JpaRepository<BookEntity, Long> {
 	List<BookEntity> findByIsbn(String isbn);

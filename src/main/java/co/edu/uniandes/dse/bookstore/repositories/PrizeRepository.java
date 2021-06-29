@@ -35,7 +35,6 @@ import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
  * @author ISIS2603
  *
  */
-
 @Repository
 public interface PrizeRepository extends JpaRepository<PrizeEntity, Long> {
 

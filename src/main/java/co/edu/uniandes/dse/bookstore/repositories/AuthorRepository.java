@@ -35,7 +35,6 @@ import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
  * @author ISIS2603
  *
  */
-
 @Repository
 public interface AuthorRepository extends JpaRepository<AuthorEntity, Long> {
 
