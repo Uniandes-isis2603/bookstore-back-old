@@ -250,6 +250,7 @@ class BookAuthorServiceTest {
 		for (int i = 0; i < 3; i++) {
 			AuthorEntity entity = factory.manufacturePojo(AuthorEntity.class);
 			entityManager.persist(entity);
+			book.getAuthors().add(entity);
 			nuevaLista.add(entity);
 		}
 		bookAuthorService.replaceAuthors(book.getId(), nuevaLista);
@@ -259,6 +260,7 @@ class BookAuthorServiceTest {
 			assertTrue(authorEntities.contains(aNuevaLista));
 		}
 	}
+	
 	
 	/**
 	 * Prueba para actualizar los autores de un libro que no existe.
