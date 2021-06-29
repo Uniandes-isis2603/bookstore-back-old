@@ -6,4 +6,9 @@ public final class ErrorMessage {
 	public static final String EDITORIAL_NOT_FOUND = "The editorial with the given id was not found";
 	public static final String PRIZE_NOT_FOUND = "The prize with the given id was not found";
 	public static final String AUTHOR_NOT_FOUND = "The author with the given id was not found";
+	public static final String ORGANIZATION_NOT_FOUND = "The organization with the given id was not found";
+
+	private ErrorMessage() {
+		throw new IllegalStateException("Utility class");
+	}
 }

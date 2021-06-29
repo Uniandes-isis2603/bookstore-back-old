@@ -35,6 +35,7 @@ import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.ErrorMessage;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.BookRepository;
 import co.edu.uniandes.dse.bookstore.repositories.EditorialRepository;
@@ -52,8 +53,6 @@ public class BookService {
 	@Autowired
 	EditorialRepository editorialRepository;
 	
-	public static final String bookNotFound = "The book with the given id was not found"; 
-
 	/**
 	 * Guardar un nuevo libro
 	 *
@@ -107,7 +106,7 @@ public class BookService {
 		log.info("Inicia proceso de consultar el libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(bookNotFound);
+			throw new EntityNotFoundException(ErrorMessage.BOOK_NOT_FOUND);
 		log.info("Termina proceso de consultar el libro con id = {0}", bookId);
 		return bookEntity.get();
 	}
@@ -127,7 +126,7 @@ public class BookService {
 		log.info("Inicia proceso de actualizar el libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(bookNotFound);
+			throw new EntityNotFoundException(ErrorMessage.BOOK_NOT_FOUND);
 
 		if (!validateISBN(book.getIsbn()))
 			throw new IllegalOperationException("ISBN is not valid");
@@ -149,7 +148,7 @@ public class BookService {
 		log.info("Inicia proceso de borrar el libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(bookNotFound);
+			throw new EntityNotFoundException(ErrorMessage.BOOK_NOT_FOUND);
 
 		List<AuthorEntity> authors = bookEntity.get().getAuthors();
 

@@ -35,6 +35,7 @@ import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.ErrorMessage;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.AuthorRepository;
 import lombok.Data;
@@ -55,8 +56,6 @@ public class AuthorService {
 	@Autowired
 	AuthorRepository authorRepository;
 	
-	public static final String authorNotFound = "The author with the given id was not found"; 
-
 	/**
 	 * Se encarga de crear un Author en la base de datos.
 	 *
@@ -91,7 +90,7 @@ public class AuthorService {
 		log.info("Inicia proceso de consultar el autor con id = {0}", authorId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		if (authorEntity.isEmpty())
-			throw new EntityNotFoundException(authorNotFound);
+			throw new EntityNotFoundException(ErrorMessage.AUTHOR_NOT_FOUND);
 		log.info("Termina proceso de consultar el autor con id = {0}", authorId);
 		return authorEntity.get();
 	}
@@ -108,7 +107,7 @@ public class AuthorService {
 		log.info("Inicia proceso de actualizar el autor con id = {0}", authorId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		if (authorEntity.isEmpty())
-			throw new EntityNotFoundException(authorNotFound);
+			throw new EntityNotFoundException(ErrorMessage.AUTHOR_NOT_FOUND);
 		log.info("Termina proceso de actualizar el autor con id = {0}", authorId);
 		author.setId(authorId);
 		return authorRepository.save(author);
@@ -125,7 +124,7 @@ public class AuthorService {
 		log.info("Inicia proceso de borrar el autor con id = {0}", authorId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		if (authorEntity.isEmpty())
-			throw new EntityNotFoundException(authorNotFound);
+			throw new EntityNotFoundException(ErrorMessage.AUTHOR_NOT_FOUND);
 
 		List<BookEntity> books = authorEntity.get().getBooks();
 		if (!books.isEmpty())

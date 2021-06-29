@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.ErrorMessage;
 import co.edu.uniandes.dse.bookstore.repositories.BookRepository;
 import co.edu.uniandes.dse.bookstore.repositories.EditorialRepository;
 import lombok.Data;
@@ -49,9 +50,6 @@ public class BookEditorialService {
 	@Autowired
 	private EditorialRepository editorialRepository;
 	
-	public static final String bookNotFound = "The book with the given id was not found";
-	public static final String editorialNotFound = "The editorial with the given id was not found";
-
 	/**
 	 * Remplazar la editorial de un book.
 	 *
@@ -65,11 +63,11 @@ public class BookEditorialService {
 		log.info("Inicia proceso de actualizar libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(bookNotFound);
+			throw new EntityNotFoundException(ErrorMessage.BOOK_NOT_FOUND);
 
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
 		if (editorialEntity.isEmpty())
-			throw new EntityNotFoundException(editorialNotFound);
+			throw new EntityNotFoundException(ErrorMessage.EDITORIAL_NOT_FOUND);
 
 		bookEntity.get().setEditorial(editorialEntity.get());
 		log.info("Termina proceso de actualizar libro con id = {0}", bookId);
@@ -88,7 +86,7 @@ public class BookEditorialService {
 		log.info("Inicia proceso de borrar la Editorial del libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(bookNotFound);
+			throw new EntityNotFoundException(ErrorMessage.BOOK_NOT_FOUND);
 
 		Optional<EditorialEntity> editorialEntity = editorialRepository
 				.findById(bookEntity.get().getEditorial().getId());

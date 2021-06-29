@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.ErrorMessage;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.EditorialRepository;
 import lombok.Data;
@@ -53,8 +54,6 @@ public class EditorialService {
 
 	@Autowired
 	EditorialRepository editorialRepository;
-	
-	final String editorialNotFound = "The editorial with the given id was not found"; 
 
 	/**
 	 * Crea una editorial en la persistencia.
@@ -97,7 +96,7 @@ public class EditorialService {
 		log.info("Inicia proceso de consultar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorial = editorialRepository.findById(editorialId);
 		if (editorial.isEmpty())
-			throw new EntityNotFoundException(editorialNotFound);
+			throw new EntityNotFoundException(ErrorMessage.EDITORIAL_NOT_FOUND);
 		log.info("Termina proceso de consultar la editorial con id = {0}", editorialId);
 		return editorial.get();
 	}
@@ -115,7 +114,7 @@ public class EditorialService {
 		log.info("Inicia proceso de actualizar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
 		if (editorialEntity.isEmpty())
-			throw new EntityNotFoundException(editorialNotFound);
+			throw new EntityNotFoundException(ErrorMessage.EDITORIAL_NOT_FOUND);
 
 		editorial.setId(editorialId);
 		log.info("Termina proceso de actualizar la editorial con id = {0}", editorialId);
@@ -133,7 +132,7 @@ public class EditorialService {
 		log.info("Inicia proceso de borrar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
 		if (editorialEntity.isEmpty())
-			throw new EntityNotFoundException(editorialNotFound);
+			throw new EntityNotFoundException(ErrorMessage.EDITORIAL_NOT_FOUND);
 
 		List<BookEntity> books = editorialEntity.get().getBooks();
 

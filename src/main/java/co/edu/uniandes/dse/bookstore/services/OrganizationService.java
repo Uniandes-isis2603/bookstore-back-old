@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.ErrorMessage;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.OrganizationRepository;
 import lombok.Data;
@@ -53,8 +54,6 @@ public class OrganizationService {
 	@Autowired
 	OrganizationRepository organizationRepository;
 	
-	public static final String organizationNotFound = "The organization with the given id was not found";  
-
 	/**
 	 * Crea una organizacion en la persistencia.
 	 *
@@ -97,7 +96,7 @@ public class OrganizationService {
 		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
 
 		if (organizationEntity.isEmpty())
-			throw new EntityNotFoundException(organizationNotFound);
+			throw new EntityNotFoundException(ErrorMessage.ORGANIZATION_NOT_FOUND);
 
 		log.info("Termina proceso de consultar organizacion con id = {0}", organizationId);
 		return organizationEntity.get();
@@ -118,7 +117,7 @@ public class OrganizationService {
 		log.info("Inicia proceso de actualizar organizacion con id = {0}", organizationId);
 		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
 		if (organizationEntity.isEmpty())
-			throw new EntityNotFoundException(organizationNotFound);
+			throw new EntityNotFoundException(ErrorMessage.ORGANIZATION_NOT_FOUND);
 
 		organization.setId(organizationId);
 
@@ -137,7 +136,7 @@ public class OrganizationService {
 		log.info("Inicia proceso de borrar organizacion con id = {0}", organizationId);
 		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
 		if (organizationEntity.isEmpty())
-			throw new EntityNotFoundException(organizationNotFound);
+			throw new EntityNotFoundException(ErrorMessage.ORGANIZATION_NOT_FOUND);
 
 		PrizeEntity prize = organizationEntity.get().getPrize();
 		if (prize != null)
