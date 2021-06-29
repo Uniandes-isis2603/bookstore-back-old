@@ -55,7 +55,7 @@ public class AuthorService {
 	@Autowired
 	AuthorRepository authorRepository;
 	
-	final String AUTHOR_NOT_FOUND = "The author with the given id was not found"; 
+	final String authorNotFound = "The author with the given id was not found"; 
 
 	/**
 	 * Se encarga de crear un Author en la base de datos.
@@ -91,7 +91,7 @@ public class AuthorService {
 		log.info("Inicia proceso de consultar el autor con id = {0}", authorId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		if (authorEntity.isEmpty())
-			throw new EntityNotFoundException(AUTHOR_NOT_FOUND);
+			throw new EntityNotFoundException(authorNotFound);
 		log.info("Termina proceso de consultar el autor con id = {0}", authorId);
 		return authorEntity.get();
 	}
@@ -108,7 +108,7 @@ public class AuthorService {
 		log.info("Inicia proceso de actualizar el autor con id = {0}", authorId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		if (authorEntity.isEmpty())
-			throw new EntityNotFoundException(AUTHOR_NOT_FOUND);
+			throw new EntityNotFoundException(authorNotFound);
 		log.info("Termina proceso de actualizar el autor con id = {0}", authorId);
 		author.setId(authorId);
 		return authorRepository.save(author);
@@ -125,7 +125,7 @@ public class AuthorService {
 		log.info("Inicia proceso de borrar el autor con id = {0}", authorId);
 		Optional<AuthorEntity> authorEntity = authorRepository.findById(authorId);
 		if (authorEntity.isEmpty())
-			throw new EntityNotFoundException(AUTHOR_NOT_FOUND);
+			throw new EntityNotFoundException(authorNotFound);
 
 		List<BookEntity> books = authorEntity.get().getBooks();
 		if (books != null && !books.isEmpty())

@@ -53,7 +53,7 @@ public class OrganizationService {
 	@Autowired
 	OrganizationRepository organizationRepository;
 	
-	final String ORGANIZATION_NOT_FOUND = "The organization with the given id was not found";  
+	final String organizationNotFound = "The organization with the given id was not found";  
 
 	/**
 	 * Crea una organizacion en la persistencia.
@@ -97,7 +97,7 @@ public class OrganizationService {
 		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
 
 		if (organizationEntity.isEmpty())
-			throw new EntityNotFoundException(ORGANIZATION_NOT_FOUND);
+			throw new EntityNotFoundException(organizationNotFound);
 
 		log.info("Termina proceso de consultar organizacion con id = {0}", organizationId);
 		return organizationEntity.get();
@@ -118,7 +118,7 @@ public class OrganizationService {
 		log.info("Inicia proceso de actualizar organizacion con id = {0}", organizationId);
 		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
 		if (organizationEntity.isEmpty())
-			throw new EntityNotFoundException(ORGANIZATION_NOT_FOUND);
+			throw new EntityNotFoundException(organizationNotFound);
 
 		organization.setId(organizationId);
 
@@ -137,7 +137,7 @@ public class OrganizationService {
 		log.info("Inicia proceso de borrar organizacion con id = {0}", organizationId);
 		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
 		if (organizationEntity.isEmpty())
-			throw new EntityNotFoundException(ORGANIZATION_NOT_FOUND);
+			throw new EntityNotFoundException(organizationNotFound);
 
 		PrizeEntity prize = organizationEntity.get().getPrize();
 		if (prize != null)

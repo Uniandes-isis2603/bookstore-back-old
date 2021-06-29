@@ -52,7 +52,7 @@ public class BookService {
 	@Autowired
 	EditorialRepository editorialRepository;
 	
-	final String BOOK_NOT_FOUND = "The book with the given id was not found"; 
+	final String bookNotFound = "The book with the given id was not found"; 
 
 	/**
 	 * Guardar un nuevo libro
@@ -107,7 +107,7 @@ public class BookService {
 		log.info("Inicia proceso de consultar el libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(BOOK_NOT_FOUND);
+			throw new EntityNotFoundException(bookNotFound);
 		log.info("Termina proceso de consultar el libro con id = {0}", bookId);
 		return bookEntity.get();
 	}
@@ -127,7 +127,7 @@ public class BookService {
 		log.info("Inicia proceso de actualizar el libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(BOOK_NOT_FOUND);
+			throw new EntityNotFoundException(bookNotFound);
 
 		if (!validateISBN(book.getIsbn()))
 			throw new IllegalOperationException("ISBN is not valid");
@@ -149,7 +149,7 @@ public class BookService {
 		log.info("Inicia proceso de borrar el libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(BOOK_NOT_FOUND);
+			throw new EntityNotFoundException(bookNotFound);
 
 		List<AuthorEntity> authors = bookEntity.get().getAuthors();
 
