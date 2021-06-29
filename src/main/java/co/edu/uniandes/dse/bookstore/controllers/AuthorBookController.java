@@ -43,7 +43,7 @@ public class AuthorBookController {
 	
 	@GetMapping(value = "/{authorId}/books")
 	@ResponseStatus(code = HttpStatus.OK)
-	public List<BookDetailDTO> getBooks(@PathVariable("authorId") Long authorId) throws EntityNotFoundException, IllegalOperationException {
+	public List<BookDetailDTO> getBooks(@PathVariable("authorId") Long authorId) throws EntityNotFoundException {
 		List<BookEntity> bookEntity = authorBookService.getBooks(authorId);
 		return modelMapper.map(bookEntity, new TypeToken<List<BookDetailDTO>>() {}.getType());
 	}
@@ -58,7 +58,7 @@ public class AuthorBookController {
 	
 	@PutMapping(value = "/{authorId}/books")
 	@ResponseStatus(code = HttpStatus.OK)
-	public List<BookDetailDTO> replaceBooks(@PathVariable("authorId") Long authorId, @RequestBody List<BookDTO> books) throws EntityNotFoundException, IllegalOperationException {
+	public List<BookDetailDTO> replaceBooks(@PathVariable("authorId") Long authorId, @RequestBody List<BookDTO> books) throws EntityNotFoundException {
 		List<BookEntity> entities = modelMapper.map(books, new TypeToken<List<BookEntity>>() {}.getType());
 		List<BookEntity> booksList = authorBookService.addBooks(authorId, entities);
 		return modelMapper.map(booksList, new TypeToken<List<BookDetailDTO>>() {}.getType());
@@ -67,7 +67,7 @@ public class AuthorBookController {
 	
 	@DeleteMapping(value = "/{authorId}/books/{bookId}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-	public void removeBook(@PathVariable("authorId") Long authorId, @PathVariable("bookId") Long bookId) throws EntityNotFoundException, IllegalOperationException {
+	public void removeBook(@PathVariable("authorId") Long authorId, @PathVariable("bookId") Long bookId) throws EntityNotFoundException {
 		authorBookService.removeBook(authorId, bookId);
 	}
 }

@@ -48,7 +48,7 @@ public class PrizeController {
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public PrizeDTO create(@RequestBody PrizeDTO prizeDTO) throws EntityNotFoundException, IllegalOperationException {
+	public PrizeDTO create(@RequestBody PrizeDTO prizeDTO) throws IllegalOperationException {
 		PrizeEntity prizeEntity = prizeService.createPrize(modelMapper.map(prizeDTO, PrizeEntity.class));
 		return modelMapper.map(prizeEntity, PrizeDTO.class);
 	}

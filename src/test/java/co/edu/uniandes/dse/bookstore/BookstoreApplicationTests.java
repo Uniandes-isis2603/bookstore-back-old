@@ -9,5 +9,10 @@ class BookstoreApplicationTests {
 	@Test
 	void contextLoads() {
 	}
+	
+	@Test
+	public void applicationContextTest() {
+		BookstoreApplication.main(new String[] {});
+	}
 
 }
