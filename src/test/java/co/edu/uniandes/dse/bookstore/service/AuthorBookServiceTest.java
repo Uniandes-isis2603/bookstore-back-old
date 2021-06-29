@@ -117,7 +117,6 @@ class AuthorBookServiceTest {
 	 * Prueba para asociar un libro a un author.
 	 *
 	 */
-
 	@Test
 	void testAddBook() throws EntityNotFoundException, IllegalOperationException {
 		BookEntity newBook = factory.manufacturePojo(BookEntity.class);
@@ -213,6 +212,31 @@ class AuthorBookServiceTest {
 	}
 
 	/**
+	 * Prueba para consultar un libro de un autor que no existe.
+	 *
+	 * @throws throws EntityNotFoundException, IllegalOperationException
+	 */
+	@Test
+	void testGetBookInvalidAuthor() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			BookEntity bookEntity = bookList.get(0);
+			authorBookService.getBook(0L, bookEntity.getId());
+		});
+	}
+
+	/**
+	 * Prueba para consultar un libro que no existe de un autor.
+	 *
+	 * @throws throws EntityNotFoundException, IllegalOperationException
+	 */
+	@Test
+	void testGetInvalidBook() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			authorBookService.getBook(author.getId(), 0L);
+		});
+	}
+
+	/**
 	 * Prueba para actualizar los libros de un autor.
 	 *
 	 * @throws EntityNotFoundException, IllegalOperationException
@@ -232,6 +256,42 @@ class AuthorBookServiceTest {
 		for (BookEntity aNuevaLista : nuevaLista) {
 			assertTrue(bookEntities.contains(aNuevaLista));
 		}
+	}
+
+	/**
+	 * Prueba para actualizar los libros de un autor que no existe.
+	 *
+	 * @throws EntityNotFoundException, IllegalOperationException
+	 */
+	@Test
+	void testReplaceBooksInvalidAuthor() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			List<BookEntity> nuevaLista = new ArrayList<>();
+			for (int i = 0; i < 3; i++) {
+				BookEntity entity = factory.manufacturePojo(BookEntity.class);
+				entity.setEditorial(editorial);
+				bookService.createBook(entity);
+				nuevaLista.add(entity);
+			}
+			authorBookService.addBooks(0L, nuevaLista);
+		});
+	}
+
+	/**
+	 * Prueba para actualizar los libros que no existen de un autor.
+	 *
+	 * @throws EntityNotFoundException, IllegalOperationException
+	 */
+	@Test
+	void testReplaceInvalidBooks() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			List<BookEntity> nuevaLista = new ArrayList<>();
+			BookEntity entity = factory.manufacturePojo(BookEntity.class);
+			entity.setEditorial(editorial);
+			entity.setId(0L);
+			nuevaLista.add(entity);
+			authorBookService.addBooks(author.getId(), nuevaLista);
+		});
 	}
 
 	/**
