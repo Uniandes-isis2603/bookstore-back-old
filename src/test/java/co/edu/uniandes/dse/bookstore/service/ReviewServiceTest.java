@@ -259,6 +259,17 @@ class ReviewServiceTest {
 		ReviewEntity deleted = entityManager.find(ReviewEntity.class, entity.getId());
 		assertNull(deleted);
 	}
+	
+	/**
+     * Prueba para eliminar un Reviewm de un libro que no existe.
+     */
+	@Test
+	void testDeleteReviewInvalidBook()  {
+		assertThrows(EntityNotFoundException.class, ()->{
+			ReviewEntity entity = reviewList.get(0);
+			reviewService.deleteReview(0L, entity.getId());
+		});
+	}
 
 	 /**
      * Prueba para eliminarle un review a un book del cual no pertenece.

@@ -122,6 +122,32 @@ class EditorialBookServiceTest {
 		assertNotNull(response);
 		assertEquals(bookEntity.getId(), response.getId());
 	}
+	
+	/**
+	 * Prueba para asociar un Book que no existe a un Editorial.
+	 * 
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testAddInvalidBook() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			EditorialEntity entity = editorialsList.get(0);
+			editorialBookService.addBook(0L, entity.getId());
+		});
+	}
+	
+	/**
+	 * Prueba para asociar un Book a una Editorial que no existe.
+	 * 
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testAddBookInvalidEditorial() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			BookEntity bookEntity = booksList.get(1);
+			editorialBookService.addBook(bookEntity.getId(), 0L);
+		});
+	}
 
 	/**
 	 * Prueba para obtener una colección de instancias de Books asociadas a una
@@ -134,6 +160,20 @@ class EditorialBookServiceTest {
 	void testGetBooks() throws EntityNotFoundException {
 		List<BookEntity> list = editorialBookService.getBooks(editorialsList.get(0).getId());
 		assertEquals(1, list.size());
+	}
+	
+	/**
+	 * Prueba para obtener una colección de instancias de Books asociadas a una
+	 * instancia Editorial que no existe.
+	 * 
+	 * @throws EntityNotFoundException
+	 */
+
+	@Test
+	void testGetBooksInvalidEditorial() {
+		assertThrows(EntityNotFoundException.class,()->{
+			editorialBookService.getBooks(0L);
+		});
 	}
 
 	/**
@@ -155,6 +195,34 @@ class EditorialBookServiceTest {
 		assertEquals(bookEntity.getDescription(), response.getDescription());
 		assertEquals(bookEntity.getIsbn(), response.getIsbn());
 		assertEquals(bookEntity.getImage(), response.getImage());
+	}
+	
+	/**
+	 * Prueba para obtener una instancia de Book asociada a una instancia Editorial que no existe.
+	 * 
+	 * @throws EntityNotFoundException
+	 *
+	 */
+	@Test
+	void testGetBookInvalidEditorial()  {
+		assertThrows(EntityNotFoundException.class, ()->{
+			BookEntity bookEntity = booksList.get(0);
+			editorialBookService.getBook(0L, bookEntity.getId());
+		});
+	}
+	
+	/**
+	 * Prueba para obtener una instancia de Book que no existe asociada a una instancia Editorial.
+	 * 
+	 * @throws EntityNotFoundException
+	 * 
+	 */
+	@Test
+	void testGetInvalidBook()  {
+		assertThrows(EntityNotFoundException.class, ()->{
+			EditorialEntity entity = editorialsList.get(0);
+			editorialBookService.getBook(entity.getId(), 0L);
+		});
 	}
 
 	/**
@@ -186,5 +254,17 @@ class EditorialBookServiceTest {
 			BookEntity b = entityManager.find(BookEntity.class, book.getId());
 			assertTrue(b.getEditorial().equals(entity));
 		}
+	}
+	
+	/**
+	 * Prueba para remplazar las instancias de Books asociadas a una instancia de
+	 * Editorial que no existe.
+	 */
+	@Test
+	void testReplaceBooksInvalidEditorial() throws EntityNotFoundException {
+		assertThrows(EntityNotFoundException.class, ()->{
+			List<BookEntity> list = booksList.subList(1, 3);
+			editorialBookService.replaceBooks(0L, list);
+		});
 	}
 }

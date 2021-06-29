@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
 import co.edu.uniandes.dse.bookstore.entities.PrizeEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.ErrorMessage;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.OrganizationRepository;
 import co.edu.uniandes.dse.bookstore.repositories.PrizeRepository;
@@ -107,7 +108,7 @@ public class PrizeService {
 		log.info("Inicia proceso de consultar premio con id = {0}", prizeId);
 		Optional<PrizeEntity> prizeEntity = prizeRepository.findById(prizeId);
 		if (prizeEntity.isEmpty())
-			throw new EntityNotFoundException("The prize with the given id was not found");
+			throw new EntityNotFoundException(ErrorMessage.PRIZE_NOT_FOUND);
 
 		log.info("Termina proceso de consultar premio con id = {0}", prizeId);
 		return prizeEntity.get();
@@ -125,7 +126,7 @@ public class PrizeService {
 		log.info("Inicia proceso de actualizar premio con id = {0}", prizeId);
 		Optional<PrizeEntity> prizeEntity = prizeRepository.findById(prizeId);
 		if (prizeEntity.isEmpty())
-			throw new EntityNotFoundException("The prize with the given id was not found");
+			throw new EntityNotFoundException(ErrorMessage.PRIZE_NOT_FOUND);
 
 		prize.setId(prizeId);
 
@@ -145,7 +146,7 @@ public class PrizeService {
 		log.info("Inicia proceso de borrar premio con id = {0}", prizeId);
 		Optional<PrizeEntity> prizeEntity = prizeRepository.findById(prizeId);
 		if (prizeEntity.isEmpty())
-			throw new EntityNotFoundException("The prize with the given id was not found");
+			throw new EntityNotFoundException(ErrorMessage.PRIZE_NOT_FOUND);
 
 		if (prizeEntity.get().getAuthor() != null) {
 			throw new IllegalOperationException("Unable to delete prize because it has an associated author");

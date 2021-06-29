@@ -34,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.ReviewEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
+import co.edu.uniandes.dse.bookstore.exceptions.ErrorMessage;
 import co.edu.uniandes.dse.bookstore.repositories.BookRepository;
 import co.edu.uniandes.dse.bookstore.repositories.ReviewRepository;
 import lombok.Data;
@@ -56,9 +57,7 @@ public class ReviewService {
 	@Autowired
 	BookRepository bookRepository;
 	
-	public static final String bookNotFound = "The book with the given id was not found";
-	public static final String reviewNotFound = "The review with the given id was not found";
-
+	
 	/**
 	 * Se encarga de crear un Review en la base de datos.
 	 *
@@ -73,7 +72,7 @@ public class ReviewService {
 		log.info("Inicia proceso de crear review");
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(bookNotFound);
+			throw new EntityNotFoundException(ErrorMessage.BOOK_NOT_FOUND);
 
 		reviewEntity.setBook(bookEntity.get());
 
@@ -93,7 +92,7 @@ public class ReviewService {
 		log.info("Inicia proceso de consultar los reviews asociados al book con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(bookNotFound);
+			throw new EntityNotFoundException(ErrorMessage.BOOK_NOT_FOUND);
 
 		log.info("Termina proceso de consultar los reviews asociados al book con id = {0}", bookId);
 		return bookEntity.get().getReviews();
@@ -114,11 +113,11 @@ public class ReviewService {
 				reviewId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(bookNotFound);
+			throw new EntityNotFoundException(ErrorMessage.BOOK_NOT_FOUND);
 
 		Optional<ReviewEntity> reviewEntity = reviewRepository.findById(reviewId);
 		if (reviewEntity.isEmpty())
-			throw new EntityNotFoundException(reviewNotFound);
+			throw new EntityNotFoundException(ErrorMessage.REVIEW_NOT_FOUND);
 
 		log.info("Termina proceso de consultar el review con id = {0} del libro con id = " + bookId,
 				reviewId);
@@ -140,11 +139,11 @@ public class ReviewService {
 				reviewId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(bookNotFound);
+			throw new EntityNotFoundException(ErrorMessage.BOOK_NOT_FOUND);
 
 		Optional<ReviewEntity> reviewEntity = reviewRepository.findById(reviewId);
 		if (reviewEntity.isEmpty())
-			throw new EntityNotFoundException(reviewNotFound);
+			throw new EntityNotFoundException(ErrorMessage.REVIEW_NOT_FOUND);
 
 		review.setId(reviewId);
 		review.setBook(bookEntity.get());
@@ -167,11 +166,11 @@ public class ReviewService {
 				reviewId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException(bookNotFound);
+			throw new EntityNotFoundException(ErrorMessage.BOOK_NOT_FOUND);
 
 		ReviewEntity review = getReview(bookId, reviewId);
 		if (review == null) {
-			throw new EntityNotFoundException(reviewNotFound);
+			throw new EntityNotFoundException(ErrorMessage.REVIEW_NOT_FOUND);
 		}
 		reviewRepository.deleteById(reviewId);
 		log.info("Termina proceso de borrar el review con id = {0} del libro con id = " + bookId,

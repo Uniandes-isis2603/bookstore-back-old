@@ -142,6 +142,16 @@ class BookAuthorServiceTest {
 			assertTrue(authorEntities.contains(authorList.get(0)));
 		}
 	}
+	
+	/**
+	 * Prueba para consultar la lista de autores de un libro que no existe.
+	 */
+	@Test
+	void testGetAuthorsInvalidBook(){
+		assertThrows(EntityNotFoundException.class, ()->{
+			bookAuthorService.getAuthors(0L);
+		});
+	}
 
 	/**
 	 * Prueba para consultar un autor de un libro.
@@ -159,6 +169,31 @@ class BookAuthorServiceTest {
 		assertEquals(authorEntity.getDescription(), author.getDescription());
 		assertEquals(authorEntity.getImage(), author.getImage());
 		assertEquals(authorEntity.getBirthDate(), author.getBirthDate());
+	}
+	
+	/**
+	 * Prueba para consultar un autor que no existe de un libro.
+	 *
+	 * @throws throws EntityNotFoundException, IllegalOperationException
+	 */
+	@Test
+	void testGetInvalidAuthor()  {
+		assertThrows(EntityNotFoundException.class, ()->{
+			bookAuthorService.getAuthor(book.getId(), 0L);
+		});
+	}
+	
+	/**
+	 * Prueba para consultar un autor de un libro que no existe.
+	 *
+	 * @throws throws EntityNotFoundException, IllegalOperationException
+	 */
+	@Test
+	void testGetAuthorInvalidBook() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			AuthorEntity authorEntity = authorList.get(0);
+			bookAuthorService.getAuthor(0L, authorEntity.getId());
+		});
 	}
 
 	/**
@@ -181,6 +216,41 @@ class BookAuthorServiceTest {
 		for (AuthorEntity aNuevaLista : nuevaLista) {
 			assertTrue(authorEntities.contains(aNuevaLista));
 		}
+	}
+	
+	/**
+	 * Prueba para actualizar los autores de un libro que no existe.
+	 *
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testReplaceAuthorsInvalidBook(){
+		assertThrows(EntityNotFoundException.class, ()->{
+			List<AuthorEntity> nuevaLista = new ArrayList<>();
+			for (int i = 0; i < 3; i++) {
+				AuthorEntity entity = factory.manufacturePojo(AuthorEntity.class);
+				entity.getBooks().add(book);		
+				entityManager.persist(entity);
+				nuevaLista.add(entity);
+			}
+			bookAuthorService.replaceAuthors(0L, nuevaLista);
+		});
+	}
+	
+	/**
+	 * Prueba para actualizar los autores que no existen de un libro.
+	 *
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testReplaceInvalidAuthors() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			List<AuthorEntity> nuevaLista = new ArrayList<>();
+			AuthorEntity entity = factory.manufacturePojo(AuthorEntity.class);
+			entity.setId(0L);
+			nuevaLista.add(entity);
+			bookAuthorService.replaceAuthors(book.getId(), nuevaLista);
+		});
 	}
 	
 	/**
@@ -212,6 +282,28 @@ class BookAuthorServiceTest {
 			bookAuthorService.removeAuthor(book.getId(), author.getId());
 		}
 		assertTrue(bookAuthorService.getAuthors(book.getId()).isEmpty());
+	}
+	
+	/**
+	 * Prueba desasociar un autor que no existe con un libro.
+	 *
+	 */
+	@Test
+	void testRemoveInvalidAuthor(){
+		assertThrows(EntityNotFoundException.class, ()->{
+			bookAuthorService.removeAuthor(book.getId(), 0L);
+		});
+	}
+	
+	/**
+	 * Prueba desasociar un autor con un libro que no existe.
+	 *
+	 */
+	@Test
+	void testRemoveAuthorInvalidBook(){
+		assertThrows(EntityNotFoundException.class, ()->{
+			bookAuthorService.removeAuthor(0L, authorList.get(0).getId());
+		});
 	}
 
 }

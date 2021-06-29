@@ -49,11 +49,15 @@ import co.edu.uniandes.dse.bookstore.services.PrizeService;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
+/**
+ * Pruebas de logica de Prizes
+ *
+ * @author ISIS2603
+ */
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @Transactional
 @Import({ PrizeService.class, OrganizationService.class })
-
 class PrizeServiceTest {
 
 	@Autowired
@@ -70,10 +74,25 @@ class PrizeServiceTest {
 	private List<OrganizationEntity> organizationList = new ArrayList<>();
 	private List<PrizeEntity> prizeList = new ArrayList<PrizeEntity>();
 
+	/**
+	 * Configuración inicial de la prueba.
+	 */
+	@BeforeEach
+	void setUp() {
+		clearData();
+		insertData();
+	}
+
+	/**
+	 * Limpia las tablas que están implicadas en la prueba.
+	 */
 	private void clearData() {
 		entityManager.getEntityManager().createQuery("delete from PrizeEntity").executeUpdate();
 	}
 
+	/**
+	 * Inserta los datos iniciales para el correcto funcionamiento de las pruebas.
+	 */
 	private void insertData() {
 		for (int i = 0; i < 3; i++) {
 			PrizeEntity entity = factory.manufacturePojo(PrizeEntity.class);
@@ -92,12 +111,12 @@ class PrizeServiceTest {
 		prizeList.get(2).setAuthor(author);
 	}
 
-	@BeforeEach
-	void setUp() {
-		clearData();
-		insertData();
-	}
-
+	/**
+	 * Prueba para crear un Prize.
+	 *
+	 * @throws EntityNotFoundException
+	 * @throws IllegalOperationException
+	 */
 	@Test
 	void testCreatePrize() throws EntityNotFoundException, IllegalOperationException {
 		PrizeEntity newEntity = factory.manufacturePojo(PrizeEntity.class);
@@ -114,6 +133,11 @@ class PrizeServiceTest {
 		assertEquals(newEntity.getPremiationDate(), entity.getPremiationDate());
 	}
 
+	/**
+	 * Prueba para crear un Prize con una organización no válida
+	 *
+	 * @throws IllegalOperationException
+	 */
 	@Test
 	void testCreatePrizeWithNoValidOrganization() {
 		assertThrows(IllegalOperationException.class, () -> {
@@ -123,8 +147,29 @@ class PrizeServiceTest {
 		});
 	}
 
+	/**
+	 * Prueba para crear un Prize con una organización no válida
+	 *
+	 * @throws IllegalOperationException
+	 */
 	@Test
-	void testCreatePrizeWithNoValidOrganization2() throws EntityNotFoundException {
+	void testCreatePrizeWithNoValidOrganization2() {
+		assertThrows(IllegalOperationException.class, () -> {
+			PrizeEntity newEntity = factory.manufacturePojo(PrizeEntity.class);
+			OrganizationEntity newOrgEntity = factory.manufacturePojo(OrganizationEntity.class);
+			newOrgEntity.setId(0L);
+			newEntity.setOrganization(newOrgEntity);
+			prizeService.createPrize(newEntity);
+		});
+	}
+
+	/**
+	 * Prueba para crear un Prize con una organización no válida
+	 *
+	 * @throws IllegalOperationException
+	 */
+	@Test
+	void testCreatePrizeWithNoValidOrganization3() throws EntityNotFoundException {
 		assertThrows(IllegalOperationException.class, () -> {
 			PrizeEntity newEntity = factory.manufacturePojo(PrizeEntity.class);
 			newEntity.setOrganization(organizationList.get(0));
@@ -132,6 +177,9 @@ class PrizeServiceTest {
 		});
 	}
 
+	/**
+	 * Prueba para consultar la lista de Prizes.
+	 */
 	@Test
 	void testGetPrizes() {
 		List<PrizeEntity> list = prizeService.getPrizes();
@@ -147,6 +195,9 @@ class PrizeServiceTest {
 		}
 	}
 
+	/**
+	 * Prueba para consultar un Prize.
+	 */
 	@Test
 	void testGetPrize() throws EntityNotFoundException {
 		PrizeEntity entity = prizeList.get(0);
@@ -158,6 +209,19 @@ class PrizeServiceTest {
 		assertEquals(entity.getPremiationDate(), resultEntity.getPremiationDate());
 	}
 
+	/**
+	 * Prueba para consultar un Prize que no existe.
+	 */
+	@Test
+	void testGetInvalidPrize() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			prizeService.getPrize(0L);
+		});
+	}
+
+	/**
+	 * Prueba para actualizar un Prize.
+	 */
 	@Test
 	void testUpdatePrize() throws EntityNotFoundException {
 		PrizeEntity entity = prizeList.get(0);
@@ -175,11 +239,28 @@ class PrizeServiceTest {
 		assertEquals(pojoEntity.getPremiationDate(), resp.getPremiationDate());
 	}
 
+	/**
+	 * Prueba para eliminar un Prize.
+	 *
+	 * @throws IllegalOperationException
+	 */
 	@Test
 	void testDeletePrize() {
 		assertThrows(IllegalOperationException.class, () -> {
 			PrizeEntity entity = prizeList.get(2);
 			prizeService.deletePrize(entity.getId());
+		});
+	}
+
+	/**
+	 * Prueba para eliminar un Prize que no existe.
+	 *
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testDeleteInvalidPrize() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			prizeService.deletePrize(0L);
 		});
 	}
 

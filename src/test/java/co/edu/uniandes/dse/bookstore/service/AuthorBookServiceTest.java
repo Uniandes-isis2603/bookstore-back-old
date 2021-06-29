@@ -142,6 +142,33 @@ class AuthorBookServiceTest {
 		assertEquals(lastBook.getImage(), newBook.getImage());
 
 	}
+	
+	/**
+	 * Prueba para asociar un libro a un author que no existe.
+	 *
+	 */
+
+	@Test
+	void testAddBookInvalidAuthor() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			BookEntity newBook = factory.manufacturePojo(BookEntity.class);
+			newBook.setEditorial(editorial);
+			bookService.createBook(newBook);
+			authorBookService.addBook(0L, newBook.getId());
+		});
+	}
+	
+	/**
+	 * Prueba para asociar un libro que no existe a un author.
+	 *
+	 */
+
+	@Test
+	void testAddInvalidBook(){
+		assertThrows(EntityNotFoundException.class, ()->{
+			authorBookService.addBook(author.getId(), 0L);
+		});
+	}
 
 	/**
 	 * Prueba para consultar la lista de libros de un autor.
