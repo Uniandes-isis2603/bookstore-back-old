@@ -48,6 +48,9 @@ public class BookEditorialService {
 
 	@Autowired
 	private EditorialRepository editorialRepository;
+	
+	final String bookNotFound = "The book with the given id was not found";
+	final String editorialNotFound = "The editorial with the given id was not found";
 
 	/**
 	 * Remplazar la editorial de un book.
@@ -62,11 +65,11 @@ public class BookEditorialService {
 		log.info("Inicia proceso de actualizar libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException("The book with the given id was not found");
+			throw new EntityNotFoundException(bookNotFound);
 
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
 		if (editorialEntity.isEmpty())
-			throw new EntityNotFoundException("The editorial with the given id was not found");
+			throw new EntityNotFoundException(editorialNotFound);
 
 		bookEntity.get().setEditorial(editorialEntity.get());
 		log.info("Termina proceso de actualizar libro con id = {0}", bookId);
@@ -85,7 +88,7 @@ public class BookEditorialService {
 		log.info("Inicia proceso de borrar la Editorial del libro con id = {0}", bookId);
 		Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
 		if (bookEntity.isEmpty())
-			throw new EntityNotFoundException("The book with the given id was not found");
+			throw new EntityNotFoundException(bookNotFound);
 
 		Optional<EditorialEntity> editorialEntity = editorialRepository
 				.findById(bookEntity.get().getEditorial().getId());

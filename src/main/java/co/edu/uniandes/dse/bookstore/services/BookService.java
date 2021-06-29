@@ -52,7 +52,7 @@ public class BookService {
 	@Autowired
 	EditorialRepository editorialRepository;
 	
-	final String bookNotFound = "The book with the given id was not found"; 
+	public static final String bookNotFound = "The book with the given id was not found"; 
 
 	/**
 	 * Guardar un nuevo libro

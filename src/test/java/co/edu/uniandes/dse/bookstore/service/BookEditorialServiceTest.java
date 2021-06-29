@@ -123,6 +123,19 @@ class BookEditorialServiceTest {
 		entity = bookService.getBook(entity.getId());
 		assertEquals(entity.getEditorial(), editorialsList.get(1));
 	}
+	
+	/**
+	 * Prueba para remplazar las instancias de Books asociadas a una instancia de
+	 * Editorial de un libro que no existe.
+	 * 
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testReplaceEditorialInvalidBook() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			bookEditorialService.replaceEditorial(0L, editorialsList.get(1).getId());
+		});
+	}
 
 	/**
 	 * Prueba para desasociar un Book existente de un Editorial existente

@@ -166,7 +166,6 @@ class BookAuthorServiceTest {
 	 *
 	 * @throws EntityNotFoundException
 	 */
-	
 	@Test
 	void testReplaceAuthors() throws EntityNotFoundException {
 		List<AuthorEntity> nuevaLista = new ArrayList<>();
@@ -182,6 +181,25 @@ class BookAuthorServiceTest {
 		for (AuthorEntity aNuevaLista : nuevaLista) {
 			assertTrue(authorEntities.contains(aNuevaLista));
 		}
+	}
+	
+	/**
+	 * Prueba para actualizar un autor de un libro que no existe.
+	 *
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testReplaceAuthorsInvalidAuthor(){
+		assertThrows(EntityNotFoundException.class, ()->{
+			List<AuthorEntity> nuevaLista = new ArrayList<>();
+			for (int i = 0; i < 3; i++) {
+				AuthorEntity entity = factory.manufacturePojo(AuthorEntity.class);
+				entity.getBooks().add(book);		
+				entityManager.persist(entity);
+				nuevaLista.add(entity);
+			}
+			bookAuthorService.replaceAuthors(0L, nuevaLista);
+		});
 	}
 
 	/**
