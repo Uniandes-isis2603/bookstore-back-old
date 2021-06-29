@@ -20,7 +20,6 @@
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.language>java</sonar.language>
-		<sonar.java.libraries>target/classes</sonar.java.libraries>
 	</properties>
 	<dependencies>
 		<dependency>
