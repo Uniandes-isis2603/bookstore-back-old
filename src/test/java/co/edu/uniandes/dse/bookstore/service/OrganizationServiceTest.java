@@ -178,6 +178,18 @@ class OrganizationServiceTest {
 		assertEquals(pojoEntity.getName(), resp.getName());
 		assertEquals(pojoEntity.getTipo(), resp.getTipo());
 	}
+	
+	/**
+	 * Prueba para actualizar una organización que no existe.
+	 */
+	@Test
+	void testUpdateOrganizationInvalid() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			OrganizationEntity pojoEntity = factory.manufacturePojo(OrganizationEntity.class);
+			pojoEntity.setId(0L);
+			organizationService.updateOrganization(0L, pojoEntity);
+		});		
+	}
 
 	/**
 	 * Prueba para eliminar un Organization.

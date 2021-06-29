@@ -53,6 +53,8 @@ public class EditorialService {
 
 	@Autowired
 	EditorialRepository editorialRepository;
+	
+	final String EDITORIAL_NOT_FOUND = "The editorial with the given id was not found"; 
 
 	/**
 	 * Crea una editorial en la persistencia.
@@ -64,7 +66,7 @@ public class EditorialService {
 	@Transactional
 	public EditorialEntity createEditorial(EditorialEntity editorialEntity) throws IllegalOperationException {
 		log.info("Inicia proceso de creación de la editorial");
-		if (editorialRepository.findByName(editorialEntity.getName()).size() > 0) {
+		if (!editorialRepository.findByName(editorialEntity.getName()).isEmpty()) {
 			throw new IllegalOperationException("Editorial name already exists");
 		}
 		log.info("Termina proceso de creación de la editorial");
@@ -95,7 +97,7 @@ public class EditorialService {
 		log.info("Inicia proceso de consultar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorial = editorialRepository.findById(editorialId);
 		if (editorial.isEmpty())
-			throw new EntityNotFoundException("The editorial with the given id was not found");
+			throw new EntityNotFoundException(EDITORIAL_NOT_FOUND);
 		log.info("Termina proceso de consultar la editorial con id = {0}", editorialId);
 		return editorial.get();
 	}
@@ -113,7 +115,7 @@ public class EditorialService {
 		log.info("Inicia proceso de actualizar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
 		if (editorialEntity.isEmpty())
-			throw new EntityNotFoundException("The editorial with the given id was not found");
+			throw new EntityNotFoundException(EDITORIAL_NOT_FOUND);
 
 		editorial.setId(editorialId);
 		log.info("Termina proceso de actualizar la editorial con id = {0}", editorialId);
@@ -131,7 +133,7 @@ public class EditorialService {
 		log.info("Inicia proceso de borrar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
 		if (editorialEntity.isEmpty())
-			throw new EntityNotFoundException("The editorial with the given id was not found");
+			throw new EntityNotFoundException(EDITORIAL_NOT_FOUND);
 
 		List<BookEntity> books = editorialEntity.get().getBooks();
 

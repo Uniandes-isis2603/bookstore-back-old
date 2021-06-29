@@ -144,7 +144,7 @@ class AuthorBookServiceTest {
 	}
 
 	/**
-	 * Prueba para consultar la lista de Books de un autor.
+	 * Prueba para consultar la lista de libros de un autor.
 	 */
 	@Test
 	void testGetBooks() throws EntityNotFoundException {

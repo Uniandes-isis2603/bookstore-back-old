@@ -171,9 +171,22 @@ class EditorialServiceTest {
 		assertEquals(entity.getId(), resultEntity.getId());
 		assertEquals(entity.getName(), resultEntity.getName());
 	}
+	
+	/**
+	 * Prueba para consultar un Editorial que no existe.
+	 * 
+	 * @throws EntityNotFoundException
+	 * 
+	 */
+	@Test
+	void testGetEditorialInvalid() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			editorialService.getEditorial(0L);
+		});
+	}
 
 	/**
-	 * Prueba para actualizar un Editorial.
+	 * Prueba para actualizar una Editorial.
 	 */
 	@Test
 	void testUpdateEditorial() throws EntityNotFoundException {
@@ -184,6 +197,18 @@ class EditorialServiceTest {
 		EditorialEntity resp = entityManager.find(EditorialEntity.class, entity.getId());
 		assertEquals(pojoEntity.getId(), resp.getId());
 		assertEquals(pojoEntity.getName(), resp.getName());
+	}
+	
+	/**
+	 * Prueba para actualizar una Editorial que no existe.
+	 */
+	@Test
+	void testUpdateEditorialInvalid() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			EditorialEntity pojoEntity = factory.manufacturePojo(EditorialEntity.class);
+			pojoEntity.setId(0L);
+			editorialService.updateEditorial(0L, pojoEntity);
+		});
 	}
 
 	/**
@@ -196,6 +221,17 @@ class EditorialServiceTest {
 		EditorialEntity deleted = entityManager.find(EditorialEntity.class, entity.getId());
 		assertNull(deleted);
 	}
+	
+	/**
+	 * Prueba para eliminar una Editorial que no existe.
+	 */
+	@Test
+	void testDeleteEditorialInvalid(){
+		assertThrows(EntityNotFoundException.class, ()->{
+			editorialService.deleteEditorial(0L);
+		});
+	}
+
 
 	/**
 	 * Prueba para eliminar un Editorial con books asociados.

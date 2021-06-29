@@ -52,6 +52,8 @@ public class OrganizationService {
 
 	@Autowired
 	OrganizationRepository organizationRepository;
+	
+	final String ORGANIZATION_NOT_FOUND = "The organization with the given id was not found";  
 
 	/**
 	 * Crea una organizacion en la persistencia.
@@ -65,7 +67,7 @@ public class OrganizationService {
 	public OrganizationEntity createOrganization(OrganizationEntity organizationEntity)
 			throws IllegalOperationException {
 		log.info("Inicia proceso de creación de la organizacion");
-		if (organizationRepository.findByName(organizationEntity.getName()).size() > 0) {
+		if (!organizationRepository.findByName(organizationEntity.getName()).isEmpty()) {
 			throw new IllegalOperationException("Organization name already exists");
 		}
 		log.info("Termina proceso de creación de la organizacion");
@@ -95,7 +97,7 @@ public class OrganizationService {
 		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
 
 		if (organizationEntity.isEmpty())
-			throw new EntityNotFoundException("The organization with the given id was not found");
+			throw new EntityNotFoundException(ORGANIZATION_NOT_FOUND);
 
 		log.info("Termina proceso de consultar organizacion con id = {0}", organizationId);
 		return organizationEntity.get();
@@ -116,7 +118,7 @@ public class OrganizationService {
 		log.info("Inicia proceso de actualizar organizacion con id = {0}", organizationId);
 		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
 		if (organizationEntity.isEmpty())
-			throw new EntityNotFoundException("The organization with the given id was not found");
+			throw new EntityNotFoundException(ORGANIZATION_NOT_FOUND);
 
 		organization.setId(organizationId);
 
@@ -135,7 +137,7 @@ public class OrganizationService {
 		log.info("Inicia proceso de borrar organizacion con id = {0}", organizationId);
 		Optional<OrganizationEntity> organizationEntity = organizationRepository.findById(organizationId);
 		if (organizationEntity.isEmpty())
-			throw new EntityNotFoundException("The organization with the given id was not found");
+			throw new EntityNotFoundException(ORGANIZATION_NOT_FOUND);
 
 		PrizeEntity prize = organizationEntity.get().getPrize();
 		if (prize != null)

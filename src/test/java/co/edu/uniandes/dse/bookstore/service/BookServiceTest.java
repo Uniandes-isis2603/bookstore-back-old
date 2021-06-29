@@ -248,6 +248,18 @@ class BookServiceTest {
 		assertEquals(pojoEntity.getImage(), resp.getImage());
 		assertEquals(pojoEntity.getPublishingDate(), resp.getPublishingDate());
 	}
+	
+	/**
+	 * Prueba para actualizar un Book inválido.
+	 */
+	@Test
+	void testUpdateBookInvalid() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			BookEntity pojoEntity = factory.manufacturePojo(BookEntity.class);
+			pojoEntity.setId(0L);
+			bookService.updateBook(0L, pojoEntity);
+		});
+	}
 
 	/**
 	 * Prueba para actualizar un Book con ISBN inválido.

@@ -44,9 +44,7 @@ import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
-import co.edu.uniandes.dse.bookstore.services.AuthorBookService;
 import co.edu.uniandes.dse.bookstore.services.BookAuthorService;
-import co.edu.uniandes.dse.bookstore.services.BookService;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -108,6 +106,10 @@ class BookAuthorServiceTest {
 		}
 	}
 
+	/**
+	 * Prueba para asociar un autor a un libro.
+	 *
+	 */
 	@Test
 	void testAddAuthor() throws EntityNotFoundException, IllegalOperationException {
 		BookEntity newBook = factory.manufacturePojo(BookEntity.class);
@@ -127,6 +129,9 @@ class BookAuthorServiceTest {
 		assertEquals(author.getName(), lastAuthor.getName());
 	}
 
+	/**
+	 * Prueba para consultar la lista de autores de un libro.
+	 */
 	@Test
 	void testGetAuthors() throws EntityNotFoundException {
 		List<AuthorEntity> authorEntities = bookAuthorService.getAuthors(book.getId());
@@ -138,6 +143,11 @@ class BookAuthorServiceTest {
 		}
 	}
 
+	/**
+	 * Prueba para consultar un autor de un libro.
+	 *
+	 * @throws throws EntityNotFoundException, IllegalOperationException
+	 */
 	@Test
 	void testGetAuthor() throws EntityNotFoundException, IllegalOperationException {
 		AuthorEntity authorEntity = authorList.get(0);
@@ -151,6 +161,12 @@ class BookAuthorServiceTest {
 		assertEquals(authorEntity.getBirthDate(), author.getBirthDate());
 	}
 
+	/**
+	 * Prueba para actualizar los autores de un libro.
+	 *
+	 * @throws EntityNotFoundException
+	 */
+	
 	@Test
 	void testReplaceAuthors() throws EntityNotFoundException {
 		List<AuthorEntity> nuevaLista = new ArrayList<>();
@@ -168,6 +184,10 @@ class BookAuthorServiceTest {
 		}
 	}
 
+	/**
+	 * Prueba desasociar un autor con un libro.
+	 *
+	 */
 	@Test
 	void testRemoveAuthor() throws EntityNotFoundException {
 		for (AuthorEntity author : authorList) {
