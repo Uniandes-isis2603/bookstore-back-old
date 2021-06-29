@@ -42,6 +42,18 @@ pipeline {
             }
          }
       }
+      stage('Static Analysis') {
+         // Run static analysis
+         steps {
+            script {
+               docker.image('citools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
+                  sh '''
+                     mvn clean verify sonar:sonar -Dsonar.host.url=${SONARQUBE_URL}
+                  '''
+               }
+            }
+         }
+      }
    }
    post { 
       always { 
