@@ -165,6 +165,16 @@ class AuthorServiceTest {
 	}
 
 	/**
+	 * Prueba para consultar un Author que no existe.
+	 */
+	@Test
+	void testGetInvalidAuthor() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			authorService.getAuthor(0L);
+		});
+	}
+
+	/**
 	 * Prueba para actualizar un Author.
 	 */
 	@Test
@@ -194,6 +204,17 @@ class AuthorServiceTest {
 		authorService.deleteAuthor(authorEntity.getId());
 		AuthorEntity deleted = entityManager.find(AuthorEntity.class, authorEntity.getId());
 		assertNull(deleted);
+	}
+	
+	/**
+	 * Prueba para eliminar un Author que no existe
+	 *
+	 */
+	@Test
+	void testDeleteInvalidAuthor() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			authorService.deleteAuthor(0L);
+		});
 	}
 
 	/**

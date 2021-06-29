@@ -54,7 +54,7 @@ public class EditorialService {
 	@Autowired
 	EditorialRepository editorialRepository;
 	
-	final String EDITORIAL_NOT_FOUND = "The editorial with the given id was not found"; 
+	final String editorialNotFound = "The editorial with the given id was not found"; 
 
 	/**
 	 * Crea una editorial en la persistencia.
@@ -97,7 +97,7 @@ public class EditorialService {
 		log.info("Inicia proceso de consultar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorial = editorialRepository.findById(editorialId);
 		if (editorial.isEmpty())
-			throw new EntityNotFoundException(EDITORIAL_NOT_FOUND);
+			throw new EntityNotFoundException(editorialNotFound);
 		log.info("Termina proceso de consultar la editorial con id = {0}", editorialId);
 		return editorial.get();
 	}
@@ -115,7 +115,7 @@ public class EditorialService {
 		log.info("Inicia proceso de actualizar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
 		if (editorialEntity.isEmpty())
-			throw new EntityNotFoundException(EDITORIAL_NOT_FOUND);
+			throw new EntityNotFoundException(editorialNotFound);
 
 		editorial.setId(editorialId);
 		log.info("Termina proceso de actualizar la editorial con id = {0}", editorialId);
@@ -133,11 +133,11 @@ public class EditorialService {
 		log.info("Inicia proceso de borrar la editorial con id = {0}", editorialId);
 		Optional<EditorialEntity> editorialEntity = editorialRepository.findById(editorialId);
 		if (editorialEntity.isEmpty())
-			throw new EntityNotFoundException(EDITORIAL_NOT_FOUND);
+			throw new EntityNotFoundException(editorialNotFound);
 
 		List<BookEntity> books = editorialEntity.get().getBooks();
 
-		if (books != null && !books.isEmpty()) {
+		if (!books.isEmpty()) {
 			throw new IllegalOperationException(
 					"Unable to delete editorial with id = " + editorialId + " because it has associated books");
 		}
