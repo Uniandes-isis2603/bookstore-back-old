@@ -30,6 +30,18 @@ pipeline {
             }
          }
       }
+      stage('Testing') {
+         // Run unit tests
+         steps {
+            script {
+               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {                  
+                  sh '''
+                     ./mvn clean test
+                  '''
+               }
+            }
+         }
+      }
    }
    post { 
       always { 
