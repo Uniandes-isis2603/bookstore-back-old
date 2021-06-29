@@ -249,7 +249,6 @@ class BookAuthorServiceTest {
 		List<AuthorEntity> nuevaLista = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			AuthorEntity entity = factory.manufacturePojo(AuthorEntity.class);
-			entity.getBooks().add(book);		
 			entityManager.persist(entity);
 			nuevaLista.add(entity);
 		}
