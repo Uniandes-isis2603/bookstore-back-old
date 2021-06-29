@@ -46,7 +46,7 @@ pipeline {
          // Run static analysis
          steps {
             script {
-               docker.image('citools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
+               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
                   sh '''
                      ./mvnw clean verify sonar:sonar -Dsonar.host.url=${SONARQUBE_URL}
                   '''
