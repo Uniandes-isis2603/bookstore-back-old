@@ -238,14 +238,39 @@ class PrizeServiceTest {
 		assertEquals(pojoEntity.getDescription(), resp.getDescription());
 		assertEquals(pojoEntity.getPremiationDate(), resp.getPremiationDate());
 	}
+	
+	/**
+	 * Prueba para actualizar un Prize que no existe.
+	 */
+	@Test
+	void testUpdateInvalidPrize() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			PrizeEntity pojoEntity = factory.manufacturePojo(PrizeEntity.class);
+			pojoEntity.setId(0L);
+			prizeService.updatePrize(0L, pojoEntity);
+		});
+	}
 
 	/**
 	 * Prueba para eliminar un Prize.
+	 * @throws EntityNotFoundException 
 	 *
 	 * @throws IllegalOperationException
 	 */
 	@Test
-	void testDeletePrize() {
+	void testDeletePrize() throws EntityNotFoundException, IllegalOperationException {
+		prizeService.deletePrize(prizeList.get(0).getId());
+		PrizeEntity result = entityManager.find(PrizeEntity.class, prizeList.get(0).getId());
+		assertNull(result);
+	}
+	
+	/**
+	 * Prueba para eliminar un Prize con un autor.
+	 *
+	 * @throws IllegalOperationException
+	 */
+	@Test
+	void testDeletePrizeWithAuthor() {
 		assertThrows(IllegalOperationException.class, () -> {
 			PrizeEntity entity = prizeList.get(2);
 			prizeService.deletePrize(entity.getId());

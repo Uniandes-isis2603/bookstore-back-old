@@ -128,6 +128,33 @@ class BookAuthorServiceTest {
 		assertEquals(author.getImage(), lastAuthor.getImage());
 		assertEquals(author.getName(), lastAuthor.getName());
 	}
+	
+	/**
+	 * Prueba para asociar un autor que no existe a un libro.
+	 *
+	 */
+	@Test
+	void testAddInvalidAuthor() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			BookEntity newBook = factory.manufacturePojo(BookEntity.class);
+			newBook.setEditorial(editorial);
+			entityManager.persist(newBook);
+			bookAuthorService.addAuthor(newBook.getId(), 0L);
+		});
+	}
+	
+	/**
+	 * Prueba para asociar un autor a un libro que no existe.
+	 *
+	 */
+	@Test
+	void testAddAuthorInvalidBook() throws EntityNotFoundException, IllegalOperationException {
+		assertThrows(EntityNotFoundException.class, ()->{
+			AuthorEntity author = factory.manufacturePojo(AuthorEntity.class);
+			entityManager.persist(author);
+			bookAuthorService.addAuthor(0L, author.getId());
+		});
+	}
 
 	/**
 	 * Prueba para consultar la lista de autores de un libro.
@@ -193,6 +220,22 @@ class BookAuthorServiceTest {
 		assertThrows(EntityNotFoundException.class, ()->{
 			AuthorEntity authorEntity = authorList.get(0);
 			bookAuthorService.getAuthor(0L, authorEntity.getId());
+		});
+	}
+	
+	/**
+	 * Prueba para obtener un autor no asociado a un libro.
+	 *
+	 */
+	@Test
+	void testGetNotAssociatedAuthor() {
+		assertThrows(IllegalOperationException.class, ()->{
+			BookEntity newBook = factory.manufacturePojo(BookEntity.class);
+			newBook.setEditorial(editorial);
+			entityManager.persist(newBook);
+			AuthorEntity author = factory.manufacturePojo(AuthorEntity.class);
+			entityManager.persist(author);
+			bookAuthorService.getAuthor(newBook.getId(), author.getId());
 		});
 	}
 

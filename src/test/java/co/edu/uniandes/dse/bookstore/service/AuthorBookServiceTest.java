@@ -142,7 +142,7 @@ class AuthorBookServiceTest {
 		assertEquals(lastBook.getImage(), newBook.getImage());
 
 	}
-	
+
 	/**
 	 * Prueba para asociar un libro a un author que no existe.
 	 *
@@ -150,22 +150,22 @@ class AuthorBookServiceTest {
 
 	@Test
 	void testAddBookInvalidAuthor() {
-		assertThrows(EntityNotFoundException.class, ()->{
+		assertThrows(EntityNotFoundException.class, () -> {
 			BookEntity newBook = factory.manufacturePojo(BookEntity.class);
 			newBook.setEditorial(editorial);
 			bookService.createBook(newBook);
 			authorBookService.addBook(0L, newBook.getId());
 		});
 	}
-	
+
 	/**
 	 * Prueba para asociar un libro que no existe a un author.
 	 *
 	 */
 
 	@Test
-	void testAddInvalidBook(){
-		assertThrows(EntityNotFoundException.class, ()->{
+	void testAddInvalidBook() {
+		assertThrows(EntityNotFoundException.class, () -> {
 			authorBookService.addBook(author.getId(), 0L);
 		});
 	}
@@ -182,6 +182,16 @@ class AuthorBookServiceTest {
 		for (int i = 0; i < bookList.size(); i++) {
 			assertTrue(bookEntities.contains(bookList.get(0)));
 		}
+	}
+
+	/**
+	 * Prueba para consultar la lista de libros de un autor que no existe.
+	 */
+	@Test
+	void testGetBooksInvalidAuthor() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			authorBookService.getBooks(0L);
+		});
 	}
 
 	/**
@@ -236,4 +246,27 @@ class AuthorBookServiceTest {
 		assertTrue(authorBookService.getBooks(author.getId()).isEmpty());
 	}
 
+	/**
+	 * Prueba desasociar un libro con un autor que no existe.
+	 *
+	 */
+	@Test
+	void testRemoveBookInvalidAuthor() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			for (BookEntity book : bookList) {
+				authorBookService.removeBook(0L, book.getId());
+			}
+		});
+	}
+
+	/**
+	 * Prueba desasociar un libro que no existe con un autor.
+	 *
+	 */
+	@Test
+	void testRemoveInvalidBook() {
+		assertThrows(EntityNotFoundException.class, () -> {
+			authorBookService.removeBook(author.getId(), 0L);
+		});
+	}
 }
