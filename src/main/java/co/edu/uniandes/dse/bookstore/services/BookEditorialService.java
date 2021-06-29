@@ -49,8 +49,8 @@ public class BookEditorialService {
 	@Autowired
 	private EditorialRepository editorialRepository;
 	
-	final String bookNotFound = "The book with the given id was not found";
-	final String editorialNotFound = "The editorial with the given id was not found";
+	public static final String bookNotFound = "The book with the given id was not found";
+	public static final String editorialNotFound = "The editorial with the given id was not found";
 
 	/**
 	 * Remplazar la editorial de un book.
@@ -92,9 +92,7 @@ public class BookEditorialService {
 
 		Optional<EditorialEntity> editorialEntity = editorialRepository
 				.findById(bookEntity.get().getEditorial().getId());
-		editorialEntity.ifPresent(editorial -> {
-			editorial.getBooks().remove(bookEntity.get());
-		});
+		editorialEntity.ifPresent(editorial -> editorial.getBooks().remove(bookEntity.get()));
 
 		bookEntity.get().setEditorial(null);
 		log.info("Termina proceso de borrar la Editorial del libro con id = {0}", bookId);

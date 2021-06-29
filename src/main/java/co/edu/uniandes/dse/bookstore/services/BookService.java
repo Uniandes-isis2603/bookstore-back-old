@@ -153,7 +153,7 @@ public class BookService {
 
 		List<AuthorEntity> authors = bookEntity.get().getAuthors();
 
-		if (authors != null && !authors.isEmpty())
+		if (!authors.isEmpty())
 			throw new IllegalOperationException("Unable to delete book because it has associated authors");
 
 		bookRepository.deleteById(bookId);

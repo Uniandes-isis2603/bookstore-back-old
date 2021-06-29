@@ -55,7 +55,7 @@ public class AuthorService {
 	@Autowired
 	AuthorRepository authorRepository;
 	
-	final String authorNotFound = "The author with the given id was not found"; 
+	public static final String authorNotFound = "The author with the given id was not found"; 
 
 	/**
 	 * Se encarga de crear un Author en la base de datos.
@@ -128,11 +128,11 @@ public class AuthorService {
 			throw new EntityNotFoundException(authorNotFound);
 
 		List<BookEntity> books = authorEntity.get().getBooks();
-		if (books != null && !books.isEmpty())
+		if (!books.isEmpty())
 			throw new IllegalOperationException("Unable to delete the author because he/she has associated books");
 
 		List<PrizeEntity> prizes = authorEntity.get().getPrizes();
-		if (prizes != null && !prizes.isEmpty())
+		if (!prizes.isEmpty())
 			throw new IllegalOperationException("Unable to delete the author because he/she has associated prizes");
 
 		authorRepository.deleteById(authorId);

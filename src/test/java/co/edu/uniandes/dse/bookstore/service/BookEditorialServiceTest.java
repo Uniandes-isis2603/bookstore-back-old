@@ -126,7 +126,7 @@ class BookEditorialServiceTest {
 	
 	/**
 	 * Prueba para remplazar las instancias de Books asociadas a una instancia de
-	 * Editorial de un libro que no existe.
+	 * Editorial con un libro que no existe
 	 * 
 	 * @throws EntityNotFoundException
 	 */
@@ -134,6 +134,20 @@ class BookEditorialServiceTest {
 	void testReplaceEditorialInvalidBook() {
 		assertThrows(EntityNotFoundException.class, ()->{
 			bookEditorialService.replaceEditorial(0L, editorialsList.get(1).getId());
+		});
+	}
+	
+	/**
+	 * Prueba para remplazar las instancias de Books asociadas a una instancia de
+	 * Editorial que no existe.
+	 * 
+	 * @throws EntityNotFoundException
+	 */
+	@Test
+	void testReplaceInvalidEditorial() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			BookEntity entity = booksList.get(0);
+			bookEditorialService.replaceEditorial(entity.getId(), 0L);
 		});
 	}
 
@@ -150,5 +164,20 @@ class BookEditorialServiceTest {
 		BookEntity response = bookService.getBook(booksList.get(0).getId());
 		assertNull(response.getEditorial());
 	}
+	
+	/**
+	 * Prueba para desasociar un Book que no existe de un Editorial
+	 * 
+	 * @throws EntityNotFoundException
+	 *
+	 * @throws co.edu.uniandes.csw.bookstore.exceptions.BusinessLogicException
+	 */
+	@Test
+	void testRemoveEditorialInvalidBook() throws EntityNotFoundException {
+		assertThrows(EntityNotFoundException.class, ()->{
+			bookEditorialService.removeEditorial(0L);
+		});
+	}
+	
 
 }

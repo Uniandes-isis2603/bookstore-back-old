@@ -53,7 +53,7 @@ public class OrganizationService {
 	@Autowired
 	OrganizationRepository organizationRepository;
 	
-	final String organizationNotFound = "The organization with the given id was not found";  
+	public static final String organizationNotFound = "The organization with the given id was not found";  
 
 	/**
 	 * Crea una organizacion en la persistencia.

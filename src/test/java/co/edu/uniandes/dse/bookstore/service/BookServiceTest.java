@@ -229,6 +229,17 @@ class BookServiceTest {
 		assertEquals(entity.getIsbn(), resultEntity.getIsbn());
 		assertEquals(entity.getImage(), resultEntity.getImage());
 	}
+	
+	/**
+	 * Prueba para consultar un Book que no existe.
+	 */
+	@Test
+	void testGetInvalidBook() {
+		assertThrows(EntityNotFoundException.class,()->{
+			bookService.getBook(0L);
+		});
+	}
+
 
 	/**
 	 * Prueba para actualizar un Book.
@@ -298,6 +309,16 @@ class BookServiceTest {
 		bookService.deleteBook(entity.getId());
 		BookEntity deleted = entityManager.find(BookEntity.class, entity.getId());
 		assertNull(deleted);
+	}
+	
+	/**
+	 * Prueba para eliminar un Book que no existe.
+	 */
+	@Test
+	void testDeleteInvalidBook() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			bookService.deleteBook(0L);
+		});
 	}
 
 	/**

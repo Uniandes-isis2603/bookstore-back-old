@@ -159,6 +159,16 @@ class OrganizationServiceTest {
 		assertEquals(entity.getName(), resultEntity.getName());
 		assertEquals(entity.getTipo(), resultEntity.getTipo());
 	}
+	
+	/**
+	 * Prueba para consultar una Organization que no existe.
+	 */
+	@Test
+	void testGetInvalidOrganization() {
+		assertThrows(EntityNotFoundException.class, ()->{
+			organizationService.getOrganization(0L);	
+		});
+	}
 
 	/**
 	 * Prueba para actualizar un Organization.
@@ -192,7 +202,7 @@ class OrganizationServiceTest {
 	}
 
 	/**
-	 * Prueba para eliminar un Organization.
+	 * Prueba para eliminar una organización.
 	 */
 	@Test
 	void testDeleteOrganization() throws EntityNotFoundException, IllegalOperationException {
@@ -200,6 +210,16 @@ class OrganizationServiceTest {
 		organizationService.deleteOrganization(entity.getId());
 		OrganizationEntity deleted = entityManager.find(OrganizationEntity.class, entity.getId());
 		assertNull(deleted);
+	}
+	
+	/**
+	 * Prueba para eliminar una organización que no existe.
+	 */
+	@Test
+	void testDeleteInvalidOrganization(){
+		assertThrows(EntityNotFoundException.class, ()->{
+			organizationService.deleteOrganization(0L);
+		});
 	}
 
 	/**

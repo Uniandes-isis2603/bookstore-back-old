@@ -193,6 +193,17 @@ class AuthorServiceTest {
 		assertEquals(pojoEntity.getBirthDate(), response.getBirthDate());
 		assertEquals(pojoEntity.getDescription(), response.getDescription());
 	}
+	
+	/**
+	 * Prueba para actualizar un Author que no existe.
+	 */
+	@Test
+	void testUpdateInvalidAuthor()  {
+		assertThrows(EntityNotFoundException.class, ()->{
+			AuthorEntity pojoEntity = factory.manufacturePojo(AuthorEntity.class);
+			authorService.updateAuthor(0L, pojoEntity);	
+		});
+	}
 
 	/**
 	 * Prueba para eliminar un Author
