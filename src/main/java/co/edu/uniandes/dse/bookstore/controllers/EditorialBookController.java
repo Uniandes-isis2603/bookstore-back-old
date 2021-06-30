@@ -45,42 +45,90 @@ import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.services.EditorialBookService;
 
+/**
+ * Clase que implementa el recurso "editorials/{id}/books".
+ *
+ * @author ISIS2603
+ */
 @RestController
 @RequestMapping("/editorials")
 public class EditorialBookController {
 
 	@Autowired
-	private EditorialBookService editorialBookService; 
-	
+	private EditorialBookService editorialBookService;
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
+	/**
+	 * Guarda un libro dentro de una editorial con la informacion que recibe el la
+	 * URL. Se devuelve el libro que se guarda en la editorial.
+	 *
+	 * @param editorialId Identificador de la editorial que se esta actualizando.
+	 *                    Este debe ser una cadena de dígitos.
+	 * @param bookId      Identificador del libro que se desea guardar. Este debe
+	 *                    ser una cadena de dígitos.
+	 * @return JSON {@link BookDTO} - El libro guardado en la editorial.
+	 */
 	@PostMapping(value = "/{editorialId}/books/{bookId}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public BookDTO addBook(@PathVariable("editorialId") Long editorialId, @PathVariable("bookId") Long booklId) throws EntityNotFoundException{
+	public BookDTO addBook(@PathVariable("editorialId") Long editorialId, @PathVariable("bookId") Long booklId)
+			throws EntityNotFoundException {
 		BookEntity bookEntity = editorialBookService.addBook(booklId, editorialId);
 		return modelMapper.map(bookEntity, BookDTO.class);
 	}
-	
+
+	/**
+	 * Busca y devuelve todos los libros que existen en la editorial.
+	 *
+	 * @param editorialId Identificador de la editorial que se esta buscando. Este
+	 *                    debe ser una cadena de dígitos.
+	 * @return JSONArray {@link BookDetailDTO} - Los libros encontrados en la
+	 *         editorial. Si no hay ninguno retorna una lista vacía.
+	 */
 	@GetMapping(value = "/{editorialId}/books")
 	@ResponseStatus(code = HttpStatus.OK)
-    public List<BookDetailDTO> getBooks(@PathVariable("editorialId") Long editorialId) throws EntityNotFoundException {
+	public List<BookDetailDTO> getBooks(@PathVariable("editorialId") Long editorialId) throws EntityNotFoundException {
 		List<BookEntity> bookList = editorialBookService.getBooks(editorialId);
-		return modelMapper.map(bookList, new TypeToken<List<BookDetailDTO>>() {}.getType());
-    }
-	
+		return modelMapper.map(bookList, new TypeToken<List<BookDetailDTO>>() {
+		}.getType());
+	}
+
+	/**
+	 * Busca el libro con el id asociado dentro de la editorial con id asociado.
+	 *
+	 * @param editorialId Identificador de la editorial que se esta buscando. Este
+	 *                    debe ser una cadena de dígitos.
+	 * @param bookId      Identificador del libro que se esta buscando. Este debe
+	 *                    ser una cadena de dígitos.
+	 * @return JSON {@link BookDetailDTO} - El libro buscado
+	 */
 	@GetMapping(value = "/{editorialId}/books/{bookId}")
 	@ResponseStatus(code = HttpStatus.OK)
-    public BookDetailDTO getBook(@PathVariable("editorialId") Long editorialId, @PathVariable("bookId") Long bookId) throws EntityNotFoundException, IllegalOperationException {
+	public BookDetailDTO getBook(@PathVariable("editorialId") Long editorialId, @PathVariable("bookId") Long bookId)
+			throws EntityNotFoundException, IllegalOperationException {
 		BookEntity bookEntity = editorialBookService.getBook(editorialId, bookId);
 		return modelMapper.map(bookEntity, BookDetailDTO.class);
-    }
-	
+	}
+
+	/**
+	 * Remplaza las instancias de Book asociadas a una instancia de Editorial
+	 *
+	 * @param editorialId Identificador de la editorial que se esta remplazando.
+	 *                    Este debe ser una cadena de dígitos.
+	 * @param books       JSONArray {@link BookDTO} El arreglo de libros nuevo para
+	 *                    la editorial.
+	 * @return JSON {@link BookDetailDTO} - El arreglo de libros guardado en la
+	 *         editorial.
+	 */
 	@PutMapping(value = "/{editorialId}/books")
 	@ResponseStatus(code = HttpStatus.OK)
-    public List<BookDetailDTO> replaceBooks(@PathVariable("editorialId") Long editorialsId, @RequestBody List<BookDetailDTO> books) throws EntityNotFoundException {
-        List<BookEntity> booksList = modelMapper.map(books, new TypeToken<List<BookEntity>>() {}.getType());
-        List<BookEntity> result = editorialBookService.replaceBooks(editorialsId, booksList);
-        return modelMapper.map(result, new TypeToken<List<BookDetailDTO>>() {}.getType());
-    }
+	public List<BookDetailDTO> replaceBooks(@PathVariable("editorialId") Long editorialsId,
+			@RequestBody List<BookDetailDTO> books) throws EntityNotFoundException {
+		List<BookEntity> booksList = modelMapper.map(books, new TypeToken<List<BookEntity>>() {
+		}.getType());
+		List<BookEntity> result = editorialBookService.replaceBooks(editorialsId, booksList);
+		return modelMapper.map(result, new TypeToken<List<BookDetailDTO>>() {
+		}.getType());
+	}
 }

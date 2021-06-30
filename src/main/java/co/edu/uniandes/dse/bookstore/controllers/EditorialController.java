@@ -46,44 +46,93 @@ import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.services.EditorialService;
 
+/**
+ * Clase que implementa el recurso "editorials".
+ *
+ * @author ISIS2603
+ */
 @RestController
 @RequestMapping("/editorials")
 public class EditorialController {
 
 	@Autowired
 	private EditorialService editorialService;
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
+	 /**
+     * Busca la editorial con el id asociado recibido en la URL y la devuelve.
+     *
+     * @param editorialId Identificador de la editorial que se esta buscando.
+     * Este debe ser una cadena de dígitos.
+     * @return JSON {@link EditorialDetailDTO} - La editorial buscada
+     */
 	@GetMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public EditorialDetailDTO findOne(@PathVariable("id") Long id) throws EntityNotFoundException {
 		EditorialEntity editorialEntity = editorialService.getEditorial(id);
 		return modelMapper.map(editorialEntity, EditorialDetailDTO.class);
 	}
-	
+
+	/**
+     * Busca y devuelve todas las editoriales que existen en la aplicacion.
+     *
+     * @return JSONArray {@link EditorialDetailDTO} - Las editoriales
+     * encontradas en la aplicación. Si no hay ninguna retorna una lista vacía.
+     */
 	@GetMapping
 	@ResponseStatus(code = HttpStatus.OK)
-	public List<EditorialDetailDTO> findAll(){
+	public List<EditorialDetailDTO> findAll() {
 		List<EditorialEntity> editorials = editorialService.getEditorials();
-		return modelMapper.map(editorials, new TypeToken<List<EditorialDetailDTO>>() {}.getType());
+		return modelMapper.map(editorials, new TypeToken<List<EditorialDetailDTO>>() {
+		}.getType());
 	}
-	
+
+	/**
+     * Crea una nueva editorial con la informacion que se recibe en el cuerpo de
+     * la petición y se regresa un objeto identico con un id auto-generado por
+     * la base de datos.
+     *
+     * @param editorial {@link EditorialDTO} - La editorial que se desea
+     * guardar.
+     * @return JSON {@link EditorialDTO} - La editorial guardada con el atributo
+     * id autogenerado.
+     */
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public EditorialDTO create(@RequestBody EditorialDTO editorialDTO) throws IllegalOperationException {
-		EditorialEntity editorialEntity = editorialService.createEditorial(modelMapper.map(editorialDTO, EditorialEntity.class));
+		EditorialEntity editorialEntity = editorialService
+				.createEditorial(modelMapper.map(editorialDTO, EditorialEntity.class));
 		return modelMapper.map(editorialEntity, EditorialDTO.class);
 	}
+
+	 /**
+     * Actualiza la editorial con el id recibido en la URL con la informacion
+     * que se recibe en el cuerpo de la petición.
+     *
+     * @param editorialId Identificador de la editorial que se desea
+     * actualizar. Este debe ser una cadena de dígitos.
+     * @param editorial {@link EditorialDTO} La editorial que se desea
+     * guardar.
+     * @return JSON {@link EditorialDTO} - La editorial guardada.
+     */
 	
 	@PutMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public EditorialDTO update(@PathVariable("id") Long id, @RequestBody EditorialDTO editorialDTO) throws EntityNotFoundException {
-		EditorialEntity editorialEntity = editorialService.updateEditorial(id, modelMapper.map(editorialDTO, EditorialEntity.class));
+	public EditorialDTO update(@PathVariable("id") Long id, @RequestBody EditorialDTO editorialDTO)
+			throws EntityNotFoundException {
+		EditorialEntity editorialEntity = editorialService.updateEditorial(id,
+				modelMapper.map(editorialDTO, EditorialEntity.class));
 		return modelMapper.map(editorialEntity, EditorialDTO.class);
 	}
-	
+
+	/**
+     * Borra la editorial con el id asociado recibido en la URL.
+     *
+     * @param id Identificador de la editorial que se desea borrar.
+     * Este debe ser una cadena de dígitos.
+     */
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable("id") Long id) throws EntityNotFoundException, IllegalOperationException {

@@ -40,54 +40,102 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uniandes.dse.bookstore.dto.OrganizationDTO;
+import co.edu.uniandes.dse.bookstore.dto.OrganizationDetailDTO;
 import co.edu.uniandes.dse.bookstore.entities.OrganizationEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.services.OrganizationService;
 
+/**
+ * Clase que implementa el recurso "organizations".
+ *
+ * @author ISIS2603
+ */
 @RestController
 @RequestMapping("/organizations")
 public class OrganizationController {
-	
+
 	@Autowired
 	private OrganizationService organizationService;
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
+	/**
+	 * Busca y devuelve todos las organizaciones que existen en la aplicacion.
+	 *
+	 * @return JSONArray {@link OrganizationDTO} - Las organizaciones encontradas en
+	 *         la aplicación. Si no hay ninguna retorna una lista vacía.
+	 */
 	@GetMapping
 	@ResponseStatus(code = HttpStatus.OK)
-	public List<OrganizationDTO> findAll(){
+	public List<OrganizationDetailDTO> findAll() {
 		List<OrganizationEntity> organizations = organizationService.getOrganizations();
-		return modelMapper.map(organizations, new TypeToken<List<OrganizationDTO>>() {}.getType());
+		return modelMapper.map(organizations, new TypeToken<List<OrganizationDetailDTO>>() {
+		}.getType());
 	}
-	
+
+	/**
+	 * Busca la organization con el id asociado recibido en la URL y lo devuelve.
+	 *
+	 * @param organizationId Identificador de la organization que se esta buscando.
+	 *                       Este debe ser una cadena de dígitos.
+	 * @return JSON {@link OrganizationDetailDTO} - La organization buscada
+	 */
 	@GetMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public OrganizationDTO findOne(@PathVariable("id") Long id) throws EntityNotFoundException {
+	public OrganizationDetailDTO findOne(@PathVariable("id") Long id) throws EntityNotFoundException {
 		OrganizationEntity organizationEntity = organizationService.getOrganization(id);
-		return modelMapper.map(organizationEntity, OrganizationDTO.class);
+		return modelMapper.map(organizationEntity, OrganizationDetailDTO.class);
 	}
-	
+
+	/**
+	 * Crea una nueva organization con la informacion que se recibe en el cuerpo de
+	 * la petición y se regresa un objeto identico con un id auto-generado por la
+	 * base de datos.
+	 *
+	 * @param organizationDTO {@link OrganizationDTO} - La organization que se desea
+	 *                        guardar.
+	 * @return JSON {@link OrganizationDTO} - La organization guardada con el
+	 *         atributo id autogenerado.
+	 */
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public OrganizationDTO create(@RequestBody OrganizationDTO organizationDTO) throws IllegalOperationException {
-		OrganizationEntity organizationEntity = organizationService.createOrganization(modelMapper.map(organizationDTO, OrganizationEntity.class));
+		OrganizationEntity organizationEntity = organizationService
+				.createOrganization(modelMapper.map(organizationDTO, OrganizationEntity.class));
 		return modelMapper.map(organizationEntity, OrganizationDTO.class);
 	}
-	
+
+	/**
+	 * Actualiza la organization con el id recibido en la URL con la información que
+	 * se recibe en el cuerpo de la petición.
+	 *
+	 * @param id           Identificador de la organization que se desea actualizar.
+	 *                     Este debe ser una cadena de dígitos.
+	 * @param organization {@link OrganizationDTO} La organization que se desea
+	 *                     guardar.
+	 * @return JSON {@link OrganizationDTO} - La organization guardada.
+	 */
 	@PutMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public OrganizationDTO update(@PathVariable("id") Long id, @RequestBody OrganizationDTO organizationDTO) throws EntityNotFoundException {
-		OrganizationEntity organizationEntity = organizationService.updateOrganization(id, modelMapper.map(organizationDTO, OrganizationEntity.class));
+	public OrganizationDTO update(@PathVariable("id") Long id, @RequestBody OrganizationDTO organizationDTO)
+			throws EntityNotFoundException {
+		OrganizationEntity organizationEntity = organizationService.updateOrganization(id,
+				modelMapper.map(organizationDTO, OrganizationEntity.class));
 		return modelMapper.map(organizationEntity, OrganizationDTO.class);
 	}
-	
+
+	/**
+	 * Borra la organization con el id asociado recibido en la URL.
+	 *
+	 * @param id Identificador de la organization que se desea borrar. Este debe ser
+	 *           una cadena de dígitos.
+	 */
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable("id") Long id) throws EntityNotFoundException, IllegalOperationException {
 		organizationService.deleteOrganization(id);
 	}
-	
-	
+
 }

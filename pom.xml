@@ -20,7 +20,7 @@
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.language>java</sonar.language>
-		<sonar.coverage.exclusions>**/controllers/**,**/exceptions/**,**/podam/**</sonar.coverage.exclusions>
+		<sonar.coverage.exclusions>**/controllers/**,**/exceptions/**,**/podam/**, **/dto/**</sonar.coverage.exclusions>
 	</properties>
 	<dependencies>
 		<dependency>

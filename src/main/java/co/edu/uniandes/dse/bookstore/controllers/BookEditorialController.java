@@ -34,28 +34,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import co.edu.uniandes.dse.bookstore.dto.BookDetailDTO;
 import co.edu.uniandes.dse.bookstore.dto.EditorialDTO;
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.services.BookEditorialService;
 
+/**
+ * Clase que implementa el recurso "books/{id}/editorial".
+ *
+ * @author ISIS2603
+ * @version 1.0
+ */
 @RestController
 @RequestMapping("/books")
 public class BookEditorialController {
 
 	@Autowired
-	private BookEditorialService bookEditorialService; 
-	
+	private BookEditorialService bookEditorialService;
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
+	/**
+	 * Remplaza la instancia de Editorial asociada a un Book.
+	 *
+	 * @param bookId    Identificador del libro que se esta actualizando. Este debe
+	 *                  ser una cadena de dígitos.
+	 * @param editorial La editorial que se será del libro.
+	 * @return JSON {@link BookDetailDTO} - El arreglo de libros guardado en la
+	 *         editorial.
+	 */
 	@PutMapping(value = "/{bookId}/editorial")
 	@ResponseStatus(code = HttpStatus.OK)
-	public BookDetailDTO replaceEditorial(@PathVariable("bookId") Long bookId, @RequestBody EditorialDTO editorialDTO ) throws EntityNotFoundException{
-		BookEntity bookEntity =  bookEditorialService.replaceEditorial(bookId, editorialDTO.getId());
-		return modelMapper.map(bookEntity, BookDetailDTO.class);	
+	public BookDetailDTO replaceEditorial(@PathVariable("bookId") Long bookId, @RequestBody EditorialDTO editorialDTO)
+			throws EntityNotFoundException {
+		BookEntity bookEntity = bookEditorialService.replaceEditorial(bookId, editorialDTO.getId());
+		return modelMapper.map(bookEntity, BookDetailDTO.class);
 	}
-		
+
 }

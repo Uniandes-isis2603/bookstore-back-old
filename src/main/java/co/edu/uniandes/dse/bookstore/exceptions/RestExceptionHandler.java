@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.PRECONDITION_FAILED;;
+import static org.springframework.http.HttpStatus.PRECONDITION_FAILED;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice

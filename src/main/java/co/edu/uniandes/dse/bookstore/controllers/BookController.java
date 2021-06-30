@@ -46,44 +46,88 @@ import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.services.BookService;
 
+/**
+ * Clase que implementa el recurso "books".
+ *
+ * @author ISIS2603
+ */
 @RestController
 @RequestMapping("/books")
 public class BookController {
 
 	@Autowired
-	private BookService bookService; 
-	
+	private BookService bookService;
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
+	/**
+	 * Busca y devuelve todos los libros que existen en la aplicacion.
+	 *
+	 * @return JSONArray {@link BookDetailDTO} - Los libros encontrados en la
+	 *         aplicación. Si no hay ninguno retorna una lista vacía.
+	 */
 	@GetMapping
 	@ResponseStatus(code = HttpStatus.OK)
-	public List<BookDetailDTO> findAll(){
+	public List<BookDetailDTO> findAll() {
 		List<BookEntity> books = bookService.getBooks();
-		return modelMapper.map(books, new TypeToken<List<BookDetailDTO>>() {}.getType());
+		return modelMapper.map(books, new TypeToken<List<BookDetailDTO>>() {
+		}.getType());
 	}
-	
+
+	/**
+	 * Busca el libro con el id asociado recibido en la URL y lo devuelve.
+	 *
+	 * @param bookId Identificador del libro que se esta buscando. Este debe ser una
+	 *               cadena de dígitos.
+	 * @return JSON {@link BookDetailDTO} - El libro buscado
+	 */
 	@GetMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public BookDetailDTO findOne(@PathVariable("id") Long id) throws EntityNotFoundException {
 		BookEntity bookEntity = bookService.getBook(id);
-		return modelMapper.map(bookEntity,BookDetailDTO.class);
+		return modelMapper.map(bookEntity, BookDetailDTO.class);
 	}
-	
+
+	/**
+	 * Crea un nuevo libro con la informacion que se recibe en el cuerpo de la
+	 * petición y se regresa un objeto identico con un id auto-generado por la base
+	 * de datos.
+	 *
+	 * @param book {@link BookDTO} - EL libro que se desea guardar.
+	 * @return JSON {@link BookDTO} - El libro guardado con el atributo id
+	 *         autogenerado.
+	 */
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public BookDTO create(@RequestBody BookDTO bookDTO) throws IllegalOperationException, EntityNotFoundException {
 		BookEntity bookEntity = bookService.createBook(modelMapper.map(bookDTO, BookEntity.class));
 		return modelMapper.map(bookEntity, BookDTO.class);
 	}
-	
+
+	/**
+	 * Actualiza el libro con el id recibido en la URL con la información que se
+	 * recibe en el cuerpo de la petición.
+	 *
+	 * @param bookId Identificador del libro que se desea actualizar. Este debe ser
+	 *               una cadena de dígitos.
+	 * @param book   {@link BookDTO} El libro que se desea guardar.
+	 * @return JSON {@link BookDTO} - El libro guardada.
+	 */
 	@PutMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public BookDTO update(@PathVariable("id") Long id, @RequestBody BookDTO bookDTO) throws EntityNotFoundException, IllegalOperationException {
+	public BookDTO update(@PathVariable("id") Long id, @RequestBody BookDTO bookDTO)
+			throws EntityNotFoundException, IllegalOperationException {
 		BookEntity bookEntity = bookService.updateBook(id, modelMapper.map(bookDTO, BookEntity.class));
 		return modelMapper.map(bookEntity, BookDTO.class);
 	}
-	
+
+	/**
+	 * Borra el libro con el id asociado recibido en la URL.
+	 *
+	 * @param bookId Identificador del libro que se desea borrar. Este debe ser una
+	 *               cadena de dígitos.
+	 */
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable("id") Long id) throws EntityNotFoundException, IllegalOperationException {

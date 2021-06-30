@@ -24,9 +24,10 @@ SOFTWARE.
 package co.edu.uniandes.dse.bookstore.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class EditorialDTO {
-	private Long id;
-	private String name;
+@EqualsAndHashCode(callSuper=false)
+public class OrganizationDetailDTO extends OrganizationDTO {
+	 private PrizeDTO prize;
 }

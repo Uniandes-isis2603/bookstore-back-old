@@ -23,7 +23,6 @@ SOFTWARE.
 */
 package co.edu.uniandes.dse.bookstore.controllers;
 
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,42 +41,78 @@ import co.edu.uniandes.dse.bookstore.entities.AuthorEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.services.PrizeAuthorService;
 
+/**
+ * Clase que implementa el recurso "prize/{id}/author".
+ *
+ * @author ISIS2603
+ */
 @RestController
 @RequestMapping("/prizes")
 public class PrizeAuthorController {
-	
+
 	@Autowired
 	private PrizeAuthorService prizeAuthorService;
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	
+
+	/**
+	 * Guarda un author dentro de un premio con la informacion que recibe el la URL.
+	 *
+	 * @param prizeId  Identificador de el premio que se esta actualizando. Este
+	 *                 debe ser una cadena de dígitos.
+	 * @param authorId Identificador del autor que se desea guardar. Este debe ser
+	 *                 una cadena de dígitos.
+	 * @return JSON {@link AuthorDTO} - El autor guardado en el premio.
+	 */
 	@PostMapping(value = "/{prizeId}/author/{authorId}")
 	@ResponseStatus(code = HttpStatus.OK)
-    public AuthorDTO addAuthor(@PathVariable("prizeId") Long prizeId, @PathVariable("authorId") Long authorId) throws EntityNotFoundException {
-        AuthorEntity authorEntity = prizeAuthorService.addAuthor(authorId, prizeId);
-        return modelMapper.map(authorEntity, AuthorDTO.class);
-    }
-	
+	public AuthorDTO addAuthor(@PathVariable("prizeId") Long prizeId, @PathVariable("authorId") Long authorId)
+			throws EntityNotFoundException {
+		AuthorEntity authorEntity = prizeAuthorService.addAuthor(authorId, prizeId);
+		return modelMapper.map(authorEntity, AuthorDTO.class);
+	}
+
+	/**
+	 * Busca el autor dentro de el premio con id asociado.
+	 *
+	 * @param prizeId Identificador de el premio que se esta buscando. Este debe ser
+	 *                una cadena de dígitos.
+	 * @return JSON {@link AuthorDetailDTO} - El autor buscado
+	 */
 	@GetMapping(value = "/{prizeId}/author")
 	@ResponseStatus(code = HttpStatus.OK)
-    public AuthorDetailDTO getAuthor(@PathVariable("prizeId") Long prizeId) throws EntityNotFoundException {
-        AuthorEntity authorEntity = prizeAuthorService.getAuthor(prizeId);
-        return modelMapper.map(authorEntity, AuthorDetailDTO.class);
-    }
-	
+	public AuthorDetailDTO getAuthor(@PathVariable("prizeId") Long prizeId) throws EntityNotFoundException {
+		AuthorEntity authorEntity = prizeAuthorService.getAuthor(prizeId);
+		return modelMapper.map(authorEntity, AuthorDetailDTO.class);
+	}
+
+	/**
+	 * Remplaza la instancia de Author asociada a una instancia de Prize
+	 *
+	 * @param prizeId  Identificador de el premio que se esta actualizando. Este
+	 *                 debe ser una cadena de dígitos.
+	 * @param authorId Identificador de el author que se esta remplazando. Este debe
+	 *                 ser una cadena de dígitos.
+	 * @return JSON {@link AuthorDetailDTO} - El autor actualizado
+	 */
 	@PutMapping(value = "/{prizeId}/author/{authorId}")
 	@ResponseStatus(code = HttpStatus.OK)
-    public AuthorDetailDTO replaceAuthor(@PathVariable("prizeId") Long prizeId, @PathVariable("authorId") Long authorId) throws EntityNotFoundException {
-        AuthorEntity authorEntity = prizeAuthorService.replaceAuthor(prizeId, authorId);
+	public AuthorDetailDTO replaceAuthor(@PathVariable("prizeId") Long prizeId, @PathVariable("authorId") Long authorId)
+			throws EntityNotFoundException {
+		AuthorEntity authorEntity = prizeAuthorService.replaceAuthor(prizeId, authorId);
 		return modelMapper.map(authorEntity, AuthorDetailDTO.class);
-    }
-	
+	}
+
+	/**
+	 * Elimina la conexión entre el autor y el premio recibido en la URL.
+	 *
+	 * @param prizeId El ID del premio al cual se le va a desasociar el autor
+	 */
 	@DeleteMapping(value = "/{prizeId}/author")
 	@ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void removeAuthor(@PathVariable("prizeId") Long prizeId) throws EntityNotFoundException {
-        prizeAuthorService.removeAuthor(prizeId);
-    }
-	
+	public void removeAuthor(@PathVariable("prizeId") Long prizeId) throws EntityNotFoundException {
+		prizeAuthorService.removeAuthor(prizeId);
+	}
+
 }
