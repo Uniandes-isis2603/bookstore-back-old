@@ -161,7 +161,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingdate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
 					"raw": "http://{{ip}}:{{puerto}}/api/books",
