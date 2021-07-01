@@ -20,7 +20,8 @@
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.language>java</sonar.language>
-		<sonar.coverage.exclusions>**/controllers/**,**/exceptions/**,**/podam/**, **/dto/**</sonar.coverage.exclusions>
+		<sonar.coverage.exclusions>**/controllers/**,**/exceptions/**,**/podam/**,
+			**/dto/**</sonar.coverage.exclusions>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -89,6 +90,28 @@
 						<goals>
 							<goal>report</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
+				<executions>
+					<execution>
+						<id>integration-tests</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>
+								newman
+							</executable>
+							<commandlineArgs>
+								run collections/AuthorTests.postman_collection.json -e collections/EntornoColeccionesBookStore.postman_environment.json
+							</commandlineArgs>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
