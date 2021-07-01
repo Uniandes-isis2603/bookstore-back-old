@@ -66,6 +66,12 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<profiles>
+						<profile>integration-tests</profile>
+					</profiles>
+					<arguments>
+						<argument>--server.port=8999</argument>
+					</arguments>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -73,6 +79,20 @@
 						</exclude>
 					</excludes>
 				</configuration>
+				<executions>
+					<execution>
+						<id>pre-integration-test</id>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-integration-test</id>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.jacoco</groupId>
@@ -109,7 +129,7 @@
 								newman
 							</executable>
 							<commandlineArgs>
-								run collections/AuthorTests.postman_collection.json -e collections/EntornoColeccionesBookStore.postman_environment.json
+								run collections/AuthorTests.postman_collection.json -e collections/EntornoIT.postman_environment.json
 							</commandlineArgs>
 						</configuration>
 					</execution>
