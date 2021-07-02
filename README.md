@@ -33,3 +33,8 @@ Proyecto de ejemplo para el curso ISIS2603 - Desarrollo de Software en Equipos
 - En SpringTools vaya a Boot Dashboard
 - Seleccione la opción local > bookstore-back
 - Haga clic en el ícono Start. Esto iniciará un servidor que escucha peticiones en el puerto 8080
+
+### Probar el API
+- Inicie Postman e importe las colecciones que están en el directorio collections
+- Seleccione el entorno denominado "Entorno Colecciones Book"
+- Ejecute las colecciones importadas
