@@ -30,4 +30,6 @@ Proyecto de ejemplo para el curso ISIS2603 - Desarrollo de Software en Equipos
 - Reinicie SpringTools
 
 ### Ejecutar el back
-- En SpringTools seleccione vaya a BootDashboard
+- En SpringTools vaya a Boot Dashboard
+- Seleccione la opción local > bookstore-back
+- Haga clic en el ícono Start. Esto iniciará un servidor que escucha peticiones en el puerto 8080
