@@ -23,7 +23,7 @@ Proyecto de ejemplo para el curso ISIS2603 - Desarrollo de Software en Equipos
 
 ### Configurar Lombok en Eclipse
 - Vaya a su directorio personal (en Windows sería, por ejemplo c:\Usuarios\estudiante\)
-- Haga doble clic al archivo .m2\repository\org\projectlombok\lombok\1.18.20
+- Haga doble clic al archivo .m2\repository\org\projectlombok\lombok\1.18.20\lombok-1.18.20.jar
 - Cuando se ejecute la aplicación verifique que en la sección IDEs este seleccionado el ejecutable SpringToolSuite4
 - Haga clic en Install/Update
 - Cierre la aplicación 
