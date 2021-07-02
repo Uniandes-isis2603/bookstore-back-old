@@ -21,9 +21,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-
 package co.edu.uniandes.dse.bookstore.exceptions;
 
+/*
+ * Excepción que se lanza cuando en el proceso de búsqueda no se encuenta una entidad
+ */
 public class EntityNotFoundException extends Exception {
 	
 	private static final long serialVersionUID = 1L;
