@@ -5,7 +5,6 @@ Proyecto de ejemplo para el curso ISIS2603 - Desarrollo de Software en Equipos
 ## Requisitos para la ejecución
 
 - [Descargue e instale el JDK 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
-- [Descargue e instale Eclipse](https://www.eclipse.org/downloads)
 - [Spring Tools para Eclipse](https://spring.io/tools)
 - [Postman](https://www.postman.com/downloads/)
 
