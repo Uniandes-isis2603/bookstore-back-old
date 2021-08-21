@@ -23,11 +23,11 @@ SOFTWARE.
 */
 package co.edu.uniandes.dse.bookstore.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@EqualsAndHashCode(callSuper=false)
+@Getter
+@Setter
 public class PrizeDetailDTO extends PrizeDTO {
 	private AuthorDTO author;
 }

@@ -25,9 +25,11 @@ package co.edu.uniandes.dse.bookstore.dto;
 
 import java.util.Date;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class AuthorDTO {
 	private Long id;
 	private Date birthDate;
