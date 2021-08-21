@@ -32,8 +32,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import uk.co.jemos.podam.common.PodamExclude;
 
 /**
@@ -42,9 +42,9 @@ import uk.co.jemos.podam.common.PodamExclude;
  * @author ISIS2603
  */
 
-@Data
+@Getter
+@Setter
 @Entity
-@EqualsAndHashCode(callSuper = false)
 public class PrizeEntity extends BaseEntity {
 
 	@Temporal(TemporalType.DATE)
