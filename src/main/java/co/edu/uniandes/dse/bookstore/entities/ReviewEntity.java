@@ -24,7 +24,6 @@ SOFTWARE.
 
 package co.edu.uniandes.dse.bookstore.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -48,6 +47,6 @@ public class ReviewEntity extends BaseEntity {
 	private String description;
 
 	@PodamExclude
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	private BookEntity book;
 }
