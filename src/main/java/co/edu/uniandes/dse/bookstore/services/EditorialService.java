@@ -37,7 +37,6 @@ import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.exceptions.ErrorMessage;
 import co.edu.uniandes.dse.bookstore.exceptions.IllegalOperationException;
 import co.edu.uniandes.dse.bookstore.repositories.EditorialRepository;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -48,7 +47,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 
 @Slf4j
-@Data
 @Service
 public class EditorialService {
 
