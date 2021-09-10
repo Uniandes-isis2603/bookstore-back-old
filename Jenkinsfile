@@ -69,7 +69,7 @@ pipeline {
                      fileName = files[i].name.replace(".json","") 
                      stage("$fileName") {
                         sh '''
-                           echo $fileName
+                           echo "$fileName"
                         '''
                      }
                   } 
@@ -83,7 +83,7 @@ pipeline {
             script {
                docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {                  
                   sh '''
-                     ./mvnw clean test
+                     
                   '''
                }
             }
@@ -95,7 +95,7 @@ pipeline {
             script {
                docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
                   sh '''
-                     ./mvnw clean verify sonar:sonar -Dsonar.host.url=${SONARQUBE_URL}
+                     
                   '''
                }
             }
