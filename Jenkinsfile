@@ -65,11 +65,10 @@ pipeline {
                   def files = findFiles(glob: "${rutaColecciones}")
                   //Recorremos el array y generamos un stage para cada colección
                   for (i=0; i<files.length; i++) {
-                     file = files[i].name
+                     def file = files[i].name
                      fileName = files[i].name.replace(".json","") 
                      stage("$fileName") {
-                        def foo = "HolaMundo"
-                        sh "echo ${foo}"
+                        sh "echo ${file}"
                      }
                   } 
                }
