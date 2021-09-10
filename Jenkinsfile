@@ -59,7 +59,7 @@ pipeline {
             script {
                docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
                   // Ruta environment
-                  def Environment="collections/EntornoIT.postman_environment.json.json"
+                  def Environment="collections/EntornoIT.postman_environment.json"
 
                   //Ruta colecciones Postman
                   def rutaColecciones = "collections/*.json"
