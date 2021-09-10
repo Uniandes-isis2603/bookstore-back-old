@@ -68,9 +68,8 @@ pipeline {
                      file = files[i].name
                      fileName = files[i].name.replace(".json","") 
                      stage("$fileName") {
-                        sh '''
-                           cat ${file}
-                        '''
+                        def foo = "HolaMundo"
+                        sh "echo ${foo}"
                      }
                   } 
                }
