@@ -69,7 +69,7 @@ pipeline {
                      fileName = files[i].name.replace(".json","") 
                      stage("$fileName") {
                         sh '''
-                           cat "$file"
+                           cat '$file'
                         '''
                      }
                   } 
