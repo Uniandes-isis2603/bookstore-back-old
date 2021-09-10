@@ -63,6 +63,16 @@ pipeline {
 
                   //Ruta colecciones Postman
                   def rutaColecciones = "collections/*.json"
+                  def files = findFiles(glob: "${rutaColecciones}")
+                  //Recorremos el array y generamos un stage para cada colección
+                  for (i=0; i<files.length; i++) {
+                     file = files[i].name
+                     fileName = files[i].name.replace(".json","") 
+                     stage("$fileName") {
+                     sh '''
+                        newman run 'test/$file' -e $Environment; 
+                     '''
+                  } 
                }
             }
          }
