@@ -53,36 +53,13 @@ pipeline {
             }
          }
       }
-      stage('IT') {
-         // Build artifacts
-         steps {
-            script {
-               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
-                  // Ruta environment
-                  def environment="collections/EntornoColeccionesBookStore.postman_environment.json"
-
-                  //Ruta colecciones Postman
-                  def rutaColecciones = "collections/*.json"
-                  def files = findFiles(glob: "${rutaColecciones}")
-                  //Recorremos el array y generamos un stage para cada colección
-                  for (i=0; i<files.length; i++) {
-                     def file = files[i].name
-                     fileName = files[i].name.replace(".json","") 
-                     stage("$fileName") {
-                        sh "newman run collections/${file} -e ${environment}"
-                     }
-                  } 
-               }
-            }
-         }
-      }
       stage('Testing') {
          // Run unit tests
          steps {
             script {
                docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {                  
                   sh '''
-                     
+                     ./mvnw clean test   
                   '''
                }
             }
@@ -94,7 +71,7 @@ pipeline {
             script {
                docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
                   sh '''
-                     
+                     /mvnw clean verify sonar:sonar -Dsonar.host.url=${SONARQUBE_URL}   
                   '''
                }
             }
