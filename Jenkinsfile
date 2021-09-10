@@ -35,8 +35,8 @@ pipeline {
                sh('echo "Report updated" >> ./reports/.status')
                sh('git add ./reports/index.html ./reports/.status')
                sh('git commit -m "[ci-skip] GitInspector report added"')
-               sh('git pull https://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@github.com/Uniandes-isis2603/${GIT_REPO} master')
-               sh('git push https://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@github.com/Uniandes-isis2603/${GIT_REPO} master')
+               //sh('git pull https://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@github.com/Uniandes-isis2603/${GIT_REPO} master')
+               //sh('git push https://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@github.com/Uniandes-isis2603/${GIT_REPO} master')
             }
          }
       }      
