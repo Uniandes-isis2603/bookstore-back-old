@@ -53,6 +53,20 @@ pipeline {
             }
          }
       }
+      stage('IT') {
+         // Build artifacts
+         steps {
+            script {
+               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
+                  // Ruta environment
+                  def Environment="collections/EntornoIT.postman_environment.json.json"
+
+                  //Ruta colecciones Postman
+                  def rutaColecciones = "collections/*.json"
+               }
+            }
+         }
+      }
       stage('Testing') {
          // Run unit tests
          steps {
