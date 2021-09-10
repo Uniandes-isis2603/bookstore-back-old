@@ -68,7 +68,7 @@ pipeline {
                      def file = files[i].name
                      fileName = files[i].name.replace(".json","") 
                      stage("$fileName") {
-                        sh "newman run ${file} -e ${environment}"
+                        sh "newman run collections/${file} -e ${environment}"
                      }
                   } 
                }
