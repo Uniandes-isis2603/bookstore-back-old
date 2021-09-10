@@ -47,6 +47,7 @@ pipeline {
                docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
                   sh '''
                      java -version
+                     ./mvnw clean package
                   '''
                }
             }
