@@ -47,7 +47,6 @@ pipeline {
                docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
                   sh '''
                      java -version
-                     ./mvnw clean package
                   '''
                }
             }
@@ -70,7 +69,7 @@ pipeline {
                      fileName = files[i].name.replace(".json","") 
                      stage("$fileName") {
                         sh '''
-                           newman run '$file' -e '$Environment'
+                           echo $fileName
                         '''
                      }
                   } 
