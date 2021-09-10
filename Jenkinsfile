@@ -69,9 +69,10 @@ pipeline {
                      file = files[i].name
                      fileName = files[i].name.replace(".json","") 
                      stage("$fileName") {
-                     sh '''
-                        newman run 'test/$file' -e $Environment; 
-                     '''
+                        sh '''
+                           newman run 'test/$file' -e $Environment
+                        '''
+                     }
                   } 
                }
             }
