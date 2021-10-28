@@ -134,7 +134,7 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>integration-tests-boojs</id>
+						<id>integration-tests-book</id>
 						<phase>integration-test</phase>
 						<goals>
 							<goal>exec</goal>
