@@ -129,22 +129,7 @@
 								newman
 							</executable>
 							<commandlineArgs>
-								run collections/AuthorTests.postman_collection.json -e collections/EntornoIT.postman_environment.json
-							</commandlineArgs>
-						</configuration>
-					</execution>
-					<execution>
-						<id>integration-tests-book</id>
-						<phase>integration-test</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>
-								newman
-							</executable>
-							<commandlineArgs>
-								run collections/BookTests.postman_collection.json -e collections/EntornoIT.postman_environment.json
+								run collections/MigrationTests.postman_collection.json -e collections/EntornoIT.postman_environment.json
 							</commandlineArgs>
 						</configuration>
 					</execution>

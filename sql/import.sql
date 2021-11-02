@@ -1,8 +1,8 @@
-delete from REVIEW_ENTITY;
-delete from BOOK_ENTITY_AUTHORS;
-delete from AUTHOR_ENTITY;
-delete from BOOK_ENTITY;
-delete from EDITORIAL_ENTITY;
+--delete from REVIEW_ENTITY;
+--delete from BOOK_ENTITY_AUTHORS;
+--delete from AUTHOR_ENTITY;
+--delete from BOOK_ENTITY;
+--delete from EDITORIAL_ENTITY;
 
 insert into EDITORIAL_ENTITY (id, name) values (100,'Oveja Negra');
 insert into EDITORIAL_ENTITY (id, name) values (200,'Siruela');
