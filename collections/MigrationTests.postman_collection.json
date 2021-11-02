@@ -15,6 +15,7 @@
 						"exec": [
 							"var data= JSON.parse(responseBody);",
 							"tests[\"No genera error en el Gell All\"] = responseCode.code === 200;",
+							"console.log(\"total\",data.length)",
 							"tests[\"authors count\"] = data.length > 0;"
 						],
 						"type": "text/javascript"
