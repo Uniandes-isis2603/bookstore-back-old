@@ -1,8 +1,8 @@
---delete from REVIEW_ENTITY;
---delete from BOOK_ENTITY_AUTHORS;
---delete from AUTHOR_ENTITY;
---delete from BOOK_ENTITY;
---delete from EDITORIAL_ENTITY;
+delete from REVIEW_ENTITY;
+delete from BOOK_ENTITY_AUTHORS;
+delete from AUTHOR_ENTITY;
+delete from BOOK_ENTITY;
+delete from EDITORIAL_ENTITY;
 
 insert into EDITORIAL_ENTITY (id, name) values (100,'Oveja Negra');
 insert into EDITORIAL_ENTITY (id, name) values (200,'Siruela');
@@ -14,7 +14,7 @@ insert into BOOK_ENTITY (id, name, isbn, image, description, publishing_date, ed
 insert into BOOK_ENTITY (id, name, isbn, image, description, publishing_date, editorial_id) values (500, 'The Slow Regard of Silent Things', '260760424-9', 'http://www.patrickrothfuss.com/images/page/cover-slow-regard_277.jpg', 'Supplement Lower Artery with Autol Sub, Perc Approach', '2013-05-09',200);
 insert into BOOK_ENTITY (id, name, isbn, image, description, publishing_date, editorial_id) values (600, 'Harry Potter and the Philosopher´s Stone', '260760424-9', 'https://katemacdonalddotnet.files.wordpress.com/2015/11/potter-1-4.jpg', 'disse accumsan tortor quis turp Perc Approach', '2013-09-05',200);
 
-insert into AUTHOR_ENTITY (id, name,  image, birth_date, description) values (100,'J.K. Rowling', 'http://cdn1us.denofgeek.com/sites/denofgeekus/files/2016/11/rowling.jpg', '1965-07-04','Joanne  Rowling, OBE, FRSL, pen names J. K. Rowling and Robert Galbraith, is a British novelist, screenwriter and film producer best known as the author of the Harry Potter fantasy series.');
+insert into AUTHOR_ENTITY (id, name,  image, birth_date, description) values (100,'J.K. Rowling', 'https://akns-images.eonline.com/eol_images/Entire_Site/201842/rs_600x600-180502094140-600-j.k.-rowling.jpg', '1965-07-04','Joanne  Rowling, OBE, FRSL, pen names J. K. Rowling and Robert Galbraith, is a British novelist, screenwriter and film producer best known as the author of the Harry Potter fantasy series.');
 insert into AUTHOR_ENTITY (id, name,  image, birth_date, description) values (200, 'J. R. R. Tolkien', 'http://www.biografiasyvidas.com/biografia/t/fotos/tolkien.jpg', '1892-03-01','Joanne  Rowling, OBE, FRSL, pen names J. K. Rowling and Robert Galbraith, is a British novelist, screenwriter and film producer best known as the author of the Harry Potter fantasy series.');
 insert into AUTHOR_ENTITY (id, name,  image, birth_date, description) values (300, 'George R. R. Martin','http://static1.businessinsider.com/image/54d3c832eab8eabe028b4569-960/george-rr-martin-2011.jpg','1948-09-20', 'asA smkcxm slklkc n names J. K. Rowling and Robert Galbraith, is a British novelist');
 insert into AUTHOR_ENTITY (id, name,  image, birth_date, description) values (400,'Patrick Rothfuss','http://librista.es/blog/wp-content/uploads/2014/05/patrick-rothfuss.jpg/5x10','1973-06-06','Joanne  Rowling, OBE, FRSL, pen names J. K. Rowling and Robert Galbraith, is a British novelist, screenwriter and film producer best known as the author of the Harry Potter fantasy series.');
