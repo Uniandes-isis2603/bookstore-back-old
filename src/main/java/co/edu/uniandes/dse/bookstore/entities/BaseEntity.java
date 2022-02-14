@@ -39,6 +39,7 @@ import uk.co.jemos.podam.common.PodamExclude;
  * @author ISIS2603
  */
 
+
 @Data
 @MappedSuperclass
 public abstract class BaseEntity {
