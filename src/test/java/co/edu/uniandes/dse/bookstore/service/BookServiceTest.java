@@ -119,11 +119,10 @@ class BookServiceTest {
 	void testCreateBook() throws EntityNotFoundException, IllegalOperationException {
 		BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
 		newEntity.setEditorial(editorialList.get(0));
+		newEntity.setIsbn("1-4028-9462-7");
 		BookEntity result = bookService.createBook(newEntity);
 		assertNotNull(result);
-
 		BookEntity entity = entityManager.find(BookEntity.class, result.getId());
-
 		assertEquals(newEntity.getId(), entity.getId());
 		assertEquals(newEntity.getName(), entity.getName());
 		assertEquals(newEntity.getDescription(), entity.getDescription());
