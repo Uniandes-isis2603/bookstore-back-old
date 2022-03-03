@@ -79,10 +79,14 @@ pipeline {
       }
    }
    post { 
-      always { 
-         // Clean workspace
-         cleanWs deleteDirs: true
-      }
+      always {
+            cleanWs(cleanWhenNotBuilt: false,
+                    deleteDirs: true,
+                    disableDeferredWipeout: true,
+                    notFailBuild: true,
+                    patterns: [[pattern: '.gitignore', type: 'INCLUDE'],
+                               [pattern: '.propsfile', type: 'EXCLUDE']])
+        }
    }
 }
 
