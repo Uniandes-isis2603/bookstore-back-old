@@ -117,7 +117,7 @@
 				<version>1.6.0</version>
 				<executions>
 					<execution>
-						<id>integration-tests-author</id>
+						<id>integration-tests-composed-collection</id>
 						<phase>integration-test</phase>
 						<goals>
 							<goal>exec</goal>
@@ -127,7 +127,7 @@
 								newman
 							</executable>
 							<commandlineArgs>
-								run collections/AuthorTests.postman_collection.json -e collections/EntornoIT.postman_environment.json
+								run composed.collection.json -e collections/EntornoIT.postman_environment.json
 							</commandlineArgs>
 						</configuration>
 					</execution>
