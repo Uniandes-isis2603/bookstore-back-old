@@ -97,10 +97,11 @@ public class AuthorController {
 	 * @param authorDTO {@link AuthorDTO} - EL autor que se desea guardar.
 	 * @return JSON {@link AuthorDTO} - El autor guardado con el atributo id
 	 *         autogenerado.
+	 * @throws IllegalOperationException 
 	 */
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public AuthorDTO create(@RequestBody AuthorDTO authorDTO) {
+	public AuthorDTO create(@RequestBody AuthorDTO authorDTO) throws IllegalOperationException {
 		AuthorEntity authorEntity = authorService.createAuthor(modelMapper.map(authorDTO, AuthorEntity.class));
 		return modelMapper.map(authorEntity, AuthorDTO.class);
 	}

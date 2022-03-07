@@ -27,6 +27,8 @@ package co.edu.uniandes.dse.bookstore.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -114,10 +116,16 @@ class AuthorServiceTest {
 
 	/**
 	 * Prueba para crear un Author.
+	 * @throws IllegalOperationException 
 	 */
 	@Test
-	void testCreateAuthor() {
+	void testCreateAuthor() throws IllegalOperationException {
 		AuthorEntity newEntity = factory.manufacturePojo(AuthorEntity.class);
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date()); 
+		calendar.add(Calendar.DATE, -15);
+		newEntity.setBirthDate(calendar.getTime());
 		AuthorEntity result = authorService.createAuthor(newEntity);
 		assertNotNull(result);
 
@@ -127,6 +135,22 @@ class AuthorServiceTest {
 		assertEquals(newEntity.getName(), entity.getName());
 		assertEquals(newEntity.getBirthDate(), entity.getBirthDate());
 		assertEquals(newEntity.getDescription(), entity.getDescription());
+	}
+	
+	/**
+	 * Prueba para crear un Author con una fecha de nacimiento mayor que la fecha actual.
+	 * @throws IllegalOperationException 
+	 */
+	@Test
+	void testCreateAuthorInvalidBirthDate() {
+		assertThrows(IllegalOperationException.class, ()->{
+			AuthorEntity newEntity = factory.manufacturePojo(AuthorEntity.class);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date()); 
+			calendar.add(Calendar.DATE, 15);
+			newEntity.setBirthDate(calendar.getTime());
+			authorService.createAuthor(newEntity);
+		});
 	}
 
 	/**

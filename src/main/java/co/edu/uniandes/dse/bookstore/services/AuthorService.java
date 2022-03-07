@@ -24,6 +24,7 @@ SOFTWARE.
 
 package co.edu.uniandes.dse.bookstore.services;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,10 +60,16 @@ public class AuthorService {
 	 *
 	 * @param author Objeto de AuthorEntity con los datos nuevos
 	 * @return Objeto de AuthorEntity con los datos nuevos y su ID.
+	 * @throws IllegalOperationException 
 	 */
 	@Transactional
-	public AuthorEntity createAuthor(AuthorEntity author) {
+	public AuthorEntity createAuthor(AuthorEntity author) throws IllegalOperationException {
 		log.info("Inicia proceso de creación del autor");
+		Calendar calendar = Calendar.getInstance();
+		if(author.getBirthDate().compareTo(calendar.getTime()) > 0) {
+			throw new IllegalOperationException("Birth date if ater current date");
+	    }
+		
 		return authorRepository.save(author);
 	}
 
