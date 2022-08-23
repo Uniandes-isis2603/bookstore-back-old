@@ -192,6 +192,7 @@ class BookServiceTest {
 	void testCreateBookWithNullEditorial() {
 		assertThrows(IllegalOperationException.class, () -> {
 			BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
+			newEntity.setIsbn("1-4028-9462-7");
 			newEntity.setEditorial(null);
 			bookService.createBook(newEntity);
 		});
