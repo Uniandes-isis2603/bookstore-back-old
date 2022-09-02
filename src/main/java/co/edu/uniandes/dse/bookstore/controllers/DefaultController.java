@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class DefaultController {
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public Map<String, String> sayHello() {
+    public Map<String, String> welcome() {
         HashMap<String, String> map = new HashMap<>();
         map.put("status", "OK");
         map.put("message", "REST API for BookStore is running");
