@@ -177,6 +177,7 @@ class BookServiceTest {
 	void testCreateBookWithInvalidEditorial() {
 		assertThrows(IllegalOperationException.class, () -> {
 			BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
+			newEntity.setIsbn("1-4028-9462-7");
 			EditorialEntity editorialEntity = new EditorialEntity();
 			editorialEntity.setId(0L);
 			newEntity.setEditorial(editorialEntity);
@@ -191,6 +192,7 @@ class BookServiceTest {
 	void testCreateBookWithNullEditorial() {
 		assertThrows(IllegalOperationException.class, () -> {
 			BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
+			newEntity.setIsbn("1-4028-9462-7");
 			newEntity.setEditorial(null);
 			bookService.createBook(newEntity);
 		});
