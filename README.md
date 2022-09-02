@@ -8,5 +8,6 @@ En [este tutorial](https://misovirtual.virtual.uniandes.edu.co/codelabs/entorno-
 
 ## Ejecución
 
-Para la ejecución del proyecto siga los pasos que se detallan [en este tutorial](https://misovirtual.virtual.uniandes.edu.co/codelabs/ejecucion-back-spring/index.html) 
-
+Para la ejecución del proyecto siga los pasos que se detallan en los siguientes tutoriales: 
+* [Instalación del ambiente](https://misovirtual.virtual.uniandes.edu.co/codelabs/ISIS2603_MaquinaPropia/index.html#8)
+* [Ejecución del proyecto](https://misovirtual.virtual.uniandes.edu.co/codelabs/ISIS2603_EjecucionBack/index.html)
