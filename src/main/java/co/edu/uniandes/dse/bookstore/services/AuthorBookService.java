@@ -57,7 +57,7 @@ public class AuthorBookService {
 
 	@Autowired
 	private AuthorRepository authorRepository;
-	
+
 	/**
 	 * Asocia un Book existente a un Author
 	 *
@@ -98,16 +98,8 @@ public class AuthorBookService {
 		if (authorEntity.isEmpty())
 			throw new EntityNotFoundException(ErrorMessage.AUTHOR_NOT_FOUND);
 
-		List<BookEntity> books = bookRepository.findAll();
-		List<BookEntity> bookList = new ArrayList<>();
-
-		for (BookEntity b : books) {
-			if (b.getAuthors().contains(authorEntity.get())) {
-				bookList.add(b);
-			}
-		}
 		log.info("Termina proceso de consultar todos los libros del autor con id = {0}", authorId);
-		return bookList;
+		return authorEntity.get().getBooks();
 	}
 
 	/**
