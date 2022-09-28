@@ -123,10 +123,10 @@ public class EditorialBookService {
 				
 		log.info("Termina proceso de consultar el libro con id = {0} de la editorial con id = " + editorialId, bookId);
 		
-		if(editorialEntity.get().getBooks().contains(bookEntity.get()))
-			return bookEntity.get();
+		if(!editorialEntity.get().getBooks().contains(bookEntity.get()))
+			throw new IllegalOperationException("The book is not associated to the editorial");
 		
-		throw new IllegalOperationException("The book is not associated to the editorial");
+		return bookEntity.get();
 	}
 
 	/**

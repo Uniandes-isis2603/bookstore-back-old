@@ -121,10 +121,10 @@ public class AuthorBookService {
 			throw new EntityNotFoundException(ErrorMessage.BOOK_NOT_FOUND);
 
 		log.info("Termina proceso de consultar el libro con id = {0} del autor con id = " + authorId, bookId);
-		if (bookEntity.get().getAuthors().contains(authorEntity.get()))
-			return bookEntity.get();
-
-		throw new IllegalOperationException("The book is not associated to the author");
+		if (!bookEntity.get().getAuthors().contains(authorEntity.get()))
+			throw new IllegalOperationException("The book is not associated to the author");
+		
+		return bookEntity.get();
 	}
 
 	/**
