@@ -24,7 +24,6 @@ SOFTWARE.
 
 package co.edu.uniandes.dse.bookstore.services;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -152,6 +151,7 @@ public class AuthorBookService {
 				bookEntity.get().getAuthors().add(authorEntity.get());
 		}
 		log.info("Finaliza proceso de reemplazar los libros asociados al author con id = {0}", authorId);
+		authorEntity.get().setBooks(books);
 		return books;
 	}
 
@@ -173,6 +173,7 @@ public class AuthorBookService {
 			throw new EntityNotFoundException(ErrorMessage.BOOK_NOT_FOUND);
 
 		bookEntity.get().getAuthors().remove(authorEntity.get());
+		authorEntity.get().getBooks().remove(bookEntity.get());
 		log.info("Finaliza proceso de borrar un libro del author con id = {0}", authorId);
 	}
 }

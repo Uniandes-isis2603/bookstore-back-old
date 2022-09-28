@@ -265,39 +265,18 @@ class AuthorBookServiceTest {
 		List<BookEntity> nuevaLista = new ArrayList<>();
 		for (int i = 0; i < 3; i++) {
 			BookEntity entity = factory.manufacturePojo(BookEntity.class);
-			entity.getAuthors().add(author);
 			entity.setEditorial(editorial);
-			bookService.createBook(entity);
+			entityManager.persist(entity);
 			nuevaLista.add(entity);
 		}
 		authorBookService.addBooks(author.getId(), nuevaLista);
 		List<BookEntity> bookEntities = authorBookService.getBooks(author.getId());
 		for (BookEntity aNuevaLista : nuevaLista) {
+			
 			assertTrue(bookEntities.contains(aNuevaLista));
 		}
 	}
 	
-	/**
-	 * Prueba para actualizar los libros de un autor.
-	 *
-	 * @throws EntityNotFoundException, IllegalOperationException
-	 */
-	@Test
-	void testReplaceBooks2() throws EntityNotFoundException, IllegalOperationException {
-		List<BookEntity> nuevaLista = new ArrayList<>();
-		for (int i = 0; i < 3; i++) {
-			BookEntity entity = factory.manufacturePojo(BookEntity.class);
-			entity.setEditorial(editorial);
-			bookService.createBook(entity);
-			nuevaLista.add(entity);
-		}
-		authorBookService.addBooks(author.getId(), nuevaLista);
-		List<BookEntity> bookEntities = authorBookService.getBooks(author.getId());
-		for (BookEntity aNuevaLista : nuevaLista) {
-			assertTrue(bookEntities.contains(aNuevaLista));
-		}
-	}
-
 	/**
 	 * Prueba para actualizar los libros de un autor que no existe.
 	 *
