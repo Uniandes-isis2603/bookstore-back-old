@@ -14,7 +14,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>bookstore</name>
 	<description>Back project for ISIS2603</description>
-	<packaging>war</packaging>
 	<properties>
 		<java.version>11</java.version>
 		<jacoco.version>0.8.3</jacoco.version>
@@ -24,12 +23,8 @@
 		<sonar.coverage.exclusions>**/controllers/**,**/exceptions/**,**/podam/**,
 			**/dto/**</sonar.coverage.exclusions>
 	</properties>
+
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-tomcat</artifactId>
-			<scope>provided</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -41,7 +36,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-		</dependency>
+		</dependency>		
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -61,14 +56,9 @@
 			<artifactId>modelmapper</artifactId>
 			<version>2.3.5</version>
 		</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 	</dependencies>
+
 	<build>
-		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
