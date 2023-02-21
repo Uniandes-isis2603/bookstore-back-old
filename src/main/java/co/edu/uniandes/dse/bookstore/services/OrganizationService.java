@@ -117,10 +117,10 @@ public class OrganizationService {
 		if (organizationEntity.isEmpty())
 			throw new EntityNotFoundException(ErrorMessage.ORGANIZATION_NOT_FOUND);
 
-		organization.setId(organizationId);
+		organizationEntity.get().setId(organizationId);
 
 		log.info("Termina proceso de actualizar organizacion con id={0}", organizationId);
-		return organizationRepository.save(organization);
+		return organizationRepository.save(organizationEntity.get());
 	}
 
 	/**

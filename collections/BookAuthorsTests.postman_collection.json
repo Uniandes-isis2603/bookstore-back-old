@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "21cc856a-fe96-4f38-8aae-4255e406ba99",
+		"_postman_id": "e7bc6d6c-75cf-4261-9a37-95d63c07300f",
 		"name": "BookAuthors Tests",
 		"description": "Colección de pruebas sobre el recurso BookAuthors",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25917437"
 	},
 	"item": [
 		{
@@ -14,7 +15,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_e\",data.id);",
+							"postman.setGlobalVariable(\"editorial_id\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);",
 							""
@@ -33,17 +34,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\":\"Norma\"\n}"
+					"raw": "{\n    \"name\": \"Norma\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/editorials",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/editorials",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"editorials"
 					]
 				},
@@ -59,7 +57,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_a\",data.id);",
+							"postman.setGlobalVariable(\"author_id_1\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);"
 						],
@@ -77,17 +75,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\n        \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n        \"description\": \"fue un escritor, guionista, editor y periodista colombiano. En 1982 recibió el Premio Nobel de Literatura.\",\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n        \"name\": \"Gabriel José de la Concordia García Márquez\"\n    }"
+					"raw": "{\n    \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n    \"description\": \"fue un escritor, guionista, editor y periodista colombiano. En 1982 recibió el Premio Nobel de Literatura.\",\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n    \"name\": \"Gabriel José de la Concordia García Márquez\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors"
 					]
 				},
@@ -103,7 +98,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_a2\",data.id);",
+							"postman.setGlobalVariable(\"author_id_2\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);"
 						],
@@ -121,17 +116,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\n        \"birthDate\": \"1966-07-22T00:00:00-05:00\",\n        \"description\": \"fue un escritor, guionista, editor y periodista colombiano..\",\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Descargakoj.jpg\",\n        \"name\": \"Gustavo Bolivar Moreno\"\n    }"
+					"raw": "{\n    \"birthDate\": \"1966-07-22T00:00:00-05:00\",\n    \"description\": \"fue un escritor, guionista, editor y periodista colombiano..\",\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Descargakoj.jpg\",\n    \"name\": \"Gustavo Bolivar Moreno\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors"
 					]
 				},
@@ -147,7 +139,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_b\",data.id);",
+							"postman.setGlobalVariable(\"book_id\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);",
 							""
@@ -166,17 +158,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantÃ¡stico con mapas de la geografÃ\\u00ada real y de sus mitologÃ\\u00adas, observando a los hombres lobo que han vivido en la imaginaciÃ³n de Europa y AmÃ©rica.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantÃ¡stico con mapas de la geografÃ\\u00ada real y de sus mitologÃ\\u00adas, observando a los hombres lobo que han vivido en la imaginaciÃ³n de Europa y AmÃ©rica.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": {\n        \"id\": {{editorial_id}}\n    },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books"
 					]
 				},
@@ -210,18 +199,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/authors/{{new_id_a}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/authors/{{author_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"authors",
-						"{{new_id_a}}"
+						"{{author_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nAsocia un autor a un libro en la aplicación. \r\n\r\nSe envía el Id del autor y el del libro a asociar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -250,16 +236,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/authors/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/authors/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"authors",
 						"0"
 					]
@@ -287,18 +270,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/authors/{{new_id_a}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/authors/{{author_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"authors",
-						"{{new_id_a}}"
+						"{{author_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de un libro en la aplicación. \r\nLa petición no tiene cuerpo.\r\n\r\nSe envía el Id del autor y del libro a consultar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -323,16 +303,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/authors/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{author_id}}/authors/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{author_id}}",
 						"authors",
 						"0"
 					]
@@ -359,16 +336,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/authors/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/authors/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"authors",
 						"0"
 					]
@@ -400,19 +374,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\n    \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n    \"description\": \"fue un escritor, guionista, editor y periodista colombiano. En 1982 recibiÃ³ el Premio Nobel de Literatura.\",\n    \"id\": {{new_id_a}},\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n    \"name\": \"Gabriel JosÃ© de la Concordia GarcÃ\\u00ada MÃ¡rquez\"\n},\n{\n    \"birthDate\": \"1966-07-22T00:00:00-05:00\",\n    \"description\": \"fue un escritor, guionista, editor y periodista colombiano..\",\n    \"id\": {{new_id_a2}},\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Descargakoj.jpg\",\n    \"name\": \"Gustavo Bolivar Moreno\"\n}]"
+					"raw": "[\n    {\n        \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n        \"description\": \"fue un escritor, guionista, editor y periodista colombiano. En 1982 recibiÃ³ el Premio Nobel de Literatura.\",\n        \"id\": {{author_id_1}},\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n        \"name\": \"Gabriel JosÃ© de la Concordia GarcÃ\\u00ada MÃ¡rquez\"\n    },\n    {\n        \"birthDate\": \"1966-07-22T00:00:00-05:00\",\n        \"description\": \"fue un escritor, guionista, editor y periodista colombiano..\",\n        \"id\": {{author_id_2}},\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Descargakoj.jpg\",\n        \"name\": \"Gustavo Bolivar Moreno\"\n    }\n]"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/authors",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/authors",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"authors"
 					]
 				},
@@ -444,17 +415,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\n    \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n    \"description\": \"fue un escritor, guionista, editor y periodista colombiano. En 1982 recibiÃ³ el Premio Nobel de Literatura.\",\n    \"id\": {{new_id_a}},\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n    \"name\": \"Gabriel JosÃ© de la Concordia GarcÃ\\u00ada MÃ¡rquez\"\n},\n{\n    \"birthDate\": \"1966-07-22T00:00:00-05:00\",\n    \"description\": \"fue un escritor, guionista, editor y periodista colombiano..\",\n    \"id\": {{new_id_a2}},\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Descargakoj.jpg\",\n    \"name\": \"Gustavo Bolivar Moreno\"\n}]"
+					"raw": "[\n    {\n        \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n        \"description\": \"fue un escritor, guionista, editor y periodista colombiano. En 1982 recibiÃ³ el Premio Nobel de Literatura.\",\n        \"id\": {{author_id_1}},\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n        \"name\": \"Gabriel JosÃ© de la Concordia GarcÃ\\u00ada MÃ¡rquez\"\n    },\n    {\n        \"birthDate\": \"1966-07-22T00:00:00-05:00\",\n        \"description\": \"fue un escritor, guionista, editor y periodista colombiano..\",\n        \"id\": {{author_id_2}},\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Descargakoj.jpg\",\n        \"name\": \"Gustavo Bolivar Moreno\"\n    }\n]"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/0/authors",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/0/authors",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
 						"0",
 						"authors"
@@ -483,16 +451,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/authors",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/authors",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"authors"
 					]
 				},
@@ -521,18 +486,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/authors/{{new_id_a}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/authors/{{author_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"authors",
-						"{{new_id_a}}"
+						"{{author_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra la asociación entre un libro y un autor. Se envían los ids del autor y del libro creados anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -560,18 +522,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/authors/{{new_id_a2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/authors/{{author_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"authors",
-						"{{new_id_a2}}"
+						"{{author_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra la asociación entre un libro y un autor. Se envían los ids del autor y del libro creados anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -600,18 +559,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/0/authors/{{new_id_a}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/0/authors/{{author_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
 						"0",
 						"authors",
-						"{{new_id_a}}"
+						"{{author_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nBorra la asociación entre un libro que no existe y un autor en la aplicación.  \r\n\r\nPara la prueba se verifica que se genera el error.\r\n\r\n**Código http esperado: 404**"
@@ -640,16 +596,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/authors/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/authors/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"authors",
 						"0"
 					]
@@ -679,16 +632,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}"
+						"{{author_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un autor. Se envía el id del autor creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -716,16 +666,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a2}}"
+						"{{author_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un autor. Se envía el id del autor creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -753,16 +700,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}"
+						"{{book_id}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un libro. Se envía el id del libro creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -790,16 +734,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/editorials/{{new_id_e}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/editorials/{{editorial_id}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"editorials",
-						"{{new_id_e}}"
+						"{{editorial_id}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra una editorial. Se envía el id de la editorial creada anteriormente.\n\n**Código HTTP esperado: 204**"

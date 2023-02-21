@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "5dba2b84-fb02-4967-95c7-2639599a9c39",
+		"_postman_id": "2a854c16-fe0a-4382-a1c8-0b789899445e",
 		"name": "AuthorBooks Tests",
 		"description": "Colección de pruebas sobre el recurso AuthorBook",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25917488"
+		"_exporter_id": "25917437"
 	},
 	"item": [
 		{

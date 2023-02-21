@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "2bc7f095-fdd1-4d18-92e2-fc6620576581",
+		"_postman_id": "89bf12ce-e5ad-40a6-b1e0-915207556e3b",
 		"name": "Organization Tests",
 		"description": "Colección de pruebas sobre el recurso Organization",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25917437"
 	},
 	"item": [
 		{
@@ -14,7 +15,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_o\",data.id);",
+							"postman.setGlobalVariable(\"organization_id_1\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);",
 							""
@@ -36,14 +37,11 @@
 					"raw": "{\r\n    \"name\": \"Real Academia Sueca de Ciencias\",\r\n    \"tipo\": \"PRIVADA\"\r\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations"
 					]
 				},
@@ -59,7 +57,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_o2\",data.id);",
+							"postman.setGlobalVariable(\"organization_id_2\",data.id);",
 							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);",
 							""
@@ -81,14 +79,11 @@
 					"raw": "{\r\n    \"name\": \"Real Academia de espanol\",\r\n    \"tipo\": \"PRIVADA\"\r\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations"
 					]
 				},
@@ -123,14 +118,11 @@
 					"raw": "{\r\n    \"name\": \"Real Academia Sueca de Ciencias\",\r\n    \"tipo\": \"PRIVADA\"\r\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations"
 					]
 				},
@@ -146,7 +138,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_p\",data.id);",
+							"postman.setGlobalVariable(\"prize_id\",data.id);",
 							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);",
 							""
@@ -165,17 +157,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t \"name\": \"Hugo Award\",\r\n\t \"description\": \"The Hugo Awards are a set of literary awards given annually for the best science fiction or fantasy works and achievements of the previous year.\",\r\n\t \"premiationDate\": \"2000-08-20T00:00:00-05:00\",\r\n\t \"organization\":\r\n       {\r\n            \"id\": {{new_id_o}},\r\n    \t\t\"name\": \"Real Academia Sueca de Ciencias\",\r\n    \t\t\"tipo\": \"PRIVADA\"\r\n       }\r\n\r\n}"
+					"raw": "{\r\n    \"name\": \"Hugo Award\",\r\n    \"description\": \"The Hugo Awards are a set of literary awards given annually for the best science fiction or fantasy works and achievements of the previous year.\",\r\n    \"premiationDate\": \"2000-08-20T00:00:00-05:00\",\r\n    \"organization\": {\r\n        \"id\": {{organization_id_1}},\r\n        \"name\": \"Real Academia Sueca de Ciencias\",\r\n        \"tipo\": \"PRIVADA\"\r\n    }\r\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes"
 					]
 				},
@@ -202,14 +191,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations"
 					]
 				},
@@ -242,19 +228,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": {{new_id_o}},\n    \"name\": \"Real Academia Sueca de Ciencias\",\n    \"tipo\": \"PUBLICA\"\n}"
+					"raw": "{\n    \"name\": \"Real Academia Sueca de Ciencias\",\n    \"tipo\": \"PUBLICA\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations/{{new_id_o}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations/{{organization_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations",
-						"{{new_id_o}}"
+						"{{organization_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nActualiza una organización existente. El recurso tiene de atributo \"name\" que debe ser único. se envía el Id en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -285,17 +268,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": {{new_id_o}},\n    \"name\": \"Real Academia Sueca de Ciencias\",\n    \"tipo\": \"PUBLICA\"\n}"
+					"raw": "{\n    \"name\": \"Real Academia Sueca de Ciencias\",\n    \"tipo\": \"PUBLICA\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations",
 						"0"
 					]
@@ -323,16 +303,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations/{{new_id_o}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations/{{organization_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations",
-						"{{new_id_o}}"
+						"{{organization_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nConsulta una organización de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id de la organizacion deseada por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -357,14 +334,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations",
 						"0"
 					]
@@ -394,16 +368,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations/{{new_id_o}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations/{{organization_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations",
-						"{{new_id_o}}"
+						"{{organization_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nBorra una organización existente pero con premio asociado. Verifica que se genera el error.\r\n\r\n**Código HTTP esperado: 412 Precondition failed\".**"
@@ -431,16 +402,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes/{{new_id_p}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes/{{prize_id}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes",
-						"{{new_id_p}}"
+						"{{prize_id}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un premio. Se envía el id del premio creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -468,16 +436,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations/{{new_id_o}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations/{{organization_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations",
-						"{{new_id_o}}"
+						"{{organization_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra una organización. Se envía el id de la organizacion creada anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -505,16 +470,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations/{{new_id_o2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations/{{organization_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations",
-						"{{new_id_o2}}"
+						"{{organization_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra una organización. Se envía el id de la organizacion creada anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -543,14 +505,11 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations",
 						"0"
 					]

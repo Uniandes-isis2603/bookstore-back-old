@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "5d4e1ac4-c25e-4370-951b-6657942f052d",
+		"_postman_id": "5f727d63-6372-41aa-98c1-f2471c2047a1",
 		"name": "BookEditorial Tests",
 		"description": "Colección de pruebas sobre el recurso BookEditorial",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25917437"
 	},
 	"item": [
 		{
@@ -14,7 +15,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_e\",data.id);",
+							"postman.setGlobalVariable(\"editorial_id_1\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
 						],
 						"type": "text/javascript"
@@ -31,17 +32,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\":\"Norma\"}"
+					"raw": "{\n    \"name\": \"Norma\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/editorials",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/editorials",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"editorials"
 					]
 				},
@@ -57,7 +55,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_e2\",data.id);",
+							"postman.setGlobalVariable(\"editorial_id_2\",data.id);",
 							"tests[\"Status code is 200\"] = responseCode.code === 201;",
 							"console.log(data.id);",
 							""
@@ -76,17 +74,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\":\"Planeta\"\n}"
+					"raw": "{\n    \"name\": \"Planeta\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/editorials",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/editorials",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"editorials"
 					]
 				},
@@ -102,7 +97,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_b\",data.id);",
+							"postman.setGlobalVariable(\"book_id\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
 						],
 						"type": "text/javascript"
@@ -119,17 +114,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": {\n        \"id\": {{editorial_id_1}}\n    },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books"
 					]
 				},
@@ -162,19 +154,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": {{new_id_e2}},\n    \"name\": \"Planeta\"\n}"
+					"raw": "{\n    \"id\": {{editorial_id_1}},\n    \"name\": \"Planeta\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/editorial",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/editorial",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"editorial"
 					]
 				},
@@ -209,16 +198,13 @@
 					"raw": "{\n    \"id\": 0\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/editorial",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/editorial",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"editorial"
 					]
 				},
@@ -250,17 +236,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\":\"Norma\",\n\t\"id\":{{new_id_e}}\n}"
+					"raw": "{\n    \"name\": \"Norma\",\n    \"id\": {{editorial_id_1}}\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/0/editorial",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/0/editorial",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
 						"0",
 						"editorial"
@@ -291,16 +274,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}"
+						"{{book_id}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un libro. Se envía el id del libro creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -328,16 +308,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/editorials/{{new_id_e}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/editorials/{{editorial_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"editorials",
-						"{{new_id_e}}"
+						"{{editorial_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra una editorial. Se envía el id de la editorial creada en la primera petición.\n\n**Código HTTP esperado: 204**"
@@ -365,16 +342,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/editorials/{{new_id_e2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/editorials/{{editorial_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"editorials",
-						"{{new_id_e2}}"
+						"{{editorial_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra una editorial. Se envía el id de la editorial 2 creada en la primera petición.\n\n**Código HTTP esperado: 204**"

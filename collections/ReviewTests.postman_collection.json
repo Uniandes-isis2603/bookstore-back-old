@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "3daa393b-60c6-4e29-8efa-663063714d86",
+		"_postman_id": "9ff21b95-8582-465f-96aa-f085efd852d0",
 		"name": "Review Tests",
 		"description": "Colección de pruebas sobre el recurso Review",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25917437"
 	},
 	"item": [
 		{
@@ -14,7 +15,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_e\",data.id);",
+							"postman.setGlobalVariable(\"editorial_id\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
 						],
 						"type": "text/javascript"
@@ -31,17 +32,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\":\"Norma\"}"
+					"raw": "{\n    \"name\": \"Norma\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/editorials",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/editorials",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"editorials"
 					]
 				},
@@ -57,7 +55,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_b\",data.id);",
+							"postman.setGlobalVariable(\"book_id\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
 						],
 						"type": "text/javascript"
@@ -74,17 +72,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": {\n        \"id\": {{editorial_id}}\n    },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books"
 					]
 				},
@@ -100,7 +95,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_r\",data.id);",
+							"postman.setGlobalVariable(\"review_id_1\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
 						],
 						"type": "text/javascript"
@@ -120,16 +115,13 @@
 					"raw": "{\n    \"description\": \"Un review nueva para el libro\",\n    \"name\": \"Mi nueva review\",\n    \"source\": \"Universidad de los Andes\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/reviews",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/reviews",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"reviews"
 					]
 				},
@@ -145,7 +137,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_r2\",data.id);",
+							"postman.setGlobalVariable(\"review_id_2\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
 						],
 						"type": "text/javascript"
@@ -165,16 +157,13 @@
 					"raw": "{\n    \"description\": \"Un resena antigua para el libro\",\n    \"name\": \"Mi antigua review\",\n    \"source\": \"Universidad de los Andes\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/reviews",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/reviews",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"reviews"
 					]
 				},
@@ -209,14 +198,11 @@
 					"raw": "{\n    \"description\": \"Un resena antigua para el libro\",\n    \"name\": \"Mi antigua review\",\n    \"source\": \"Universidad de los Andes\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/0/reviews",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/0/reviews",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
 						"0",
 						"reviews"
@@ -245,16 +231,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/reviews",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/reviews",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"reviews"
 					]
 				},
@@ -281,18 +264,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/reviews/{{new_id_r}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/reviews/{{review_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"reviews",
-						"{{new_id_r}}"
+						"{{review_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nConsulta una reseña de un libro en la aplicación. \r\nLa petición no tiene cuerpo.\r\n\r\nSe envía el Id del libro y de la reseña a consultar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -327,18 +307,15 @@
 					"raw": "{\n    \"name\": \"Tiene ahora un nombre la review\",\n    \"source\": \"Se edita la fuente de la review\",\n    \"description\": \"Un review nueva para el libro\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/reviews/{{new_id_r}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/reviews/{{review_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"reviews",
-						"{{new_id_r}}"
+						"{{review_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nActualiza una reseña a un libro existente. Se envían los Ids de las entidades asociar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -373,16 +350,13 @@
 					"raw": "{\n    \"name\": \"Tiene ahora un nombre la review\",\n    \"source\": \"Se edita la fuente de la review\",\n    \"description\": \"Un review nueva para el libro\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/reviews/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/reviews/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"reviews",
 						"0"
 					]
@@ -418,18 +392,15 @@
 					"raw": "{\n    \"name\": \"Tiene ahora un nombre la review\",\n    \"source\": \"Se edita la fuente de la review\",\n    \"description\": \"Un review nueva para el libro\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/0/reviews/{{new_id_r}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/0/reviews/{{review_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
 						"0",
 						"reviews",
-						"{{new_id_r}}"
+						"{{review_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nAsocia una reseña a un libro que no existe.\r\n\r\nPara la prueba se verifica que se genera el error y el mensaje \"El recurso /books/0 no existe.\".\r\n\r\n**Código HTTP esperado: 404**"
@@ -459,16 +430,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/reviews/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/reviews/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"reviews",
 						"0"
 					]
@@ -499,18 +467,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/0/reviews/{{new_id_r}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/0/reviews/{{review_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
 						"0",
 						"reviews",
-						"{{new_id_r}}"
+						"{{review_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nBorra una reseña a un libro que no existe en la aplicación.  \r\n\r\nPara la prueba se verifica que se genera el error y el mensaje \"El recurso /books/0/reviews no existe.\".\r\n\r\n**Código http esperado: 404**"
@@ -538,18 +503,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/reviews/{{new_id_r}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/reviews/{{review_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"reviews",
-						"{{new_id_r}}"
+						"{{review_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra una reseña asociada a un libro. Se envían los ids de la reseña y el libro creados anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -577,18 +539,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}/reviews/{{new_id_r2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}/reviews/{{review_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}",
+						"{{book_id}}",
 						"reviews",
-						"{{new_id_r2}}"
+						"{{review_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra una reseña asociada a un libro. Se envían los ids de la reseña y el libro creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -616,16 +575,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}"
+						"{{book_id}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un libro. Se envía el id del libro creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -653,16 +609,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/editorials/{{new_id_e}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/editorials/{{editorial_id}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"editorials",
-						"{{new_id_e}}"
+						"{{editorial_id}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra una editorial. Se envía el id de la editorial creada en la primera petición.\n\n**Código HTTP esperado: 204**"

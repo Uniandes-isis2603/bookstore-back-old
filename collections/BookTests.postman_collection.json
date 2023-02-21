@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "abb4306e-b5a5-4db1-99f8-733dcefbb06d",
+		"_postman_id": "a4073f1c-ef76-4801-ad2e-49adc268342a",
 		"name": "Book Tests",
 		"description": "Colección de pruebas sobre el recurso Book",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25917437"
 	},
 	"item": [
 		{
@@ -14,7 +15,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_e\",data.id);",
+							"postman.setGlobalVariable(\"editorial_id\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
 						],
 						"type": "text/javascript"
@@ -31,17 +32,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\":\"Norma\"}"
+					"raw": "{\n    \"name\": \"Norma\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/editorials",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/editorials",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"editorials"
 					]
 				},
@@ -73,17 +71,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingdate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"editorial\": {\n        \"id\": {{editorial_id}}\n    },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingdate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books"
 					]
 				},
@@ -115,17 +110,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingdate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"\",\n    \"editorial\": {\n        \"id\": {{editorial_id}}\n    },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingdate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books"
 					]
 				},
@@ -141,7 +133,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_b\",data.id);",
+							"postman.setGlobalVariable(\"book_id_1\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
 						],
 						"type": "text/javascript"
@@ -158,17 +150,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": {\n        \"id\": {{editorial_id}}\n    },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books"
 					]
 				},
@@ -184,7 +173,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_b2\",data.id);",
+							"postman.setGlobalVariable(\"book_id_2\",data.id);",
 							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
 						],
 						"type": "text/javascript"
@@ -201,17 +190,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-81\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Historia de los hombres lobo 3\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-81\",\n    \"editorial\": {\n        \"id\": {{editorial_id}}\n    },\n    \"name\": \"Historia de los hombres lobo 3\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books"
 					]
 				},
@@ -243,17 +229,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": {\n        \"id\": {{editorial_id}}\n    },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books"
 					]
 				},
@@ -285,17 +268,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-9\",\n    \"editorial\": { \"id\": 0 },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-9\",\n    \"editorial\": {\n        \"id\": 0\n    },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books"
 					]
 				},
@@ -322,14 +302,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books"
 					]
 				},
@@ -356,16 +333,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}"
+						"{{book_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nConsulta un libro de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del libro deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -390,14 +364,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
 						"0"
 					]
@@ -430,17 +401,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Se ha editado la Historia de los hombres lobo 2\",\n    \"publishingdate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": {\n        \"id\": {{editorial_id}}\n    },\n    \"name\": \"Se ha editado la Historia de los hombres lobo 2\",\n    \"publishingdate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
 						"0"
 					]
@@ -473,19 +441,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Se ha editado la Historia de los hombres lobo 2\",\n    \"publishingdate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"\",\n    \"editorial\": {\n        \"id\": {{editorial_id}}\n    },\n    \"name\": \"Se ha editado la Historia de los hombres lobo 2\",\n    \"publishingdate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}"
+						"{{book_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\nActualiza un libro con ISBN invalido. \r\n\r\nPara la prueba se verifica que se genera el error y el mensaje \"El ISBN es inválido.\".\r\n\r\n**Código HTTP esperado: 412**"
@@ -517,19 +482,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": { \"id\": {{new_id_e}} },\n    \"name\": \"Se ha editado la Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": {\n        \"id\": {{editorial_id}}\n    },\n    \"name\": \"Se ha editado la Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}"
+						"{{book_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nActualiza un libro existente. \r\nse envía el Id en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -557,16 +519,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}"
+						"{{book_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un libro. Se envía el id del libro creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -594,16 +553,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b2}}"
+						"{{book_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un libro. Se envía el id del libro creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -632,14 +588,11 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
 						"0"
 					]
@@ -669,16 +622,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/editorials/{{new_id_e}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/editorials/{{editorial_id}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"editorials",
-						"{{new_id_e}}"
+						"{{editorial_id}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra una editorial. Se envía el id de la editorial creada anteriormente.\n\n**Código HTTP esperado: 204**"

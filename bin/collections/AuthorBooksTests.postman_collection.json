@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "adb21814-1c61-48f9-9cee-85ca4edd806a",
+		"_postman_id": "5dba2b84-fb02-4967-95c7-2639599a9c39",
 		"name": "AuthorBooks Tests",
 		"description": "Colección de pruebas sobre el recurso AuthorBook",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25917488"
 	},
 	"item": [
 		{
@@ -14,7 +15,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_e\",data.id);",
+							"postman.setGlobalVariable(\"editorial_id\",data.id);",
 							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);",
 							""
@@ -33,17 +34,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"name\":\"Norma\"\n}"
+					"raw": "{\n    \"name\": \"Norma\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/editorials",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/editorials",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"editorials"
 					]
 				},
@@ -59,7 +57,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_b\",data.id);",
+							"postman.setGlobalVariable(\"book_id_1\",data.id);",
 							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);",
 							""
@@ -78,17 +76,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantÃ¡stico con mapas de la geografÃ\\u00ada real y de sus mitologÃ\\u00adas, observando a los hombres lobo que han vivido en la imaginaciÃ³n de Europa y AmÃ©rica.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": { \"id\": {{new_id_e}},\n                   \"name\": \"Norma\" },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Jorge Fondebrider traza un mundo fantástico con mapas de la geografía real y de sus mitologías, observando a los hombres lobo que han vivido en la imaginación de Europa y América.\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"editorial\": {\n        \"id\": {{editorial_id}},\n        \"name\": \"Norma\"\n    },\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books"
 					]
 				},
@@ -104,7 +99,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_b2\",data.id);",
+							"postman.setGlobalVariable(\"book_id_2\",data.id);",
 							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);",
 							""
@@ -123,17 +118,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"description\": \"Descripción para el libro 2\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-2\",\n    \"editorial\": { \"id\": {{new_id_e}} ,\n                   \"name\": \"Norma\"},\n    \"name\": \"Historia de los programadores\",\n    \"publishingDate\": \"2003-08-20T00:00:00-05:00\"\n}"
+					"raw": "{\n    \"description\": \"Descripción para el libro 2\",\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-2\",\n    \"editorial\": {\n        \"id\": {{editorial_id}},\n        \"name\": \"Norma\"\n    },\n    \"name\": \"Historia de los programadores\",\n    \"publishingDate\": \"2003-08-20T00:00:00-05:00\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books"
 					]
 				},
@@ -149,7 +141,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_a\",data.id);",
+							"postman.setGlobalVariable(\"author_id\",data.id);",
 							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);"
 						],
@@ -167,17 +159,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\n        \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n        \"description\": \"fue un escritor, guionista, editor y periodista colombiano. En 1982 recibió el Premio Nobel de Literatura.\",\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n        \"name\": \"Gabriel José de la Concordia García Márquez\"\n    }"
+					"raw": "{\n    \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n    \"description\": \"fue un escritor, guionista, editor y periodista colombiano. En 1982 recibió el Premio Nobel de Literatura.\",\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n    \"name\": \"Gabriel José de la Concordia García Márquez\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors"
 					]
 				},
@@ -211,18 +200,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}/books/{{new_id_b}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id}}/books/{{book_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}",
+						"{{author_id}}",
 						"books",
-						"{{new_id_b}}"
+						"{{book_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nAsocia un libro a un autor en la aplicación. \r\n\r\nSe envía el Id del autor y el del libro a asociar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -251,16 +237,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}/books/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id}}/books/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}",
+						"{{author_id}}",
 						"books",
 						"0"
 					]
@@ -288,18 +271,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}/books/{{new_id_b}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id}}/books/{{book_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}",
+						"{{author_id}}",
 						"books",
-						"{{new_id_b}}"
+						"{{book_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nConsulta un libro de un autor en la aplicación. \r\nLa petición no tiene cuerpo.\r\n\r\nSe envía el Id del autor y del libro a consultar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -324,16 +304,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}/books/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id}}/books/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}",
+						"{{author_id}}",
 						"books",
 						"0"
 					]
@@ -360,21 +337,51 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}/books/{{new_id_b2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id}}/books/{{book_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}",
+						"{{author_id}}",
 						"books",
-						"{{new_id_b2}}"
+						"{{book_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nConsulta un libro que no esta asociado a un autor en la aplicación.  \r\n\r\nPara la prueba se verifica que se genera el error y el mensaje \"El libro no está asociado al autor\".\r\n\r\n**Código http esperado: 412**"
+			},
+			"response": []
+		},
+		{
+			"name": "Obtener los libros de un autor",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data= JSON.parse(responseBody);",
+							"tests[\"No genera error en el Get\"] = responseCode.code === 200;",
+							"tests[\"books count - author\"] = data.length >= 1;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/authors/{{author_id}}/books",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"authors",
+						"{{author_id}}",
+						"books"
+					]
+				},
+				"description": "**Release: Paso-5**\r\n\r\nConsulta los libros de un autor en la aplicación. \r\nLa petición no tiene cuerpo.\r\n\r\nSe envía el Id del autor y el del libro a consultar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
 			},
 			"response": []
 		},
@@ -401,59 +408,20 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\n    \"description\": \"Jorge Fondebrider traza un mundo fantÃƒÂ¡stico con mapas de la geografÃƒ\\u00ada real y de sus mitologÃƒ\\u00adas, observando a los hombres lobo que han vivido en la imaginaciÃƒÂ³n de Europa y AmÃƒÂ©rica.\",\n    \"editorial\": {\n        \"id\": {{new_id_e}},\n        \"name\": \"Norma\"\n    },\n    \"id\": {{new_id_b}},\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingDate\": \"2000-08-20T00:00:00-05:00\"\n},\n{\n    \"description\": \"DescripciÃ³n para el libro 2\",\n    \"editorial\": {\n        \"id\": {{new_id_e}},\n        \"name\": \"Norma\"\n    },\n    \"id\": {{new_id_b2}},\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-2\",\n    \"name\": \"Historia de los programadores\",\n    \"publishingDate\": \"2003-08-20T00:00:00-05:00\"\n}]"
+					"raw": "[\n    {\n        \"id\": {{book_id_1}}\n    },\n    {\n\n        \"id\": {{book_id_2}}\n    }\n]"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}",
+						"{{author_id}}",
 						"books"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nActualiza la lista de libros un autor existente.\r\n\r\nSe envía el Id en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
-			},
-			"response": []
-		},
-		{
-			"name": "Obtener los libros de un autor",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var data= JSON.parse(responseBody);",
-							"tests[\"No genera error en el Get\"] = responseCode.code === 200;",
-							"tests[\"books count - author\"] = data.length >= 1;"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}/books",
-					"protocol": "http",
-					"host": [
-						"{{ip}}"
-					],
-					"port": "{{puerto}}",
-					"path": [
-						"api",
-						"authors",
-						"{{new_id_a}}",
-						"books"
-					]
-				},
-				"description": "**Release: Paso-5**\r\n\r\nConsulta los libros de un autor en la aplicación. \r\nLa petición no tiene cuerpo.\r\n\r\nSe envía el Id del autor y el del libro a consultar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
 			},
 			"response": []
 		},
@@ -481,19 +449,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "[{\n    \"description\": \"Jorge Fondebrider traza un mundo fantastico con mapas de la geografia real y de sus mitologias, observando a los hombres lobo que han vivido en la imaginacion de Europa y America.\",\n    \"id\": 0,\n    \"image\": \"https://static.iris.net.co/arcadia/upload/images/2017/7/31/64899_1.jpg\",\n    \"isbn\": \"930330149-8\",\n    \"name\": \"Historia de los hombres lobo 2\",\n    \"publishingdate\": \"2000-08-20T00:00:00-05:00\"\n}\n]"
+					"raw": "[\n    {\n        \"id\": 0\n    }\n]"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}/books",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id}}/books",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}",
+						"{{author_id}}",
 						"books"
 					]
 				},
@@ -522,18 +487,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}/books/{{new_id_b}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id}}/books/{{book_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}",
+						"{{author_id}}",
 						"books",
-						"{{new_id_b}}"
+						"{{book_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra la asociación entre un libro y un autor. Se envían los ids del autor y del libro creados anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -561,18 +523,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}/books/{{new_id_b2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id}}/books/{{book_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}",
+						"{{author_id}}",
 						"books",
-						"{{new_id_b2}}"
+						"{{book_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra la asociación entre un libro y un autor. Se envían los ids del autor y del libro creados anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -601,18 +560,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/0/books/{{new_id_b}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/0/books/{{book_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
 						"0",
 						"books",
-						"{{new_id_b}}"
+						"{{book_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nBorra la asociación entre a un libro y un autor que no existe en la aplicación.  \r\n\r\nPara la prueba se verifica que se genera el error y el mensaje \"El recurso /authors/0/books no existe.\".\r\n\r\n**Código http esperado: 404**"
@@ -641,16 +597,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}/books/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id}}/books/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}",
+						"{{author_id}}",
 						"books",
 						"0"
 					]
@@ -680,16 +633,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b}}"
+						"{{book_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un libro. Se envía el id del libro creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -717,16 +667,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/books/{{new_id_b2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/books/{{book_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"books",
-						"{{new_id_b2}}"
+						"{{book_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un libro. Se envía el id del libro creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -754,16 +701,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}"
+						"{{author_id}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un autor. Se envía el id del autor creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -791,16 +735,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/editorials/{{new_id_e}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/editorials/{{editorial_id}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"editorials",
-						"{{new_id_e}}"
+						"{{editorial_id}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra una editorial. Se envía el id de la editorial creada anteriormente.\n\n**Código HTTP esperado: 204**"

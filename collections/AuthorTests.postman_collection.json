@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "fcdd1cae-bd13-40fd-9f5e-79c7cb50fb99",
+		"_postman_id": "39948a67-fc5f-4193-a299-29cde42e7607",
 		"name": "Author Tests",
 		"description": "Colección de pruebas sobre el recurso Author",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25917488"
+		"_exporter_id": "25917437"
 	},
 	"item": [
 		{
@@ -139,13 +139,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/authors/{{new_id_a}}",
+					"raw": "{{baseUrl}}/authors/{{author_id_1}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
 						"authors",
-						"{{new_id_a}}"
+						"{{author_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nConsulta un autor de la aplicación.  \r\nLa petición no tiene cuerpo.\r\nSe envía el id del autor deseado por la URL de la petición.\r\n\r\n**Código http esperado: 200**"
