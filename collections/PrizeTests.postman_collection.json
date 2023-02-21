@@ -14,11 +14,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"organization_id_1\",data.id);",
-							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);",
-							""
+							"var data = pm.response.json()",
+							"pm.globals.set(\"organization_id_1\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -56,10 +57,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"organization_id_2\",data.id);",
-							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);",
+							"var data = pm.response.json()",
+							"pm.globals.set(\"organization_id_2\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
 							""
 						],
 						"type": "text/javascript"
@@ -98,10 +101,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"prize_id_1\",data.id);",
-							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);",
+							"var data = pm.response.json()",
+							"pm.globals.set(\"prize_id_1\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
 							""
 						],
 						"type": "text/javascript"
@@ -140,8 +145,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se deberia poder crear el prize ya que no tiene organization.\"] = responseCode.code === 412;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"Organization is not valid\");"
+							"pm.test(\"Status code is 412\", function () {",
+							"   pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"Organization is not valid\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -179,8 +190,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se deberia poder crear el prize ya que no tiene una organization que exista.\"] = responseCode.code === 412;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"Organization is not valid\");"
+							"pm.test(\"Status code is 412\", function () {",
+							"   pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"Organization is not valid\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -218,8 +235,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se deberia poder crear el prize ya que su organization ya tiene un premio.\"] = responseCode.code === 412;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"Organization already holds a prize\");"
+							"pm.test(\"Status code is 412\", function () {",
+							"   pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"Organization already holds a prize\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -257,11 +280,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"prize_id_2\",data.id);",
-							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);",
-							""
+							"var data = pm.response.json()",
+							"pm.globals.set(\"prize_id_2\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -299,9 +323,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data= JSON.parse(responseBody);",
-							"tests[\"No genera error en el Get All\"] = responseCode.code === 200;",
-							"tests[\"prize count\"] = data.length >= 1;"
+							"pm.test('Number of prizes > ' + 0, function () {",
+							"   var data = pm.response.json()",
+							"   pm.expect(data.length).to.greaterThan(0)",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -330,9 +360,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"console.log(responseBody);",
-							"var data = JSON.parse(responseBody);",
-							"tests[\"No genera error en el Get\"] = responseCode.code === 200;"
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -362,8 +393,16 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se puede un prize que no existe\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The prize with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The prize with the given id was not found\");",
+							"});",
+							"",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -393,9 +432,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"console.log(responseBody);",
-							"var data = JSON.parse(responseBody);",
-							"tests[\"No genera error en el Put\"] = responseCode.code === 200;"
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -434,8 +473,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se deberia editar el prize ya que este no existe\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The prize with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The prize with the given id was not found\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -474,7 +519,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -508,7 +556,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -542,8 +593,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se puede borrar el prize ya que este no existe.\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The prize with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The prize with the given id was not found\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -577,7 +634,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -611,7 +671,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}

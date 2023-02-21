@@ -14,9 +14,13 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"editorial_id_1\",data.id);",
-							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
+							"var data = pm.response.json()",
+							"pm.globals.set(\"editorial_id_1\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -54,10 +58,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"editorial_id_2\",data.id);",
-							"tests[\"no genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);",
+							"var data = pm.response.json()",
+							"pm.globals.set(\"editorial_id_2\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
 							""
 						],
 						"type": "text/javascript"
@@ -96,8 +102,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No crea con el mismo nombre\"] = responseCode.code === 412;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"Editorial name already exists\");"
+							"pm.test(\"Status code is 412\", function () {",
+							"   pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"Editorial name already exists\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -135,9 +147,13 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"book_id\",data.id);",
-							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
+							"var data = pm.response.json()",
+							"pm.globals.set(\"book_id\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -175,9 +191,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"console.log(responseBody);",
-							"var data = JSON.parse(responseBody);",
-							"tests[\"No genera error en el Put\"] = responseCode.code === 200;"
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -216,8 +232,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No actualiza con id que no existe\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The editorial with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The editorial with the given id was not found\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -256,9 +279,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data= JSON.parse(responseBody);",
-							"tests[\"No genera error en el Get all\"] = responseCode.code === 200;",
-							"tests[\"editorials count\"] = data.length > 1;"
+							"pm.test('Number of editorials > ' + 0, function () {",
+							"   var data = pm.response.json()",
+							"   pm.expect(data.length).to.greaterThan(0)",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -288,9 +316,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"console.log(responseBody);",
-							"var data = JSON.parse(responseBody);",
-							"tests[\"No genera error en el Get\"] = responseCode.code === 200;"
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -320,8 +348,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No consulta con id que no existe\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The editorial with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The editorial with the given id was not found\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -351,7 +386,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No borra con libros asociados\"] = responseCode.code === 412;"
+							"pm.test(\"Status code is 412\", function () {",
+							"   pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"Unable to delete editorial because it has associated books\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -385,7 +427,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -419,7 +464,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -453,7 +501,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -487,8 +538,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No borra con id que no existe\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The editorial with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The editorial with the given id was not found\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}

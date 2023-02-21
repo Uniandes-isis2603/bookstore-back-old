@@ -138,8 +138,7 @@ public class OrganizationService {
 
 		PrizeEntity prize = organizationEntity.get().getPrize();
 		if (prize != null)
-			throw new IllegalOperationException("Unable to delete organization with id = " + organizationId
-					+ " because it has an associated prize");
+			throw new IllegalOperationException("Unable to delete organization because it has a prize");
 
 		organizationRepository.deleteById(organizationId);
 		log.info("Termina proceso de borrar organizacion con id = {0}", organizationId);

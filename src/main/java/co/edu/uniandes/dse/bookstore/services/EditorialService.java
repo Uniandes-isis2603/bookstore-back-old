@@ -136,7 +136,7 @@ public class EditorialService {
 
 		if (!books.isEmpty()) {
 			throw new IllegalOperationException(
-					"Unable to delete editorial with id = " + editorialId + " because it has associated books");
+					"Unable to delete editorial because it has associated books");
 		}
 
 		editorialRepository.deleteById(editorialId);

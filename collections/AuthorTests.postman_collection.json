@@ -14,10 +14,13 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"author_id_1\",data.id);",
-							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);"
+							"var data = pm.response.json()",
+							"pm.globals.set(\"author_id_1\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -55,10 +58,13 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"author_id_2\",data.id);",
-							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);"
+							"var data = pm.response.json()",
+							"pm.globals.set(\"author_id_2\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -96,9 +102,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data= JSON.parse(responseBody);",
-							"tests[\"No genera error en el Gell All\"] = responseCode.code === 200;",
-							"tests[\"authors count\"] = data.length > 0;"
+							"pm.test('Number of authors > ' + 0, function () {",
+							"   var data = pm.response.json()",
+							"   pm.expect(data.length).to.greaterThan(0)",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -127,9 +139,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"console.log(responseBody);",
-							"var data = JSON.parse(responseBody);",
-							"tests[\"No genera error en el Get\"] = responseCode.code === 200;"
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -159,8 +171,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se deberia obtener un autor con un id que no existe\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The author with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The author with the given id was not found\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -190,9 +209,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"console.log(responseBody);",
-							"var data = JSON.parse(responseBody);",
-							"tests[\"No genera error en el Put\"] = responseCode.code === 200;"
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -231,8 +251,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se deberia actualizar un autor con id que no existe\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The author with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The author with the given id was not found\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -271,7 +298,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -305,7 +335,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -339,8 +372,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se deberia borrar un autor con un id que no existe\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The author with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The author with the given id was not found\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}

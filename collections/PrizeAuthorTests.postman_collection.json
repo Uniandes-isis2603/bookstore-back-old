@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "3d6d42d4-dd84-489d-9242-2c4e41cd918a",
+		"_postman_id": "4f5fc1b0-373b-47c9-af2a-568273562f7d",
 		"name": "PrizeAuthor Tests",
 		"description": "Colección de pruebas sobre el recurso PrizeAuthor",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25917437"
 	},
 	"item": [
 		{
@@ -13,10 +14,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_o\",data.id);",
-							"tests[\"no genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);",
+							"var data = pm.response.json()",
+							"pm.globals.set(\"organization_id_1\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
 							""
 						],
 						"type": "text/javascript"
@@ -36,14 +39,11 @@
 					"raw": "{\r\n    \"name\": \"Real Academia Sueca de Ciencias\",\r\n    \"tipo\": \"PRIVADA\"\r\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations"
 					]
 				},
@@ -58,10 +58,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_o2\",data.id);",
-							"tests[\"no genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);",
+							"var data = pm.response.json()",
+							"pm.globals.set(\"organization_id_2\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
 							""
 						],
 						"type": "text/javascript"
@@ -81,14 +83,11 @@
 					"raw": "{\r\n    \"name\": \"Real Academia de espanol\",\r\n    \"tipo\": \"PRIVADA\"\r\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations"
 					]
 				},
@@ -103,11 +102,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_p\",data.id);",
-							"tests[\"no genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);",
-							""
+							"var data = pm.response.json()",
+							"pm.globals.set(\"prize_id_1\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -123,17 +123,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t \"name\": \"Hugo Award\",\r\n\t \"description\": \"The Hugo Awards are a set of literary awards given annually for the best science fiction or fantasy works and achievements of the previous year.\",\r\n\t  \"premiationDate\": \"2000-08-20T00:00:00-05:00\",\r\n\t \"organization\":\r\n       {\r\n            \"id\": {{new_id_o}},\r\n    \t\t\"name\": \"Real Academia Sueca de Ciencias\",\r\n    \t\t\"tipo\": \"PRIVADA\"\r\n       }\r\n\r\n}"
+					"raw": "{\r\n    \"name\": \"Hugo Award\",\r\n    \"description\": \"The Hugo Awards are a set of literary awards given annually for the best science fiction or fantasy works and achievements of the previous year.\",\r\n    \"premiationDate\": \"2000-08-20T00:00:00-05:00\",\r\n    \"organization\": {\r\n        \"id\": {{organization_id_1}},\r\n        \"name\": \"Real Academia Sueca de Ciencias\",\r\n        \"tipo\": \"PRIVADA\"\r\n    }\r\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes"
 					]
 				},
@@ -148,11 +145,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_p2\",data.id);",
-							"tests[\"no genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);",
-							""
+							"var data = pm.response.json()",
+							"pm.globals.set(\"prize_id_2\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -168,17 +166,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\t \"name\": \"Varon Award\",\r\n\t \"description\": \"The Varon Awards are a set of peace awards given monthly for the best peace book of the year.\",\r\n\t  \"premiationDate\": \"2000-08-20T00:00:00-05:00\",\r\n\t \"organization\":\r\n       {\r\n            \"id\": {{new_id_o2}},\r\n    \t\t\"name\": \"Real Academia de espanol\",\r\n    \t\t\"tipo\": \"PRIVADA\"\r\n       }\r\n\r\n}"
+					"raw": "{\r\n    \"name\": \"Varon Award\",\r\n    \"description\": \"The Varon Awards are a set of peace awards given monthly for the best peace book of the year.\",\r\n    \"premiationDate\": \"2000-08-20T00:00:00-05:00\",\r\n    \"organization\": {\r\n        \"id\": {{organization_id_2}},\r\n        \"name\": \"Real Academia de espanol\",\r\n        \"tipo\": \"PRIVADA\"\r\n    }\r\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes"
 					]
 				},
@@ -193,10 +188,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_a\",data.id);",
-							"tests[\"no genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);"
+							"var data = pm.response.json()",
+							"pm.globals.set(\"author_id_1\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -212,17 +209,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\n        \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n        \"description\": \"fue un escritor, guionista, editor y periodista colombiano. En 1982 recibió el Premio Nobel de Literatura.\",\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n        \"name\": \"Gabriel José de la Concordia García Márquez\"\n    }"
+					"raw": "{\n    \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n    \"description\": \"fue un escritor, guionista, editor y periodista colombiano. En 1982 recibió el Premio Nobel de Literatura.\",\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n    \"name\": \"Gabriel José de la Concordia García Márquez\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors"
 					]
 				},
@@ -237,10 +231,12 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"new_id_a2\",data.id);",
-							"tests[\"no genera error en el Post\"] = responseCode.code === 201;",
-							"console.log(data.id);"
+							"var data = pm.response.json()",
+							"pm.globals.set(\"author_id_2\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -256,17 +252,14 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\n        \"birthDate\": \"1966-07-22T00:00:00-05:00\",\n        \"description\": \"fue un escritor, guionista, editor y periodista colombiano..\",\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Descargakoj.jpg\",\n        \"name\": \"Gustavo Bolivar Moreno\"\n    }"
+					"raw": "{\n    \"birthDate\": \"1966-07-22T00:00:00-05:00\",\n    \"description\": \"fue un escritor, guionista, editor y periodista colombiano..\",\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Descargakoj.jpg\",\n    \"name\": \"Gustavo Bolivar Moreno\"\n}"
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors"
 					]
 				},
@@ -281,7 +274,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"no genera error en el Post\"] = responseCode.code === 200;"
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -295,18 +291,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes/{{new_id_p}}/author/{{new_id_a}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes/{{prize_id_1}}/author/{{author_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes",
-						"{{new_id_p}}",
+						"{{prize_id_1}}",
 						"author",
-						"{{new_id_a}}"
+						"{{author_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nAsocia un premio a un autor en la aplicación. \r\n\r\nSe envía el Id del autor y el del premio a asociar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -320,8 +313,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se puede asociar el author ya que este no existe.\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The author with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The author with the given id was not found\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -335,16 +335,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes/{{new_id_p}}/author/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes/{{prize_id_1}}/author/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes",
-						"{{new_id_p}}",
+						"{{prize_id_1}}",
 						"author",
 						"0"
 					]
@@ -360,9 +357,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"console.log(responseBody);",
-							"var data = JSON.parse(responseBody);",
-							"tests[\"no genera error en el Get\"] = responseCode.code === 200;"
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -372,16 +370,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes/{{new_id_p}}/author",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes/{{prize_id_1}}/author",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes",
-						"{{new_id_p}}",
+						"{{prize_id_1}}",
 						"author"
 					]
 				},
@@ -396,9 +391,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se puede obtener el author ya que este no existe.\"] = responseCode.code === 404;",
-							"let id = pm.variables.get(\"new_id_p2\");",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The author was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The author was not found\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -408,16 +409,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes/{{new_id_p2}}/author",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes/{{prize_id_2}}/author",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes",
-						"{{new_id_p2}}",
+						"{{prize_id_2}}",
 						"author"
 					]
 				},
@@ -432,7 +430,11 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"no genera error en el Put\"] = responseCode.code === 200;"
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							"",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -446,18 +448,15 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes/{{new_id_p}}/author/{{new_id_a2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes/{{prize_id_1}}/author/{{author_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes",
-						"{{new_id_p}}",
+						"{{prize_id_1}}",
 						"author",
-						"{{new_id_a2}}"
+						"{{author_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nActualiza el autor de un premio existente. Se envían los Ids de las entidades asociar en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -471,8 +470,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se puede reemplazar el author al prize ya que el nuevo no existe.\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The author with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The author with the given id was not found\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -486,16 +491,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes/{{new_id_p}}/author/0",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes/{{prize_id_1}}/author/0",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes",
-						"{{new_id_p}}",
+						"{{prize_id_1}}",
 						"author",
 						"0"
 					]
@@ -511,9 +513,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No se puede borrar un prize que tenga un author asociado.\"] = responseCode.code === 412;",
-							"let id = pm.variables.get(\"new_id_p\");",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"Unable to delete prize because it has an associated author\");"
+							"pm.test(\"Status code is 412\", function () {",
+							"   pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"Unable to delete prize because it has an associated author\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -527,16 +534,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes/{{new_id_p}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes/{{prize_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes",
-						"{{new_id_p}}"
+						"{{prize_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nBorra un premio existente pero con autor. Verifica que se genera el error.\r\n\r\n**Código HTTP esperado: 412 Precondition failed\".**"
@@ -550,7 +554,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"no genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -564,16 +570,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes/{{new_id_p}}/author",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes/{{prize_id_1}}/author",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes",
-						"{{new_id_p}}",
+						"{{prize_id_1}}",
 						"author"
 					]
 				},
@@ -588,7 +591,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"no genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -602,16 +607,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a}}"
+						"{{author_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un autor. Se envía el id del autor creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -625,7 +627,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"no genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -639,16 +643,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/authors/{{author_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"authors",
-						"{{new_id_a2}}"
+						"{{author_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un autor. Se envía el id del autor creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -662,7 +663,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"no genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -676,16 +679,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes/{{new_id_p}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes/{{prize_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes",
-						"{{new_id_p}}"
+						"{{prize_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un premio. Se envía el id del premio creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -699,7 +699,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"no genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -713,16 +715,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/prizes/{{new_id_p2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/prizes/{{prize_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"prizes",
-						"{{new_id_p2}}"
+						"{{prize_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un premio. Se envía el id del premio creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -736,7 +735,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"no genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -750,16 +751,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations/{{new_id_o}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations/{{organization_id_1}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations",
-						"{{new_id_o}}"
+						"{{organization_id_1}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra una organización. Se envía el id de la organización creada petición.\n\n**Código HTTP esperado: 204**"
@@ -773,7 +771,9 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"no genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -787,16 +787,13 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://{{ip}}:{{puerto}}/api/organizations/{{new_id_o2}}",
-					"protocol": "http",
+					"raw": "{{baseUrl}}/organizations/{{organization_id_2}}",
 					"host": [
-						"{{ip}}"
+						"{{baseUrl}}"
 					],
-					"port": "{{puerto}}",
 					"path": [
-						"api",
 						"organizations",
-						"{{new_id_o2}}"
+						"{{organization_id_2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra una organizacion. Se envía el id de la organizacion creada anteriormente.\n\n**Código HTTP esperado: 204**"

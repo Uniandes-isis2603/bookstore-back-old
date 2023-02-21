@@ -14,9 +14,13 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"editorial_id\",data.id);",
-							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
+							"var data = pm.response.json()",
+							"pm.globals.set(\"editorial_id\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -54,8 +58,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No crea con ISBN invalido\"] = responseCode.code === 412;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"ISBN is not valid\");"
+							"pm.test(\"Status code is 412\", function () {",
+							"   pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"ISBN is not valid\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -93,8 +104,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No crea con ISBN invalido\"] = responseCode.code === 412;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"ISBN is not valid\");"
+							"pm.test(\"Status code is 412\", function () {",
+							"   pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"ISBN is not valid\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -132,9 +150,13 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"book_id_1\",data.id);",
-							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
+							"var data = pm.response.json()",
+							"pm.globals.set(\"book_id_1\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -172,9 +194,13 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"book_id_2\",data.id);",
-							"tests[\"no genera error en el Post\"] = responseCode.code === 201;"
+							"var data = pm.response.json()",
+							"pm.globals.set(\"book_id_2\", data.id);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"   pm.response.to.have.status(201);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -212,8 +238,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No crea con el mismo nombre\"] = responseCode.code === 412;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"ISBN already exists\");"
+							"pm.test(\"Status code is 412\", function () {",
+							"   pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"ISBN already exists\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -251,8 +284,14 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No crea con editorial que no existe\"] = responseCode.code === 412;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"Editorial is not valid\");"
+							"pm.test(\"Status code is 412\", function () {",
+							"   pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"Editorial is not valid\");",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -290,9 +329,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var data= JSON.parse(responseBody);",
-							"tests[\"No genera error en el Get all\"] = responseCode.code === 200;",
-							"tests[\"books count\"] = data.length >= 0;"
+							"pm.test('Number of books > ' + 0, function () {",
+							"   var data = pm.response.json()",
+							"   pm.expect(data.length).to.greaterThan(0)",
+							"});",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -321,9 +366,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"console.log(responseBody);",
-							"var data = JSON.parse(responseBody);",
-							"tests[\"No genera error en el Get\"] = responseCode.code === 200;"
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -353,8 +399,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No consulta con id que no existe\"] = responseCode.code === 404; ",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The book with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The book with the given id was not found\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -384,8 +437,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No actualiza con id que no existe\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The book with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The book with the given id was not found\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -424,8 +484,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No crea con ISBN invalido\"] = responseCode.code === 412;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"ISBN is not valid\");"
+							"pm.test(\"Status code is 412\", function () {",
+							"   pm.response.to.have.status(412);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"ISBN is not valid\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -464,9 +531,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"console.log(responseBody);",
-							"var data = JSON.parse(responseBody);",
-							"tests[\"No genera error en el Put\"] = responseCode.code === 200;"
+							"pm.test(\"Status code is 200\", function () {",
+							"   pm.response.to.have.status(200);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -505,7 +573,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -539,7 +610,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -573,8 +647,15 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No borra con id que no existe\"] = responseCode.code === 404;",
-							"tests[\"Mensaje correcto de error\"] = responseBody.has(\"The book with the given id was not found\");"
+							"pm.test(\"Status code is 404\", function () {",
+							"   pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Get expected error message\", function () {",
+							"   var data = pm.response.json();",
+							"   pm.expect(data.apierror.message).to.eql(\"The book with the given id was not found\");",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -608,7 +689,10 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"tests[\"No genera error en el Delete\"] = responseCode.code === 204;"
+							"pm.test(\"Status code is 204\", function () {",
+							"   pm.response.to.have.status(204);",
+							"});",
+							""
 						],
 						"type": "text/javascript"
 					}
