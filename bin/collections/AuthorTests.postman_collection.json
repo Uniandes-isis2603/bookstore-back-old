@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "fcdd1cae-bd13-40fd-9f5e-79c7cb50fb99",
+		"_postman_id": "c98e1353-63a6-459d-8eef-252767e0ad72",
 		"name": "Author Tests",
 		"description": "Colección de pruebas sobre el recurso Author",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25917488"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -15,7 +14,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"author_id_1\",data.id);",
+							"postman.setGlobalVariable(\"new_id_a\",data.id);",
 							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);"
 						],
@@ -33,14 +32,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n    \"description\": \"fue un escritor, guionista, editor y periodista colombiano. En 1982 recibió el Premio Nobel de Literatura.\",\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n    \"name\": \"Gabriel José de la Concordia García Márquez\"\n}"
+					"raw": "    {\n        \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n        \"description\": \"fue un escritor, guionista, editor y periodista colombiano. En 1982 recibió el Premio Nobel de Literatura.\",\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n        \"name\": \"Gabriel José de la Concordia García Márquez\"\n    }"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/authors",
+					"raw": "http://{{ip}}:{{puerto}}/api/authors",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"{{ip}}"
 					],
+					"port": "{{puerto}}",
 					"path": [
+						"api",
 						"authors"
 					]
 				},
@@ -56,7 +58,7 @@
 					"script": {
 						"exec": [
 							"var data = JSON.parse(responseBody);",
-							"postman.setGlobalVariable(\"author_id_2\",data.id);",
+							"postman.setGlobalVariable(\"new_id_a2\",data.id);",
 							"tests[\"No genera error en el Post\"] = responseCode.code === 201;",
 							"console.log(data.id);"
 						],
@@ -74,14 +76,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"birthDate\": \"1966-07-22T00:00:00-05:00\",\n    \"description\": \"fue un escritor, guionista, editor y periodista colombiano..\",\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Descargakoj.jpg\",\n    \"name\": \"Gustavo Bolivar Moreno\"\n}"
+					"raw": "    {\n        \"birthDate\": \"1966-07-22T00:00:00-05:00\",\n        \"description\": \"fue un escritor, guionista, editor y periodista colombiano..\",\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Descargakoj.jpg\",\n        \"name\": \"Gustavo Bolivar Moreno\"\n    }"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/authors",
+					"raw": "http://{{ip}}:{{puerto}}/api/authors",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"{{ip}}"
 					],
+					"port": "{{puerto}}",
 					"path": [
+						"api",
 						"authors"
 					]
 				},
@@ -108,11 +113,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/authors",
+					"raw": "http://{{ip}}:{{puerto}}/api/authors",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"{{ip}}"
 					],
+					"port": "{{puerto}}",
 					"path": [
+						"api",
 						"authors"
 					]
 				},
@@ -139,11 +147,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/authors/{{new_id_a}}",
+					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"{{ip}}"
 					],
+					"port": "{{puerto}}",
 					"path": [
+						"api",
 						"authors",
 						"{{new_id_a}}"
 					]
@@ -170,11 +181,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/authors/0",
+					"raw": "http://{{ip}}:{{puerto}}/api/authors/0",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"{{ip}}"
 					],
+					"port": "{{puerto}}",
 					"path": [
+						"api",
 						"authors",
 						"0"
 					]
@@ -208,16 +222,19 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n    \"description\": \"Fue un escritor, guionista, editor y periodista colombiano. En 1982 recibió el Premio Nobel de Literatura. Vivio gran parte de su vida en Mexico\",\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n    \"name\": \"Gabriel José de la Concordia García Márquez\"\n}"
+					"raw": "    {\n        \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n        \"description\": \"Fue un escritor, guionista, editor y periodista colombiano. En 1982 recibió el Premio Nobel de Literatura. Vivio gran parte de su vida en Mexico\",\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n        \"name\": \"Gabriel José de la Concordia García Márquez\"\n    }"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/authors/{{author_id_1}}",
+					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"{{ip}}"
 					],
+					"port": "{{puerto}}",
 					"path": [
+						"api",
 						"authors",
-						"{{author_id_1}}"
+						"{{new_id_a}}"
 					]
 				},
 				"description": "**Release: Paso-5**\r\n\r\nActualiza un autor existente. \r\nse envía el Id en la URL de la petición.\r\n\r\n**Código http esperado: 200**"
@@ -248,14 +265,17 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n    \"description\": \"Fue un escritor, guionista, editor y periodista colombiano. En 1982 recibió el Premio Nobel de Literatura. Vivio gran parte de su vida en Mexico\",\n    \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n    \"name\": \"Gabriel José de la Concordia García Márquez\"\n}"
+					"raw": "    {\n        \"birthDate\": \"1927-03-03T00:00:00-05:00\",\n        \"description\": \"Fue un escritor, guionista, editor y periodista colombiano. En 1982 recibió el Premio Nobel de Literatura. Vivio gran parte de su vida en Mexico\",\n        \"image\": \"https://commons.wikimedia.org/wiki/File:Gabriel_Garcia_Marquez.jpg\",\n        \"name\": \"Gabriel José de la Concordia García Márquez\"\n    }"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/authors/0",
+					"raw": "http://{{ip}}:{{puerto}}/api/authors/0",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"{{ip}}"
 					],
+					"port": "{{puerto}}",
 					"path": [
+						"api",
 						"authors",
 						"0"
 					]
@@ -285,13 +305,16 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{baseUrl}}/authors/{{author_id_1}}",
+					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a}}",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"{{ip}}"
 					],
+					"port": "{{puerto}}",
 					"path": [
+						"api",
 						"authors",
-						"{{author_id_1}}"
+						"{{new_id_a}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un autor. Se envía el id del autor creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -319,13 +342,16 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{baseUrl}}/authors/{{author_id_2}}",
+					"raw": "http://{{ip}}:{{puerto}}/api/authors/{{new_id_a2}}",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"{{ip}}"
 					],
+					"port": "{{puerto}}",
 					"path": [
+						"api",
 						"authors",
-						"{{author_id_2}}"
+						"{{new_id_a2}}"
 					]
 				},
 				"description": "**Release: Paso-5**\n\nBorra un autor. Se envía el id del autor creado anteriormente.\n\n**Código HTTP esperado: 204**"
@@ -354,11 +380,14 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{baseUrl}}/authors/0",
+					"raw": "http://{{ip}}:{{puerto}}/api/authors/0",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"{{ip}}"
 					],
+					"port": "{{puerto}}",
 					"path": [
+						"api",
 						"authors",
 						"0"
 					]
@@ -386,13 +415,6 @@
 					""
 				]
 			}
-		}
-	],
-	"variable": [
-		{
-			"key": "baseUrl",
-			"value": "http://localhost:8080/api",
-			"type": "string"
 		}
 	]
 }
