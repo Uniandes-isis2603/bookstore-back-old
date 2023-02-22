@@ -178,8 +178,6 @@ class OrganizationServiceTest {
 		OrganizationEntity entity = organizationList.get(0);
 		OrganizationEntity pojoEntity = factory.manufacturePojo(OrganizationEntity.class);
 
-		pojoEntity.setId(entity.getId());
-
 		organizationService.updateOrganization(entity.getId(), pojoEntity);
 
 		OrganizationEntity resp = entityManager.find(OrganizationEntity.class, entity.getId());

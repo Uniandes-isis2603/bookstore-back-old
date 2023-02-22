@@ -270,9 +270,9 @@ class AuthorBookServiceTest {
 			nuevaLista.add(entity);
 		}
 		authorBookService.addBooks(author.getId(), nuevaLista);
+		
 		List<BookEntity> bookEntities = authorBookService.getBooks(author.getId());
 		for (BookEntity aNuevaLista : nuevaLista) {
-			
 			assertTrue(bookEntities.contains(aNuevaLista));
 		}
 	}
