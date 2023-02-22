@@ -263,17 +263,19 @@ class AuthorBookServiceTest {
 	@Test
 	void testReplaceBooks() throws EntityNotFoundException, IllegalOperationException {
 		List<BookEntity> nuevaLista = new ArrayList<>();
+		
 		for (int i = 0; i < 3; i++) {
 			BookEntity entity = factory.manufacturePojo(BookEntity.class);
 			entity.setEditorial(editorial);
 			entityManager.persist(entity);
 			nuevaLista.add(entity);
 		}
+		
 		authorBookService.addBooks(author.getId(), nuevaLista);
 		
-		List<BookEntity> bookEntities = authorBookService.getBooks(author.getId());
-		for (BookEntity aNuevaLista : nuevaLista) {
-			assertTrue(bookEntities.contains(aNuevaLista));
+		List<BookEntity> bookEntities = entityManager.find(AuthorEntity.class, author.getId()).getBooks();
+		for (BookEntity item : nuevaLista) {
+			assertTrue(bookEntities.contains(item));
 		}
 	}
 	
