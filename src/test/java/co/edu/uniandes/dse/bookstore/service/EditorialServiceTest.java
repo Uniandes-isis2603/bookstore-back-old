@@ -69,8 +69,6 @@ class EditorialServiceTest {
 
 	private List<EditorialEntity> editorialList = new ArrayList<>();
 
-	private List<BookEntity> bookList = new ArrayList<>();
-
 	/**
 	 * Configuración inicial de la prueba.
 	 */
@@ -98,14 +96,6 @@ class EditorialServiceTest {
 			entityManager.persist(editorialEntity);
 			editorialList.add(editorialEntity);
 		}
-
-		for (int i = 0; i < 3; i++) {
-			BookEntity bookEntity = factory.manufacturePojo(BookEntity.class);
-			entityManager.persist(bookEntity);
-			bookList.add(bookEntity);
-		}
-		bookList.get(0).setEditorial(editorialList.get(0));
-		editorialList.get(0).getBooks().add(bookList.get(0));
 	}
 
 	/**
@@ -239,8 +229,12 @@ class EditorialServiceTest {
 	@Test
 	void testDeleteEditorialWithBooks() {
 		assertThrows(IllegalOperationException.class, () -> {
-			EditorialEntity entity = editorialList.get(0);
-			editorialService.deleteEditorial(entity.getId());
+			
+			EditorialEntity editorialEntity = editorialList.get(0);
+			BookEntity bookEntity = factory.manufacturePojo(BookEntity.class);
+			entityManager.persist(bookEntity);
+			editorialEntity.getBooks().add(bookEntity);
+			editorialService.deleteEditorial(editorialEntity.getId());
 		});
 	}
 }

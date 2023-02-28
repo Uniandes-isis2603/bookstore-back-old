@@ -104,11 +104,6 @@ class PrizeServiceTest {
 			prizeList.add(entity);
 			organizationList.add(orgEntity);
 		}
-
-		AuthorEntity author = factory.manufacturePojo(AuthorEntity.class);
-		entityManager.persist(author);
-		author.getPrizes().add(prizeList.get(2));
-		prizeList.get(2).setAuthor(author);
 	}
 
 	/**
@@ -272,8 +267,14 @@ class PrizeServiceTest {
 	@Test
 	void testDeletePrizeWithAuthor() {
 		assertThrows(IllegalOperationException.class, () -> {
-			PrizeEntity entity = prizeList.get(2);
-			prizeService.deletePrize(entity.getId());
+			
+			AuthorEntity author = factory.manufacturePojo(AuthorEntity.class);
+			entityManager.persist(author);
+			
+			PrizeEntity prizeEntity = prizeList.get(2);
+			prizeEntity.setAuthor(author);
+			
+			prizeService.deletePrize(prizeEntity.getId());
 		});
 	}
 

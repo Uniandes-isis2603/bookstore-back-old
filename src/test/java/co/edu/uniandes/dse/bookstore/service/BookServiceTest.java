@@ -69,7 +69,7 @@ class BookServiceTest {
 	private PodamFactory factory = new PodamFactoryImpl();
 
 	private List<BookEntity> bookList = new ArrayList<>();
-	private List<EditorialEntity> editorialList = new ArrayList<>();
+	private EditorialEntity editorialEntity;
 
 	/**
 	 * Configuración inicial de la prueba.
@@ -93,15 +93,13 @@ class BookServiceTest {
 	 * Inserta los datos iniciales para el correcto funcionamiento de las pruebas.
 	 */
 	private void insertData() {
-		for (int i = 0; i < 3; i++) {
-			EditorialEntity editorialEntity = factory.manufacturePojo(EditorialEntity.class);
-			entityManager.persist(editorialEntity);
-			editorialList.add(editorialEntity);
-		}
+		
+		editorialEntity = factory.manufacturePojo(EditorialEntity.class);
+		entityManager.persist(editorialEntity);
 
 		for (int i = 0; i < 3; i++) {
 			BookEntity bookEntity = factory.manufacturePojo(BookEntity.class);
-			bookEntity.setEditorial(editorialList.get(0));
+			bookEntity.setEditorial(editorialEntity);
 			entityManager.persist(bookEntity);
 			bookList.add(bookEntity);
 		}
@@ -118,7 +116,7 @@ class BookServiceTest {
 	@Test
 	void testCreateBook() throws EntityNotFoundException, IllegalOperationException {
 		BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
-		newEntity.setEditorial(editorialList.get(0));
+		newEntity.setEditorial(editorialEntity);
 		newEntity.setIsbn("1-4028-9462-7");
 		BookEntity result = bookService.createBook(newEntity);
 		assertNotNull(result);
@@ -138,7 +136,7 @@ class BookServiceTest {
 	void testCreateBookWithNoValidISBN() {
 		assertThrows(IllegalOperationException.class, () -> {
 			BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
-			newEntity.setEditorial(editorialList.get(0));
+			newEntity.setEditorial(editorialEntity);
 			newEntity.setIsbn("");
 			bookService.createBook(newEntity);
 		});
@@ -151,7 +149,7 @@ class BookServiceTest {
 	void testCreateBookWithNoValidISBN2() {
 		assertThrows(IllegalOperationException.class, () -> {
 			BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
-			newEntity.setEditorial(editorialList.get(0));
+			newEntity.setEditorial(editorialEntity);
 			newEntity.setIsbn(null);
 			bookService.createBook(newEntity);
 		});
@@ -164,7 +162,7 @@ class BookServiceTest {
 	void testCreateBookWithStoredISBN() {
 		assertThrows(IllegalOperationException.class, () -> {
 			BookEntity newEntity = factory.manufacturePojo(BookEntity.class);
-			newEntity.setEditorial(editorialList.get(0));
+			newEntity.setEditorial(editorialEntity);
 			newEntity.setIsbn(bookList.get(0).getIsbn());
 			bookService.createBook(newEntity);
 		});

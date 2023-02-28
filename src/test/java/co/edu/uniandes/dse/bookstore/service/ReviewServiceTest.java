@@ -40,7 +40,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import co.edu.uniandes.dse.bookstore.entities.BookEntity;
-import co.edu.uniandes.dse.bookstore.entities.EditorialEntity;
 import co.edu.uniandes.dse.bookstore.entities.ReviewEntity;
 import co.edu.uniandes.dse.bookstore.exceptions.EntityNotFoundException;
 import co.edu.uniandes.dse.bookstore.services.ReviewService;
@@ -67,8 +66,7 @@ class ReviewServiceTest {
 	private PodamFactory factory = new PodamFactoryImpl();
 
 	private List<ReviewEntity> reviewList = new ArrayList<>();
-	private List<BookEntity> bookList = new ArrayList<>();
-	private List<EditorialEntity> editorialList = new ArrayList<>();
+	private BookEntity bookEntity;
 
 	/**
 	 * Configuración inicial de la prueba.
@@ -85,33 +83,24 @@ class ReviewServiceTest {
 	private void clearData() {
 		entityManager.getEntityManager().createQuery("delete from ReviewEntity").executeUpdate();
 		entityManager.getEntityManager().createQuery("delete from BookEntity").executeUpdate();
-		entityManager.getEntityManager().createQuery("delete from EditorialEntity").executeUpdate();
 	}
 
 	/**
 	 * Inserta los datos iniciales para el correcto funcionamiento de las pruebas.
 	 */
 	private void insertData() {
-		for (int i = 0; i < 3; i++) {
-			EditorialEntity editorial = factory.manufacturePojo(EditorialEntity.class);
-			entityManager.persist(editorial);
-			editorialList.add(editorial);
-		}
 
-		for (int i = 0; i < 3; i++) {
-			BookEntity entity = factory.manufacturePojo(BookEntity.class);
-			entity.setEditorial(editorialList.get(i));
-			entityManager.persist(entity);
-			bookList.add(entity);
-		}
-
+		bookEntity = factory.manufacturePojo(BookEntity.class);
+		entityManager.persist(bookEntity);
+		
 		for (int i = 0; i < 3; i++) {
 			ReviewEntity entity = factory.manufacturePojo(ReviewEntity.class);
-			entity.setBook(bookList.get(0));
-			bookList.get(0).getReviews().add(entity);
+			entity.setBook(bookEntity);
 			entityManager.persist(entity);
 			reviewList.add(entity);
 		}
+		
+		bookEntity.setReviews(reviewList);
 	}
 
 	/**
@@ -120,8 +109,8 @@ class ReviewServiceTest {
 	@Test
 	void testCreateReview() throws EntityNotFoundException {
 		ReviewEntity newEntity = factory.manufacturePojo(ReviewEntity.class);
-		newEntity.setBook(bookList.get(1));
-		ReviewEntity result = reviewService.createReview(reviewList.get(1).getId(), newEntity);
+				
+		ReviewEntity result = reviewService.createReview(bookEntity.getId(), newEntity);
 		assertNotNull(result);
 		ReviewEntity entity = entityManager.find(ReviewEntity.class, result.getId());
 		assertEquals(newEntity.getId(), entity.getId());
@@ -146,7 +135,7 @@ class ReviewServiceTest {
 	 */
 	@Test
 	void testGetReviews() throws EntityNotFoundException {
-		List<ReviewEntity> list = reviewService.getReviews(bookList.get(0).getId());
+		List<ReviewEntity> list = reviewService.getReviews(bookEntity.getId());
 		assertEquals(reviewList.size(), list.size());
 		for (ReviewEntity entity : list) {
 			boolean found = false;
@@ -175,7 +164,7 @@ class ReviewServiceTest {
 	@Test
 	void testGetReview() throws EntityNotFoundException {
 		ReviewEntity entity = reviewList.get(0);
-		ReviewEntity resultEntity = reviewService.getReview(bookList.get(0).getId(), entity.getId());
+		ReviewEntity resultEntity = reviewService.getReview(bookEntity.getId(), entity.getId());
 		assertNotNull(resultEntity);
 		assertEquals(entity.getId(), resultEntity.getId());
 		assertEquals(entity.getName(), resultEntity.getName());
@@ -200,7 +189,7 @@ class ReviewServiceTest {
 	@Test
 	void testGetInvalidReview() {
 		assertThrows(EntityNotFoundException.class, () -> {
-			reviewService.getReview(bookList.get(0).getId(), 0L);
+			reviewService.getReview(bookEntity.getId(), 0L);
 		});
 	}
 
@@ -214,7 +203,7 @@ class ReviewServiceTest {
 
 		pojoEntity.setId(entity.getId());
 
-		reviewService.updateReview(bookList.get(1).getId(), entity.getId(), pojoEntity);
+		reviewService.updateReview(bookEntity.getId(), entity.getId(), pojoEntity);
 
 		ReviewEntity resp = entityManager.find(ReviewEntity.class, entity.getId());
 
@@ -245,7 +234,7 @@ class ReviewServiceTest {
 	void testUpdateInvalidReview(){
 		assertThrows(EntityNotFoundException.class, ()->{
 			ReviewEntity pojoEntity = factory.manufacturePojo(ReviewEntity.class);
-			reviewService.updateReview(bookList.get(1).getId(), 0L, pojoEntity);
+			reviewService.updateReview(bookEntity.getId(), 0L, pojoEntity);
 		});
 	}
 
@@ -255,13 +244,13 @@ class ReviewServiceTest {
 	@Test
 	void testDeleteReview() throws EntityNotFoundException {
 		ReviewEntity entity = reviewList.get(0);
-		reviewService.deleteReview(bookList.get(0).getId(), entity.getId());
+		reviewService.deleteReview(bookEntity.getId(), entity.getId());
 		ReviewEntity deleted = entityManager.find(ReviewEntity.class, entity.getId());
 		assertNull(deleted);
 	}
 	
 	/**
-     * Prueba para eliminar un Reviewm de un libro que no existe.
+     * Prueba para eliminar un Review de un libro que no existe.
      */
 	@Test
 	void testDeleteReviewInvalidBook()  {
@@ -277,8 +266,12 @@ class ReviewServiceTest {
 	@Test
 	void testDeleteReviewWithNoAssociatedBook() {
 		assertThrows(EntityNotFoundException.class, () -> {
+			
+			BookEntity newBook =  factory.manufacturePojo(BookEntity.class);
+			entityManager.persist(newBook);
+			
 			ReviewEntity entity = reviewList.get(0);
-			reviewService.deleteReview(bookList.get(1).getId(), entity.getId());
+			reviewService.deleteReview(newBook.getId(), entity.getId());
 		});
 	}
 
