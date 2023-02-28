@@ -100,18 +100,6 @@ class AuthorServiceTest {
 			entityManager.persist(authorEntity);
 			authorList.add(authorEntity);
 		}
-
-		AuthorEntity authorEntity = authorList.get(2);
-		BookEntity bookEntity = factory.manufacturePojo(BookEntity.class);
-		bookEntity.getAuthors().add(authorEntity);
-		entityManager.persist(bookEntity);
-
-		authorEntity.getBooks().add(bookEntity);
-
-		PrizeEntity prize = factory.manufacturePojo(PrizeEntity.class);
-		prize.setAuthor(authorList.get(1));
-		entityManager.persist(prize);
-		authorList.get(1).getPrizes().add(prize);
 	}
 
 	/**
@@ -259,6 +247,13 @@ class AuthorServiceTest {
 	@Test
 	void testDeleteAuthorWithBooks() {
 		assertThrows(IllegalOperationException.class, () -> {
+			AuthorEntity authorEntity = authorList.get(2);
+			
+			BookEntity bookEntity = factory.manufacturePojo(BookEntity.class);
+			bookEntity.getAuthors().add(authorEntity);
+			entityManager.persist(bookEntity);
+			authorEntity.getBooks().add(bookEntity);
+			
 			authorService.deleteAuthor(authorList.get(2).getId());
 		});
 	}
@@ -270,6 +265,11 @@ class AuthorServiceTest {
 	@Test
 	void testDeleteAuthorWithPrize() {
 		assertThrows(IllegalOperationException.class, () -> {
+			PrizeEntity prize = factory.manufacturePojo(PrizeEntity.class);
+			prize.setAuthor(authorList.get(1));
+			entityManager.persist(prize);
+			authorList.get(1).getPrizes().add(prize);
+			
 			authorService.deleteAuthor(authorList.get(1).getId());
 		});
 	}
