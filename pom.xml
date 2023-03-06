@@ -117,21 +117,6 @@
 				<version>1.6.0</version>
 				<executions>
 					<execution>
-						<id>install-combine</id>
-						<phase>integration-test</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<executable>
-								npm
-							</executable>
-							<commandlineArgs>
-								install -g postman-combine-collections
-							</commandlineArgs>
-						</configuration>
-					</execution>
-					<execution>
 						<id>combine-collection</id>
 						<phase>integration-test</phase>
 						<goals>
