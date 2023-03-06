@@ -36,6 +36,7 @@ pipeline {
             script {
                docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {                  
                   sh '''
+                  	 npm i -g postman-combine-collections
                      ./mvnw clean test   
                   '''
                }

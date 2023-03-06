@@ -117,6 +117,21 @@
 				<version>1.6.0</version>
 				<executions>
 					<execution>
+						<id>combine-collection</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>
+								postman-combine-collections
+							</executable>
+							<commandlineArgs>
+								--name Composed -f collections/*.postman_collection.json -o it/composed.collection.json
+							</commandlineArgs>
+						</configuration>
+					</execution>
+					<execution>
 						<id>integration-tests-composed-collection</id>
 						<phase>integration-test</phase>
 						<goals>
