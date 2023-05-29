@@ -10,6 +10,7 @@ pipeline {
       stage('Checkout') { 
          steps {
             scmSkip(deleteBuild: true, skipPattern:'.*\\[ci-skip\\].*')
+
             git branch: 'master', 
                credentialsId: env.GIT_CREDENTIAL_ID,
                url: 'https://github.com/Uniandes-isis2603/' + env.GIT_REPO
@@ -20,7 +21,44 @@ pipeline {
          steps {
             sh """ curl --request POST --url https://code-analyzer.virtual.uniandes.edu.co/clone --header "Content-Type: application/json" --data '{"repo_url":"git@github.com:Uniandes-isis2603/bookstore-front.git", "access_token": env.GIT_CREDENTIAL_ID }' """   
          }
-      }    
+      }          
+      stage('Build') {
+         // Build artifacts
+         steps {
+            script {
+               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
+                  sh '''
+                     java -version
+                     ./mvnw clean install
+                  '''
+               }
+            }
+         }
+      }
+      stage('Testing') {
+         // Run unit tests
+         steps {
+            script {
+               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {                  
+                  sh '''
+                     ./mvnw clean test   
+                  '''
+               }
+            }
+         }
+      }
+      stage('Static Analysis') {
+         // Run static analysis
+         steps {
+            script {
+               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
+                  sh '''
+                     ./mvnw clean verify sonar:sonar -Dsonar.host.url=${SONARQUBE_URL}   
+                  '''
+               }
+            }
+         }
+      }
    }
    post { 
       always {
