@@ -16,9 +16,9 @@ pipeline {
             
          }
       }
-      stage('SendAPÎ') { 
+      stage('SendAPIRequest') { 
          steps {
-            sh """ curl --request POST --url https://code-analyzer.virtual.uniandes.edu.co/clone --header "Content-Type: application/json" --data '{"repo_url":"git@github.com:Uniandes-isis2603/bookstore-front.git", "access_token": "u551nRffLkewHzPEsdBfQ6xe7zjzVs38gBRz"}' """   
+            sh """ curl --request POST --url https://code-analyzer.virtual.uniandes.edu.co/clone --header "Content-Type: application/json" --data '{"repo_url":"git@github.com:Uniandes-isis2603/bookstore-front.git", "access_token": env.GIT_CREDENTIAL_ID }' """   
          }
       }    
    }
