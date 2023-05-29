@@ -33,6 +33,43 @@ pipeline {
             ])
          }
       }          
+      stage('Build') {
+         // Build artifacts
+         steps {
+            script {
+               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
+                  sh '''
+                     java -version
+                     ./mvnw clean install
+                  '''
+               }
+            }
+         }
+      }
+      stage('Testing') {
+         // Run unit tests
+         steps {
+            script {
+               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {                  
+                  sh '''
+                     ./mvnw clean test   
+                  '''
+               }
+            }
+         }
+      }
+      stage('Static Analysis') {
+         // Run static analysis
+         steps {
+            script {
+               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
+                  sh '''
+                     ./mvnw clean verify sonar:sonar -Dsonar.host.url=${SONARQUBE_URL}   
+                  '''
+               }
+            }
+         }
+      }
    }
    post { 
       always {
