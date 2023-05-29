@@ -19,46 +19,9 @@ pipeline {
       }
       stage('SendAPIRequest') { 
          steps {
-            sh """ curl --request POST --url https://code-analyzer.virtual.uniandes.edu.co/clone --header "Content-Type: application/json" --data '{"repo_url":"git@github.com:Uniandes-isis2603/bookstore-front.git", "access_token": env.GIT_CREDENTIAL_ID }' """   
+            sh """ curl --request POST --url https://code-analyzer.virtual.uniandes.edu.co/clone --header "Content-Type: application/json" --data '{"repo_url":"git@github.com:Uniandes-isis2603/bookstore-front.git", "access_token": env.GIT_CREDENTIAL_ID }' > code-analyzer-reports/index.html"""   
          }
       }          
-      stage('Build') {
-         // Build artifacts
-         steps {
-            script {
-               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
-                  sh '''
-                     java -version
-                     ./mvnw clean install
-                  '''
-               }
-            }
-         }
-      }
-      stage('Testing') {
-         // Run unit tests
-         steps {
-            script {
-               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {                  
-                  sh '''
-                     ./mvnw clean test   
-                  '''
-               }
-            }
-         }
-      }
-      stage('Static Analysis') {
-         // Run static analysis
-         steps {
-            script {
-               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
-                  sh '''
-                     ./mvnw clean verify sonar:sonar -Dsonar.host.url=${SONARQUBE_URL}   
-                  '''
-               }
-            }
-         }
-      }
    }
    post { 
       always {
