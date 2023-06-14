@@ -71,14 +71,5 @@ pipeline {
          }
       }
    }
-   post {
-      always {
-        cleanWs()
-        deleteDir() 
-        dir("${env.GIT_REPO}@tmp") {
-          deleteDir()
-        }
-      }
-   }
 }
 
