@@ -13,7 +13,6 @@ pipeline {
             git branch: 'master', 
                credentialsId: env.GIT_CREDENTIAL_ID,
                url: 'https://github.com/Uniandes-isis2603/' + env.GIT_REPO
-            
          }
       }
       stage('SendAPIRequest') { 
@@ -70,5 +69,13 @@ pipeline {
          }
       }
    }
+   post {
+      always {
+        cleanWs()
+        deleteDir() 
+        dir("${env.GIT_REPO}@tmp") {
+          deleteDir()
+        }
+      }
+   }
 }
-
