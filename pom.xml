@@ -12,7 +12,7 @@
 	<groupId>co.edu.uniandes.dse.bookstore</groupId>
 	<artifactId>bookstore-back</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>bookstore</name>
+	<name>bookstore-back</name>
 	<description>Back project for ISIS2603</description>
 	<properties>
 		<java.version>11</java.version>
