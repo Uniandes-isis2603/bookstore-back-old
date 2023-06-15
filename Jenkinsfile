@@ -15,7 +15,7 @@ pipeline {
                url: 'https://github.com/Uniandes-isis2603/' + env.GIT_REPO
          }
       }
-      stage('SendAPIRequest') { 
+      stage('Statistical analysis') { 
          steps {
             withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIAL_ID, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                sh 'mkdir -p code-analyzer-report'
