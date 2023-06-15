@@ -30,6 +30,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -42,6 +43,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @Entity
 public class EditorialEntity extends BaseEntity {
 

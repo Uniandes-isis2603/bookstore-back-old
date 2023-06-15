@@ -32,6 +32,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -44,6 +45,7 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @Entity
 public class PrizeEntity extends BaseEntity {
 

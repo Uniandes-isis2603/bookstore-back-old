@@ -36,6 +36,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import co.edu.uniandes.dse.bookstore.podam.DateStrategy;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -49,6 +50,7 @@ import uk.co.jemos.podam.common.PodamStrategyValue;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @Entity
 public class AuthorEntity extends BaseEntity {
 
