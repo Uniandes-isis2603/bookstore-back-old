@@ -16,22 +16,6 @@ pipeline {
                url: 'https://github.com/Uniandes-isis2603/' + env.GIT_REPO
          }
       }
-      stage('Statistical analysis') { 
-         steps {
-            withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIAL_ID, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-               sh 'mkdir -p code-analyzer-report'
-               sh """ curl --request POST --url https://code-analyzer.virtual.uniandes.edu.co/analyze --header "Content-Type: application/json" --data '{"repo_url":"git@github.com:Uniandes-isis2603/bookstore-front.git", "access_token": "${GIT_PASSWORD}" }' > code-analyzer-report/index.html """   
-            }
-            publishHTML (target: [
-               allowMissing: false,
-               alwaysLinkToLastBuild: false,
-               keepAll: true,
-               reportDir: 'code-analyzer-report',
-               reportFiles: 'index.html',
-               reportName: "GitInspector"
-            ])
-         }
-      }
       stage('ARCC') {
          // Run arcc analysis
          steps {
@@ -45,45 +29,7 @@ pipeline {
                }
             }
          }
-      }
-          
-      stage('Build') {
-         // Build artifacts
-         steps {
-            script {
-               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
-                  sh '''
-                     java -version
-                     ./mvnw clean install
-                  '''
-               }
-            }
-         }
-      }
-      stage('Testing') {
-         // Run unit tests
-         steps {
-            script {
-               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {                  
-                  sh '''
-                     ./mvnw clean test   
-                  '''
-               }
-            }
-         }
-      }
-      stage('Static Analysis') {
-         // Run static analysis
-         steps {
-            script {
-               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
-                  sh '''
-                     ./mvnw clean verify sonar:sonar -Dsonar.host.url=${SONARQUBE_URL}   
-                  '''
-               }
-            }
-         }
-      }
+      }      
    }
    post {
       always {
