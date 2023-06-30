@@ -23,11 +23,9 @@ SOFTWARE.
 */
 package co.edu.uniandes.dse.bookstore.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class PrizeDetailDTO extends PrizeDTO {
 	private AuthorDTO author;
 }

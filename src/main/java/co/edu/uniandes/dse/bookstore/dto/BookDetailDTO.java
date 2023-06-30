@@ -26,12 +26,10 @@ package co.edu.uniandes.dse.bookstore.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-public class BookDetailDTO extends BookDTO{
+@Data
+public class BookDetailDTO extends BookDTO {
 	private List<ReviewDTO> reviews = new ArrayList<>();
 	private List<AuthorDTO> authors = new ArrayList<>();
 }
