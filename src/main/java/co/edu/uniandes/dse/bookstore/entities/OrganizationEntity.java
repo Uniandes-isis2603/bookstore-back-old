@@ -28,9 +28,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
 
 /**
@@ -39,9 +37,7 @@ import uk.co.jemos.podam.common.PodamExclude;
  * @author ISIS2603
  */
 
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 @Entity
 public class OrganizationEntity extends BaseEntity {
 
