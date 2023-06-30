@@ -36,9 +36,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
 
 /**
@@ -47,9 +45,7 @@ import uk.co.jemos.podam.common.PodamExclude;
  * @author ISIS2603
  */
 
-@Getter
-@Setter
-@EqualsAndHashCode
+@Data
 @Entity
 public class BookEntity extends BaseEntity {
 
