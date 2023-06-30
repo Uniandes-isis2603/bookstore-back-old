@@ -4,6 +4,8 @@ pipeline {
       GIT_REPO = 'bookstore-back'
       GIT_CREDENTIAL_ID = '7c21addc-0cbf-4f2e-9bd8-eced479c56c6'
       SONARQUBE_URL = 'http://172.24.101.209:8082/sonar-isis2603'
+      ARCHID_TOKEN = credentials('7c21addc-0cbf-4f2e-9bd8-eced479c56c6')
+
    }
    stages {
       stage('Checkout') { 
@@ -30,7 +32,21 @@ pipeline {
                reportName: "GitInspector"
             ])
          }
-      }          
+      }
+      stage('ARCC') {
+         // Run arcc analysis
+         steps {
+            script {
+               docker.image('arcc-tools-isis2603:latest').inside('-e ARCHID_TOKEN=${ARCHID_TOKEN}') {
+                  sh '''
+                     java -version
+                     java -cp /eclipse/plugins/org.eclipse.equinox.launcher_1.5.700.v20200207-2156.jar org.eclipse.equinox.launcher.Main -application co.edu.uniandes.archtoring.archtoring --full
+                  '''
+               }
+            }
+         }
+      }
+          
       stage('Build') {
          // Build artifacts
          steps {
