@@ -7,7 +7,7 @@ pipeline {
       ARCHID_TOKEN = credentials('7c21addc-0cbf-4f2e-9bd8-eced479c56c6')
 
    }
-   stages {
+   stages { 
       stage('Checkout') { 
          steps {
             scmSkip(deleteBuild: true, skipPattern:'.*\\[ci-skip\\].*')
