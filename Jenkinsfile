@@ -16,6 +16,59 @@ pipeline {
                url: 'https://github.com/Uniandes-isis2603/' + env.GIT_REPO
          }
       }
+      stage('GitInspector') { 
+         steps {
+            withCredentials([usernamePassword(credentialsId: env.GIT_CREDENTIAL_ID, passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+               sh 'mkdir -p code-analyzer-report'
+               sh """ curl --request POST --url https://code-analyzer.virtual.uniandes.edu.co/analyze --header "Content-Type: application/json" --data '{"repo_url":"git@github.com:Uniandes-isis2603/${GIT_REPO}.git", "access_token": "${GIT_PASSWORD}" }' > code-analyzer-report/index.html """   
+            }
+            publishHTML (target: [
+               allowMissing: false,
+               alwaysLinkToLastBuild: false,
+               keepAll: true,
+               reportDir: 'code-analyzer-report',
+               reportFiles: 'index.html',
+               reportName: "GitInspector"
+            ])
+         }
+      }
+      stage('Build') {
+         // Build artifacts
+         steps {
+            script {
+               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
+                  sh '''
+                     java -version
+                     ./mvnw clean package
+                  '''
+               }
+            }
+         }
+      }
+      stage('Testing') {
+         // Run unit tests
+         steps {
+            script {
+               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {                  
+                  sh '''
+                     ./mvnw clean test
+                  '''
+               }
+            }
+         }
+      }
+      stage('Static Analysis') {
+         // Run static analysis
+         steps {
+            script {
+               docker.image('springtools-isis2603:latest').inside('-v ${WORKSPACE}/maven:/root/.m2') {
+                  sh '''
+                     ./mvnw clean verify sonar:sonar -Dsonar.host.url=${SONARQUBE_URL}
+                  '''
+               }
+            }
+         }
+      }
       stage('ARCC') {
          // Run arcc analysis
          steps {
@@ -30,5 +83,14 @@ pipeline {
             }
          }
       }      
+   }
+   post {
+      always {
+        cleanWs()
+        deleteDir() 
+        dir("${env.GIT_REPO}@tmp") {
+          deleteDir()
+        }
+      }
    }
 }
