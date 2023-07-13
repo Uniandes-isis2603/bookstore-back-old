@@ -20,10 +20,10 @@ pipeline {
          // Run arcc analysis
          steps {
             script {
-               docker.image('arcc-tools-isis2603:latest').inside('-e ARCHID_TOKEN=${ARCHID_TOKEN}') {
+               docker.image('arcc-tools-isis2603:latest').inside('-e ARCHID_TOKEN=${ARCHID_TOKEN}').args('-u root') {
                   sh '''
                      java -version
-                     sudo apt install -y rsync 
+                     apt-get install -y rsync 
                      rsync --recursive . bookstore-back
                      java -cp /eclipse/plugins/org.eclipse.equinox.launcher_1.5.700.v20200207-2156.jar org.eclipse.equinox.launcher.Main -application co.edu.uniandes.archtoring.archtoring bookstore-back
                   '''
