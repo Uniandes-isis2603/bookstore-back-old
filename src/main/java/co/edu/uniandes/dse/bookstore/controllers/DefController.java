@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("*")
-public class DefaultController {
+public class DefController {
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
     public Map<String, String> welcome() {
