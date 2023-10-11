@@ -73,7 +73,7 @@ pipeline {
          // Run arcc analysis
          steps {
             script {
-               docker.image('citools-isis2603:latest').inside('-e ARCHID_TOKEN=${ARCHID_TOKEN}'){
+               docker.image('arcc-tools-isis2603-isis2603:latest').inside('-e ARCHID_TOKEN=${ARCHID_TOKEN}'){
                   sh '''
                      java -version
                      rsync --recursive . bookstore-back
