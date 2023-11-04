@@ -22,8 +22,9 @@
 		<sonar.language>java</sonar.language>
 		<sonar.coverage.exclusions>**/controllers/**,**/exceptions/**,**/podam/**,
 			**/dto/**</sonar.coverage.exclusions>
+		<sonar.organization>miso-alejosaur</sonar.organization>
+  		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
