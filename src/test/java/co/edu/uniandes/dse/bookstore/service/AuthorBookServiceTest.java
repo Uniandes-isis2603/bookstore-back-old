@@ -150,10 +150,10 @@ class AuthorBookServiceTest {
 
 	@Test
 	void testAddBookInvalidAuthor() {
+		BookEntity newBook = factory.manufacturePojo(BookEntity.class);
+		newBook.setEditorial(editorial);
+		bookService.createBook(newBook);
 		assertThrows(EntityNotFoundException.class, () -> {
-			BookEntity newBook = factory.manufacturePojo(BookEntity.class);
-			newBook.setEditorial(editorial);
-			bookService.createBook(newBook);
 			authorBookService.addBook(0L, newBook.getId());
 		});
 	}
