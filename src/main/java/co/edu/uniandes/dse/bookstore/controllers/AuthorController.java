@@ -55,11 +55,15 @@ import co.edu.uniandes.dse.bookstore.services.AuthorService;
 @RequestMapping("/authors")
 public class AuthorController {
 
-	@Autowired
-	private AuthorService authorService;
+	private final AuthorService authorService;
 
+	private final ModelMapper modelMapper;
+	
 	@Autowired
-	private ModelMapper modelMapper;
+	public AuthorController(AuthorService authorService, ModelMapper modelMapper){
+		this.authorService = authorService;
+		this.modelMapper = modelMapper;
+	}
 
 	/**
 	 * Busca y devuelve todos los autores que existen en la aplicacion.

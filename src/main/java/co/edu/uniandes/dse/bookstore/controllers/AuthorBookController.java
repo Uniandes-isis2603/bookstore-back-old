@@ -55,11 +55,15 @@ import co.edu.uniandes.dse.bookstore.services.AuthorBookService;
 @RequestMapping("/authors")
 public class AuthorBookController {
 
-	@Autowired
-	private AuthorBookService authorBookService;
+	private final AuthorBookService authorBookService;
 
+	private final ModelMapper modelMapper;
+	
 	@Autowired
-	private ModelMapper modelMapper;
+	public AuthorBookController(AuthorBookService authorBookService, ModelMapper modelMapper){
+		this.authorBookService = authorBookService;
+		this.modelMapper = modelMapper;
+	}
 
 	/**
 	 * Busca y devuelve el libro con el ID recibido en la URL, relativo a un autor.
