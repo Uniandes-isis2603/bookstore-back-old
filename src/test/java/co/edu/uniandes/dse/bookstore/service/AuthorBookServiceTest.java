@@ -149,7 +149,7 @@ class AuthorBookServiceTest {
 	 */
 
 	@Test
-	void testAddBookInvalidAuthor() {
+	void testAddBookInvalidAuthor() throws EntityNotFoundException, IllegalOperationException {
 		BookEntity newBook = factory.manufacturePojo(BookEntity.class);
 		newBook.setEditorial(editorial);
 		bookService.createBook(newBook);
