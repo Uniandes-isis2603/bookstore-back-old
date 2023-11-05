@@ -53,7 +53,7 @@ public class BookAuthorService {
 	private AuthorRepository authorRepository;
 
 	@Resource
- 	private BookAuthorService bookAuthorService;
+ 	private BookAuthorService thisBookAuthorService;
 
 	/**
 	 * Asocia un Author existente a un Book
@@ -146,7 +146,7 @@ public class BookAuthorService {
 				bookEntity.get().getAuthors().add(authorEntity.get());
 		}
 		log.info("Termina proceso de reemplazar los autores del libro con id = {0}", bookId);
-		return bookAuthorService.getAuthors(bookId);
+		return thisBookAuthorService.getAuthors(bookId);
 	}
 
 	@Transactional
