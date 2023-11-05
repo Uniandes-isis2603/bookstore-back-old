@@ -286,14 +286,14 @@ class AuthorBookServiceTest {
 	 */
 	@Test
 	void testReplaceBooksInvalidAuthor() {
-		assertThrows(EntityNotFoundException.class, () -> {
-			List<BookEntity> nuevaLista = new ArrayList<>();
-			for (int i = 0; i < 3; i++) {
-				BookEntity entity = factory.manufacturePojo(BookEntity.class);
-				entity.setEditorial(editorial);
-				bookService.createBook(entity);
-				nuevaLista.add(entity);
-			}
+		List<BookEntity> nuevaLista = new ArrayList<>();
+		for (int i = 0; i < 3; i++) {
+			BookEntity entity = factory.manufacturePojo(BookEntity.class);
+			entity.setEditorial(editorial);
+			bookService.createBook(entity);
+			nuevaLista.add(entity);
+		}
+		assertThrows(EntityNotFoundException.class, () -> {			
 			authorBookService.addBooks(0L, nuevaLista);
 		});
 	}
